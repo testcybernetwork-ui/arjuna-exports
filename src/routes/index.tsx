@@ -444,7 +444,7 @@ function Home() {
                       <span className="display shrink-0 text-[clamp(.9rem,2vw,1.5rem)] leading-none text-pure-white">
                         {String(i + 1).padStart(2, "0")}
                       </span>
-                      <h3 className="display min-w-0 text-[clamp(.8rem,1.6vw,1.3rem)] leading-tight text-pure-white">
+                      <h3 className="process-preview-stage-title display min-w-0 text-[clamp(.8rem,1.6vw,1.3rem)] leading-tight">
                         {s.title}
                       </h3>
                     </div>

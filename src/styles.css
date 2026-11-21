@@ -857,6 +857,7 @@ h1:is(.hero-title-dark, .contact-hero-title, [class*="text-[#20555A]"]) {
 .home-hero h1.home-hero__title { color: #fff !important; }
 .home-hero h1.home-hero__title .home-hero__title-line--accent { color: var(--text-secondary) !important; }
 .home-hero .micro-label { color: var(--text-secondary) !important; }
+.process-preview-stage-title { color: var(--text-secondary) !important; }
 
 .home-hero__content > p {
   max-width: 43ch;

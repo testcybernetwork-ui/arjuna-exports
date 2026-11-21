@@ -19,6 +19,7 @@ import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as ProcessRouteImport } from './routes/process'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as ResourcesRouteImport } from './routes/resources'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SustainabilityRouteImport } from './routes/sustainability'
 import { Route as AdminArticlesRouteImport } from './routes/admin.articles'
@@ -99,6 +100,11 @@ const ProductsRoute = ProductsRouteImport.update({
 const ResourcesRoute = ResourcesRouteImport.update({
   id: '/resources',
   path: '/resources',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -269,6 +275,7 @@ export interface FileRoutesByFullPath {
   '/process': typeof ProcessRoute
   '/products': typeof ProductsRouteWithChildren
   '/resources': typeof ResourcesRouteWithChildren
+  '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sustainability': typeof SustainabilityRoute
   '/admin/articles': typeof AdminArticlesRouteWithChildren
@@ -312,6 +319,7 @@ export interface FileRoutesByTo {
   '/process': typeof ProcessRoute
   '/products': typeof ProductsRouteWithChildren
   '/resources': typeof ResourcesRouteWithChildren
+  '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sustainability': typeof SustainabilityRoute
   '/admin/articles': typeof AdminArticlesRouteWithChildren
@@ -356,6 +364,7 @@ export interface FileRoutesById {
   '/process': typeof ProcessRoute
   '/products': typeof ProductsRouteWithChildren
   '/resources': typeof ResourcesRouteWithChildren
+  '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sustainability': typeof SustainabilityRoute
   '/admin/articles': typeof AdminArticlesRouteWithChildren
@@ -401,6 +410,7 @@ export interface FileRouteTypes {
     | '/process'
     | '/products'
     | '/resources'
+    | '/robots.txt'
     | '/sitemap.xml'
     | '/sustainability'
     | '/admin/articles'
@@ -444,6 +454,7 @@ export interface FileRouteTypes {
     | '/process'
     | '/products'
     | '/resources'
+    | '/robots.txt'
     | '/sitemap.xml'
     | '/sustainability'
     | '/admin/articles'
@@ -487,6 +498,7 @@ export interface FileRouteTypes {
     | '/process'
     | '/products'
     | '/resources'
+    | '/robots.txt'
     | '/sitemap.xml'
     | '/sustainability'
     | '/admin/articles'
@@ -531,6 +543,7 @@ export interface RootRouteChildren {
   ProcessRoute: typeof ProcessRoute
   ProductsRoute: typeof ProductsRouteWithChildren
   ResourcesRoute: typeof ResourcesRouteWithChildren
+  RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SustainabilityRoute: typeof SustainabilityRoute
   ApiArticlesRoute: typeof ApiArticlesRouteWithChildren
@@ -617,6 +630,13 @@ declare module '@tanstack/react-router' {
       path: '/resources'
       fullPath: '/resources'
       preLoaderRoute: typeof ResourcesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -970,6 +990,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProcessRoute: ProcessRoute,
   ProductsRoute: ProductsRouteWithChildren,
   ResourcesRoute: ResourcesRouteWithChildren,
+  RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SustainabilityRoute: SustainabilityRoute,
   ApiArticlesRoute: ApiArticlesRouteWithChildren,

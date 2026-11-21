@@ -10,6 +10,7 @@ export const Route = createFileRoute("/products")({
     pageMeta(
       "Products",
       "Explore Coco Peat Blocks, Coco Peat 650g Bricks, Coco Husk Chips and Coir Matting.",
+      "/products",
     ),
   component: Products,
 });

@@ -12,6 +12,7 @@ const publicPages = [
   "/resources",
   "/sustainability",
   "/contact",
+  "/privacy-policy",
 ];
 const xml = (value: string) =>
   value

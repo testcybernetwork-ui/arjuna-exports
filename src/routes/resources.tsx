@@ -28,6 +28,7 @@ export const Route = createFileRoute("/resources")({
     pageMeta(
       "Resources",
       "Practical coco coir growing guides, product knowledge and sustainability insights.",
+      "/resources",
     ),
   component: Resources,
 });
@@ -207,7 +208,7 @@ function Resources() {
           </div>
           <Link
             to="/contact"
-            search={{ product: undefined }}
+            search={{ product: undefined, request: "quote" }}
             className="flex items-center justify-between border-b border-brand py-5 text-xs font-semibold uppercase tracking-[0.18em] text-brand"
           >
             Ask an expert <Arrow />

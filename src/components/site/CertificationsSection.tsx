@@ -2,16 +2,13 @@ import epceLogo from "@/assets/certifications/eepc-official.png";
 import msmeLogo from "@/assets/certifications/msme.png";
 import coirBoardLogo from "@/assets/certifications/coir-board.jpg";
 import iso9001Logo from "@/assets/certifications/iso-9001.png";
+import { ContentTodo, Label } from "./primitives";
 
 const certificates = [
   {
     name: "MSME · Udyam",
     desc: "Registered micro, small and medium enterprise",
     image: msmeLogo,
-  },
-  {
-    name: "GST Registration",
-    desc: "GSTIN: [INSERT GST NUMBER] · Registered under the Goods and Services Tax Act, India.",
   },
   {
     name: "Coir Board",
@@ -32,55 +29,45 @@ const certificates = [
 
 export function CertificationsSection() {
   return (
-    <section className="w-full overflow-hidden bg-white py-8 text-[#123f3b] sm:py-10 lg:py-12">
-      <div className="mx-auto w-full max-w-[1280px] px-5 sm:px-8 lg:px-10">
-        <div className="mb-8 flex flex-col gap-4 sm:mb-10 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
+    <section className="w-full overflow-hidden bg-surface-cream py-12 text-body-text lg:py-16">
+      <div className="container">
+        <div className="mb-8 grid gap-4 sm:grid-cols-[1fr_auto] sm:items-end sm:gap-8">
           <div>
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#25856f]">
+            <Label className="mb-3 block text-brand">
               Certifications &amp; Registrations
-            </p>
-            <h2 className="text-[clamp(2rem,4vw,3.25rem)] font-bold leading-[1.08] tracking-[-0.03em] text-[#123f3b]">
+            </Label>
+            <h2 className="display max-w-[25ch] text-h2">
               Standards behind every shipment.
             </h2>
           </div>
-          <p className="text-[15px] leading-7 text-[#49645e]">
+          <p className="max-w-[46ch] text-sm leading-body text-body-text">
             Recognised memberships and quality systems support a professional, export-ready supply
             experience.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5 lg:gap-5">
+        <div className="grid auto-rows-fr grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {certificates.map((cert) => (
             <article
               key={cert.name}
-              className="flex min-w-0 flex-col rounded-md border border-[#c9e3d8] bg-[#f7fcf9] p-5 sm:p-4 lg:px-4 lg:py-5"
+              className="flex h-full min-w-0 flex-col rounded-sm border border-brand/15 bg-surface-teal-light p-5 shadow-[var(--shadow-card)]"
             >
-              <div className="flex h-[76px] items-center justify-center border-b border-[#dcece5] pb-4">
-                {cert.image ? (
-                  <img
-                    src={cert.image}
-                    alt={`${cert.name} logo`}
-                    className="max-h-[58px] max-w-full object-contain"
-                    loading="lazy"
-                  />
-                ) : (
-                  <span
-                    aria-hidden="true"
-                    className="grid h-12 w-12 place-items-center rounded-full bg-[#e5f5ed] text-sm font-bold text-[#176052]"
-                  >
-                    GST
-                  </span>
-                )}
+              <div className="flex h-[76px] items-center justify-center border-b border-brand/15 pb-4">
+                <img
+                  src={cert.image}
+                  alt={`${cert.name} logo`}
+                  className="max-h-[58px] max-w-full object-contain"
+                  loading="lazy"
+                />
               </div>
               <div className="pt-4">
-                <h3 className="text-[clamp(0.88rem,1.1vw,1rem)] font-semibold leading-5 text-[#123f3b]">
-                  {cert.name}
-                </h3>
-                <p className="mt-2 text-sm leading-6 text-[#58736d]">{cert.desc}</p>
+                <h3 className="text-base font-semibold leading-heading text-heading">{cert.name}</h3>
+                <p className="mt-2 text-sm leading-body text-text-muted">{cert.desc}</p>
               </div>
             </article>
           ))}
         </div>
+        <ContentTodo request="Confirm the GST registration details before publishing them." />
       </div>
     </section>
   );

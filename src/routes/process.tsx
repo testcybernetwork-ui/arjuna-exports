@@ -30,6 +30,7 @@ export const Route = createFileRoute("/process")({
     pageMeta(
       "Process",
       "Controlled coco peat manufacturing from coconut husk selection to export-ready packing.",
+      "/process",
     ),
   component: Process,
 });

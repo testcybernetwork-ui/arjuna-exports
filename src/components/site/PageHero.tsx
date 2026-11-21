@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Label, Reveal } from "./primitives";
 import { cn } from "@/lib/utils";
+import heroSocialImage from "@/assets/hero-plantation.webp";
 
 export function PageHero({
   eyebrow,
@@ -62,11 +63,37 @@ export function PageHero({
   );
 }
 
-export const pageMeta = (title: string, description: string) => ({
-  meta: [
-    { title: `${title} | Arjuna Exports` },
-    { name: "description", content: description },
-    { property: "og:title", content: `${title} | Arjuna Exports` },
-    { property: "og:description", content: description },
-  ],
-});
+const siteOrigin = "https://www.arjunaexports.com";
+
+export const pageMeta = (
+  title: string,
+  description: string,
+  canonicalPath = "/",
+  image = heroSocialImage,
+) => {
+  const suffix = " | Arjuna Exports";
+  const availableTitleLength = 60 - suffix.length;
+  const conciseTitle =
+    title.length > availableTitleLength
+      ? `${title.slice(0, availableTitleLength - 1).trimEnd()}…`
+      : title;
+  const canonicalUrl = new URL(canonicalPath, siteOrigin).toString();
+  const imageUrl = new URL(image, siteOrigin).toString();
+  const pageTitle = `${conciseTitle}${suffix}`;
+
+  return {
+    meta: [
+      { title: pageTitle },
+      { name: "description", content: description.slice(0, 160) },
+      { property: "og:title", content: pageTitle },
+      { property: "og:description", content: description.slice(0, 160) },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: imageUrl },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: pageTitle },
+      { name: "twitter:description", content: description.slice(0, 160) },
+      { name: "twitter:image", content: imageUrl },
+    ],
+    links: [{ rel: "canonical", href: canonicalUrl }],
+  };
+};

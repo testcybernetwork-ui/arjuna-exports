@@ -95,6 +95,7 @@ export function PrimaryButton({
   type,
   className,
   disabled = false,
+  "aria-busy": ariaBusy,
 }: {
   to?: string;
   hash?: string;
@@ -103,6 +104,7 @@ export function PrimaryButton({
   type?: "submit" | "button";
   className?: string;
   disabled?: boolean;
+  "aria-busy"?: boolean;
 }) {
   const inner = (
     <>
@@ -122,6 +124,7 @@ export function PrimaryButton({
         {...(hash !== undefined ? { hash } : {})}
         className={cls}
         aria-disabled={disabled || undefined}
+        aria-busy={ariaBusy}
         tabIndex={disabled ? -1 : undefined}
         onClick={disabled ? (event) => event.preventDefault() : undefined}
       >
@@ -129,7 +132,13 @@ export function PrimaryButton({
       </Link>
     );
   return (
-    <button type={type ?? "button"} onClick={onClick} className={cls} disabled={disabled}>
+    <button
+      type={type ?? "button"}
+      onClick={onClick}
+      className={cls}
+      disabled={disabled}
+      aria-busy={ariaBusy}
+    >
       {inner}
     </button>
   );
@@ -219,4 +228,40 @@ export function ChapterHeading({
       {action && <div className="section-heading__action">{action}</div>}
     </div>
   );
+}
+
+export function Breadcrumbs({
+  items,
+  className,
+}: {
+  items: Array<{ label: string; to?: string }>;
+  className?: string;
+}) {
+  return (
+    <nav aria-label="Breadcrumb" className={cn("text-sm text-charcoal/70", className)}>
+      <ol className="flex flex-wrap items-center gap-2">
+        {items.map((item, index) => (
+          <li key={`${item.label}-${index}`} className="inline-flex items-center gap-2">
+            {index > 0 && <span aria-hidden="true">/</span>}
+            {item.to ? (
+              <Link
+                to={item.to}
+                className="inline-flex min-h-11 items-center underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+              >
+                {item.label}
+              </Link>
+            ) : (
+              <span aria-current="page" className="font-semibold text-brand-deep">
+                {item.label}
+              </span>
+            )}
+          </li>
+        ))}
+      </ol>
+    </nav>
+  );
+}
+
+export function ContentTodo(_props: { request: string }): null {
+  return null;
 }

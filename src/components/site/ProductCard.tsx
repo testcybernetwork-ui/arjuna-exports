@@ -85,7 +85,7 @@ export function ProductCard({ product, index, variant }: ProductCardProps) {
           </Link>
           <Link
             to="/contact"
-            search={{ product: product.slug }}
+            search={{ product: product.slug, request: "quote" }}
             aria-label={`Request a quote for ${product.name}`}
             className="inline-flex min-h-11 items-center rounded-sm border border-brand px-4 text-sm font-semibold uppercase tracking-[0.04em] text-brand transition-colors hover:bg-brand hover:text-pure-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >

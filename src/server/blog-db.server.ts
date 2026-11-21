@@ -4,6 +4,7 @@ import path from "node:path";
 import { randomUUID } from "node:crypto";
 import sanitizeHtml from "sanitize-html";
 import { query, ensureSchema, getDbPool } from "./db.server.ts";
+import { legacyResourceSlugRedirects } from "../lib/route-aliases.ts";
 
 export type PostStatus = "draft" | "published";
 export type BlogPost = {
@@ -105,15 +106,6 @@ function slugify(value: string): string {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 }
-
-const LEGACY_SLUG_ALIASES: Record<string, string> = {
-  "what-s-the-real-difference-between-coco-peat-coco-hush-chips-and-coco-fibre":
-    "what-s-the-real-difference-between-coco-peat-coco-husk-chips-and-coco-fibre",
-  "why-more-professional-growers-are-adding-coco-hush-chips-to-their-substrate-mix":
-    "why-more-professional-growers-are-adding-coconut-husk-chips-to-their-substrate-mix",
-  "coco-hush-chips-vs-perlite-vs-wood-bark-what-actually-performs-better":
-    "husk-chips-vs-perlite-vs-wood-bark-what-actually-performs-better",
-};
 
 function mapRow(row: Record<string, unknown>): BlogPost {
   let tags: string[] = [];
@@ -479,7 +471,7 @@ export async function findPost(id: string): Promise<BlogPost | null> {
 export async function findResourceArticle(slug: string): Promise<BlogPost | null> {
   await ensureInitialPosts();
   const normalized = slugify(slug);
-  const alias = LEGACY_SLUG_ALIASES[normalized] || normalized;
+  const alias = legacyResourceSlugRedirects[normalized] || normalized;
   const res = await query(
     "SELECT * FROM posts WHERE (slug = $1 OR legacy_slug = $1 OR slug = $2 OR legacy_slug = $2) AND status = 'published' LIMIT 1",
     [normalized, alias],

@@ -5,6 +5,7 @@
  * The Resend API key is read from process.env — never sent to the browser.
  */
 import { createServerFn } from "@tanstack/react-start";
+import { getRequestIP } from "@tanstack/react-start/server";
 import { Resend } from "resend";
 
 /* ------------------------------------------------------------------ */
@@ -18,6 +19,7 @@ interface EnquiryPayload {
   company: string;
   country: string;
   email: string;
+  requestPurpose?: "quote" | "sample";
   website?: string;
   phone?: string;
   enquiryType: "partnership" | "product" | "general";
@@ -91,6 +93,45 @@ function validateString(
   return { value: trimmed };
 }
 
+function isEnquiryPayload(value: unknown): value is EnquiryPayload {
+  if (typeof value !== "object" || value === null || Array.isArray(value)) return false;
+  const payload = value as Record<string, unknown>;
+  const requiredStringFields = ["firstName", "lastName", "company", "country", "email"];
+  const optionalStringFields = [
+    "website",
+    "phone",
+    "marketSegment",
+    "marketSegmentOther",
+    "partnershipRole",
+    "partnershipRoleOther",
+    "partnershipRequirements",
+    "currentCustomer",
+    "product",
+    "productCategory",
+    "productCategoryOther",
+    "requiredDocuments",
+    "additionalInformation",
+    "generalRole",
+    "generalRoleOther",
+    "generalComments",
+    "_hp_website",
+  ];
+
+  const enquiryType = payload["enquiryType"];
+  return (
+    requiredStringFields.every((field) => typeof payload[field] === "string") &&
+    optionalStringFields.every(
+      (field) => payload[field] === undefined || typeof payload[field] === "string",
+    ) &&
+    typeof enquiryType === "string" &&
+    ["partnership", "product", "general"].includes(enquiryType) &&
+    typeof payload["marketingConsent"] === "boolean" &&
+    (payload["requestPurpose"] === undefined ||
+      payload["requestPurpose"] === "quote" ||
+      payload["requestPurpose"] === "sample")
+  );
+}
+
 /* ------------------------------------------------------------------ */
 /*  Rate limiter (in-memory, per-process; resets on cold start)        */
 /* ------------------------------------------------------------------ */
@@ -102,6 +143,9 @@ const rateLimitMap = new Map<string, { count: number; windowStart: number }>();
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
+  for (const [key, entry] of rateLimitMap) {
+    if (now - entry.windowStart > RATE_LIMIT_WINDOW_MS) rateLimitMap.delete(key);
+  }
   const entry = rateLimitMap.get(ip);
 
   if (!entry || now - entry.windowStart > RATE_LIMIT_WINDOW_MS) {
@@ -139,6 +183,10 @@ function buildEmailHtml(data: EnquiryPayload): string {
     if (data.partnershipRequirements) rows.push(["Requirements", data.partnershipRequirements]);
   }
   if (data.enquiryType === "product") {
+    rows.push([
+      "Request purpose",
+      data.requestPurpose === "sample" ? "Sample request" : "Quote request",
+    ]);
     if (data.currentCustomer) rows.push(["Current customer", data.currentCustomer]);
     if (data.product) rows.push(["Product", data.product]);
     if (data.productCategory) rows.push(["Product category", data.productCategory]);
@@ -175,12 +223,15 @@ function buildEmailHtml(data: EnquiryPayload): string {
 /* ------------------------------------------------------------------ */
 
 export const submitEnquiry = createServerFn({ method: "POST" })
-  .validator((data: unknown) => data as EnquiryPayload)
+  .validator((data: unknown) => {
+    if (!isEnquiryPayload(data)) throw new Error("Invalid enquiry form data.");
+    return data;
+  })
   .handler(async ({ data }): Promise<SubmitResult> => {
     // --- Rate limiting ---
     // In Vercel / serverless, IP can be extracted from headers in middleware.
     // For basic protection, we use an in-memory rate limiter keyed by a hash.
-    const clientIp = "serverless";
+    const clientIp = getRequestIP({ xForwardedFor: true }) ?? "unknown";
 
     if (isRateLimited(clientIp)) {
       console.warn(`[enquiry] Rate limited`);
@@ -196,6 +247,28 @@ export const submitEnquiry = createServerFn({ method: "POST" })
 
     // --- Field validation ---
     const fieldErrors: Record<string, string> = {};
+    const optionalFields: Array<[keyof EnquiryPayload, string, number]> = [
+      ["website", "Website", MAX_SHORT],
+      ["phone", "Phone", MAX_SHORT],
+      ["marketSegment", "Market segment", MAX_SHORT],
+      ["marketSegmentOther", "Market segment", MAX_SHORT],
+      ["partnershipRole", "Role", MAX_SHORT],
+      ["partnershipRoleOther", "Role", MAX_SHORT],
+      ["partnershipRequirements", "Requirements", MAX_LEN],
+      ["currentCustomer", "Customer status", MAX_SHORT],
+      ["product", "Product", MAX_SHORT],
+      ["productCategory", "Product category", MAX_SHORT],
+      ["productCategoryOther", "Product category", MAX_SHORT],
+      ["requiredDocuments", "Required documents", MAX_LEN],
+      ["additionalInformation", "Additional information", MAX_LEN],
+      ["generalRole", "Role", MAX_SHORT],
+      ["generalRoleOther", "Role", MAX_SHORT],
+      ["generalComments", "Comments", MAX_LEN],
+    ];
+    for (const [field, label, maxLen] of optionalFields) {
+      const validated = validateString(data[field], label, { maxLen });
+      if (validated.error) fieldErrors[field] = validated.error;
+    }
 
     const firstName = validateString(data.firstName, "First name", { required: true });
     if (firstName.error) fieldErrors["firstName"] = firstName.error;
@@ -226,22 +299,54 @@ export const submitEnquiry = createServerFn({ method: "POST" })
 
     // Enquiry-type-specific validation
     if (enquiryType === "partnership") {
+      const marketSegment = validateString(data.marketSegment, "Market segment", {
+        required: true,
+      });
+      if (marketSegment.error) fieldErrors["marketSegment"] = marketSegment.error;
+
       const reqs = validateString(data.partnershipRequirements, "Requirements", {
         required: true,
         maxLen: MAX_LEN,
       });
       if (reqs.error) fieldErrors["partnershipRequirements"] = reqs.error;
+      if (data.marketSegment === "Others") {
+        const other = validateString(data.marketSegmentOther, "Market segment", {
+          required: true,
+        });
+        if (other.error) fieldErrors["marketSegmentOther"] = other.error;
+      }
+      if (data.partnershipRole === "Others") {
+        const other = validateString(data.partnershipRoleOther, "Role", { required: true });
+        if (other.error) fieldErrors["partnershipRoleOther"] = other.error;
+      }
+    }
+    if (enquiryType === "product") {
+      const product = validateString(data.product, "Product", { required: true });
+      if (product.error) fieldErrors["product"] = product.error;
+
+      const documents = validateString(data.requiredDocuments, "Required documents", {
+        required: true,
+        maxLen: MAX_LEN,
+      });
+      if (documents.error) fieldErrors["requiredDocuments"] = documents.error;
+
+      if (data.productCategory === "Others") {
+        const other = validateString(data.productCategoryOther, "Product category", {
+          required: true,
+        });
+        if (other.error) fieldErrors["productCategoryOther"] = other.error;
+      }
     }
     if (enquiryType === "general") {
+      if (data.generalRole === "Others") {
+        const other = validateString(data.generalRoleOther, "Role", { required: true });
+        if (other.error) fieldErrors["generalRoleOther"] = other.error;
+      }
       const comments = validateString(data.generalComments, "Comments", {
         required: true,
         maxLen: MAX_LEN,
       });
       if (comments.error) fieldErrors["generalComments"] = comments.error;
-    }
-
-    if (!data.marketingConsent) {
-      fieldErrors["marketingConsent"] = "You must agree to the marketing consent.";
     }
 
     if (Object.keys(fieldErrors).length > 0) {
@@ -290,7 +395,7 @@ export const submitEnquiry = createServerFn({ method: "POST" })
         return { success: false, error: "Failed to send your enquiry. Please try again later." };
       }
 
-      console.log(`[enquiry] Email sent for ${enquiryType} enquiry from ${email.value}`);
+      console.log(`[enquiry] Email sent for ${enquiryType} enquiry`);
       return { success: true };
     } catch (err) {
       console.error("[enquiry] Unexpected error:", err);

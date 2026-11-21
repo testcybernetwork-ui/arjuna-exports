@@ -1,10 +1,20 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, redirect } from "@tanstack/react-router";
 import { Clock3, Facebook, Linkedin, Mail } from "lucide-react";
-import { Label, PrimaryButton, Reveal } from "@/components/site/primitives";
+import { Breadcrumbs, Label, PrimaryButton, Reveal } from "@/components/site/primitives";
 import { resourceArticles, resourceCategories } from "@/lib/resource-data";
+import { legacyResourceSlugRedirects } from "@/lib/route-aliases";
+import { pageMeta } from "@/components/site/PageHero";
 
 export const Route = createFileRoute("/resources_/$slug")({
   loader: ({ params }) => {
+    const canonicalSlug = legacyResourceSlugRedirects[params.slug];
+    if (canonicalSlug) {
+      throw redirect({
+        to: "/resources/$slug",
+        params: { slug: canonicalSlug },
+        statusCode: 301,
+      });
+    }
     const article = resourceArticles.find((item) => item.slug === params.slug);
     if (!article) throw notFound();
     return {
@@ -12,23 +22,13 @@ export const Route = createFileRoute("/resources_/$slug")({
       related: resourceArticles.filter((item) => item.slug !== article.slug).slice(0, 3),
     };
   },
-  head: ({ loaderData }) => ({
-    meta: [
-      { title: `${loaderData?.article.title ?? "Article"} | Arjuna Exports` },
-      {
-        name: "description",
-        content: loaderData?.article.excerpt ?? "Arjuna Exports growing guide",
-      },
-      { property: "og:title", content: loaderData?.article.title ?? "Arjuna Exports Resources" },
-      {
-        property: "og:description",
-        content: loaderData?.article.excerpt ?? "Practical coir knowledge",
-      },
-      ...(loaderData?.article.image
-        ? [{ property: "og:image", content: loaderData.article.image }]
-        : []),
-    ],
-  }),
+  head: ({ loaderData }) =>
+    pageMeta(
+      loaderData?.article.title ?? "Resources",
+      loaderData?.article.excerpt ?? "Practical coco coir knowledge from Arjuna Exports.",
+      loaderData?.article.slug ? `/resources/${loaderData.article.slug}` : "/resources",
+      loaderData?.article.image,
+    ),
   component: ArticleDetail,
 });
 
@@ -51,7 +51,15 @@ function ArticleDetail() {
   return (
     <article className="bg-offwhite pb-20 pt-24 sm:pt-28">
       <div className="container grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-12 xl:grid-cols-[minmax(0,1fr)_360px]">
-        <main className="min-w-0">
+        <div className="min-w-0">
+          <Breadcrumbs
+            className="mb-8"
+            items={[
+              { label: "Home", to: "/" },
+              { label: "Resources", to: "/resources" },
+              { label: article.title },
+            ]}
+          />
           <Reveal>
             <div className="flex flex-wrap items-center justify-between gap-5">
               <Link
@@ -143,7 +151,7 @@ function ArticleDetail() {
             </div>
             <PrimaryButton to="/contact">Ask our team</PrimaryButton>
           </Reveal>
-        </main>
+        </div>
 
         <aside className="border-t border-solid border-brand/45 pt-10 lg:sticky lg:top-28 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
           <Reveal>

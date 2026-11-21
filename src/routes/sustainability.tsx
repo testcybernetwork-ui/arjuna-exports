@@ -8,6 +8,7 @@ export const Route = createFileRoute("/sustainability")({
     pageMeta(
       "Sustainability",
       "Turning coconut by-product into renewable, peat-free growing media.",
+      "/sustainability",
     ),
   component: Sustainability,
 });
@@ -70,13 +71,13 @@ function Sustainability() {
           </div>
         </div>
       </section>
-      <section className="bg-leaf py-20 text-pure-white lg:py-24">
+      <section className="bg-surface-teal-dark py-20 text-pure-white lg:py-24">
         <div className="container">
-          <Label className="text-sand">The honest next steps</Label>
+          <Label className="text-pure-white">The honest next steps</Label>
           <h2 className="display mt-6 max-w-4xl text-[clamp(2.25rem,4vw,4rem)]">
             Measure more. Recover more water. Move more energy to renewables.
           </h2>
-          <p className="mt-8 max-w-2xl leading-relaxed text-pure-white/70">
+          <p className="mt-8 max-w-2xl leading-relaxed text-pure-white/90">
             Sustainability is operating work, not a finished claim. These are the priorities guiding
             the next stage of our manufacturing investment.
           </p>

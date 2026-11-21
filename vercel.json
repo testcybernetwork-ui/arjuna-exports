@@ -1,4 +1,49 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": "tanstack-start"
+  "framework": "tanstack-start",
+  "redirects": [
+    {
+      "source": "/products/coco-hush-chips",
+      "destination": "/products/coco-husk-chips",
+      "statusCode": 301
+    },
+    {
+      "source": "/products/coir-650-gram-bricks",
+      "destination": "/products/coco-peat-650g-bricks",
+      "statusCode": 301
+    },
+    {
+      "source": "/resources/what-s-the-real-difference-between-coco-peat-coco-hush-chips-and-coco-fibre",
+      "destination": "/resources/what-s-the-real-difference-between-coco-peat-coco-husk-chips-and-coco-fibre",
+      "statusCode": 301
+    },
+    {
+      "source": "/resources/why-more-professional-growers-are-adding-coco-hush-chips-to-their-substrate-mix",
+      "destination": "/resources/why-more-professional-growers-are-adding-coco-husk-chips-to-their-substrate-mix",
+      "statusCode": 301
+    },
+    {
+      "source": "/resources/coco-hush-chips-vs-perlite-vs-wood-bark-what-actually-performs-better",
+      "destination": "/resources/coco-husk-chips-perlite-and-wood-bark-a-performance-comparison",
+      "statusCode": 301
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' blob:; connect-src 'self' https:; worker-src 'self' blob:; frame-ancestors 'self'; form-action 'self'"
+        }
+      ]
+    }
+  ]
 }

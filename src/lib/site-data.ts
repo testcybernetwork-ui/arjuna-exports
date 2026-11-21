@@ -22,7 +22,7 @@ import stage9Shipping from "@/assets/Process/stage-9-shipping.jpg";
 import productBlock from "@/assets/product-block.jpg";
 import productCocoPeat5kg from "@/assets/product-coco-peat-5kg.png";
 import productCocoPeat650g from "@/assets/product-coco-peat-650g.png";
-import productCocoHushChips4kg from "@/assets/product-coco-hush-chips-4kg.png";
+import productCocoHuskChips4kg from "@/assets/product-coco-husk-chips-4kg.png";
 import productGrowbag from "@/assets/product-growbag.jpg";
 import productErosion from "@/assets/product-erosion.jpg";
 import productFloor from "@/assets/product-floor.jpg";
@@ -83,7 +83,7 @@ export const img = {
   productBlock,
   productCocoPeat5kg,
   productCocoPeat650g,
-  productCocoHushChips4kg,
+  productCocoHuskChips4kg,
   productGrowbag,
   productErosion,
   productFloor,
@@ -122,7 +122,6 @@ export const cropIcons: Record<string, string> = {
 };
 
 export const navItems = [
-  { label: "Home", to: "/" },
   { label: "About Us", to: "/our-story" },
   { label: "Products", to: "/products" },
   { label: "Applications", to: "/applications" },
@@ -159,7 +158,7 @@ export type IndustrySolution = {
   image: string;
   alt: string;
   icon: LucideIcon;
-  href: any;
+  href: string;
 };
 
 export const products: Product[] = [
@@ -199,7 +198,7 @@ export const products: Product[] = [
     ],
   },
   {
-    slug: "coir-650-gram-bricks",
+    slug: "coco-peat-650g-bricks",
     name: "Coco Peat 650g Bricks",
     category: "Coco Peat",
     image: productCocoPeat650g,
@@ -234,7 +233,7 @@ export const products: Product[] = [
     slug: "coco-husk-chips",
     name: "Coco Husk Chips",
     category: "Coco Husk",
-    image: productCocoHushChips4kg,
+    image: productCocoHuskChips4kg,
     short: "Chunky coir chips for airy substrate blends and orchid-style growing media.",
     format: "4 kg block / loose chips / compressed bales",
     application: "Orchids, aroids, nursery blends and hydroponic substrates",
@@ -265,7 +264,7 @@ export const products: Product[] = [
   {
     slug: "coir-matting",
     name: "Coir Matting",
-    category: "Coir Fibre",
+    category: "Coir Matting",
     image: detailCoirFlooring,
     short: "Durable natural coir matting for entrances, interiors and contract flooring.",
     format: "Rolls / cut mats / custom sizes",

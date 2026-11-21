@@ -1,4 +1,4 @@
-import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
   FileDown,
@@ -9,10 +9,14 @@ import {
   Sprout,
 } from "lucide-react";
 import { applications, img, products } from "@/lib/site-data";
+import { legacyProductSlugRedirects } from "@/lib/route-aliases";
+import { pageMeta } from "@/components/site/PageHero";
 import { CategoryCard } from "@/components/site/CategoryCard";
 import { CoirMattingFeatures } from "@/components/site/CoirMattingFeatures";
 import {
   Arrow,
+  Breadcrumbs,
+  ContentTodo,
   Label,
   PrimaryButton,
   Reveal,
@@ -102,7 +106,7 @@ const productGalleries: Record<string, Array<{ image: string; label: string }>> 
     { image: coirMatPhoto5, label: "Coir matting product picture 5" },
     { image: coirMatPhoto6, label: "Coir matting product picture 6" },
   ],
-  "coir-650-gram-bricks": [
+  "coco-peat-650g-bricks": [
     { image: img.productCocoPeat650g, label: "Individually wrapped 650 gram coco peat brick" },
     { image: cocoBrickPhoto1, label: "Coco coir bricks stacked for product display" },
     { image: cocoBrickPhoto2, label: "Coco coir bricks loaded in an export container" },
@@ -379,10 +383,11 @@ const huskChipsSpecification = [
 
 export const Route = createFileRoute("/products/$slug")({
   loader: ({ params }) => {
-    if (params.slug === "coco-hush-chips") {
+    const canonicalSlug = legacyProductSlugRedirects[params.slug];
+    if (canonicalSlug) {
       throw redirect({
         to: "/products/$slug",
-        params: { slug: "coco-husk-chips" },
+        params: { slug: canonicalSlug },
         statusCode: 301,
       });
     }
@@ -391,33 +396,27 @@ export const Route = createFileRoute("/products/$slug")({
     const { industrySolutions, ...serializableProduct } = product;
     return serializableProduct;
   },
-  head: ({ loaderData: p }) => ({
-    meta: [
-      { title: p?.slug === "coir-matting" ? "Coir Matting (Carpet) – 100% Natural Biodegradable Coir Carpet Manufacturer" : `${p?.name ?? "Product"} | Arjuna Exports` },
-      { name: "description", content: p?.slug === "coir-matting" ? "Made from 100% natural coir (coconut fiber), these biodegradable machine-woven carpets offer sustainable, resilient floor coverings for indoor and outdoor residential and commercial spaces." : p?.short ?? "Arjuna Exports product" },
-    ],
-  }),
+  head: ({ loaderData: product }) =>
+    pageMeta(
+      product?.name ?? "Product",
+      product?.short ?? "Coco coir products from Arjuna Exports.",
+      product ? `/products/${product.slug}` : "/products",
+      product?.image,
+    ),
   component: ProductDetail,
 });
 function ProductDetail() {
   const p = Route.useLoaderData();
-  if (!p) {
-    return null;
-  }
   const gallery = (p.slug ? productGalleries[p.slug] : undefined) ?? [
     { image: p.image, label: p.name },
     { image: img.stageMedium, label: "Prepared growing medium" },
     { image: img.processQuality, label: "Quality inspection" },
     { image: img.exportPort, label: "Export-ready shipment" },
   ];
-  const coirGallery = (productGalleries["coir-matting"] ?? []).map((item, index) => ({
-    image: item.image,
-    label: `06 - Product Pictures (${index + 1})`,
-  }));
-  const heroGallery = p.slug === "coir-matting" ? coirGallery : gallery;
   const [activePhoto, setActivePhoto] = useState(
     gallery[0] ?? { image: p.image, label: p.name },
   );
+  const [galleryPaused, setGalleryPaused] = useState(false);
 
   useEffect(() => {
     if (gallery[0]) {
@@ -426,7 +425,8 @@ function ProductDetail() {
   }, [p.slug]);
 
   useEffect(() => {
-    if (gallery.length < 2) return;
+    if (gallery.length < 2 || galleryPaused) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const interval = window.setInterval(() => {
       setActivePhoto((current) => {
@@ -436,12 +436,12 @@ function ProductDetail() {
     }, 10_000);
 
     return () => window.clearInterval(interval);
-  }, [gallery]);
+  }, [gallery, galleryPaused]);
 
   const related = products.filter((product) => product.slug !== p.slug).slice(0, 3);
   const isCocoPeatBlocks = p.slug === "coco-peat-blocks";
   const isCoirMatting = p.slug === "coir-matting";
-  const isGramBlock = p.slug === "coir-650-gram-bricks";
+  const isGramBlock = p.slug === "coco-peat-650g-bricks";
   const isHuskChips = p.slug === "coco-husk-chips";
   const applicationVisuals = isHuskChips ? huskChipsApplications : (p.applications ?? []).map((name) => ({
     name,
@@ -451,7 +451,7 @@ function ProductDetail() {
     ? [
         img.productCocoPeat5kg,
         img.productCocoPeat650g,
-        img.productCocoHushChips4kg,
+        img.productCocoHuskChips4kg,
       ].includes(activePhoto.image)
     : false;
   const specification = [
@@ -489,24 +489,49 @@ function ProductDetail() {
             : p.specs.map((item) => `${item.label}: ${item.value}`)),
   ].join("\n");
   const downloadHref = `data:text/plain;charset=utf-8,${encodeURIComponent(specification)}`;
+  const productStructuredData = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: p.name,
+    description: p.short,
+    image: new URL(p.image, "https://www.arjunaexports.com").toString(),
+    url: `https://www.arjunaexports.com/products/${p.slug}`,
+    brand: { "@type": "Brand", name: "Arjuna Exports" },
+    category: p.category,
+    additionalProperty: p.specs.map((spec) => ({
+      "@type": "PropertyValue",
+      name: spec.label,
+      value: spec.value,
+    })),
+  }).replace(/</g, "\\u003c");
   return (
     <>
-      <section className={`relative overflow-hidden pt-20 lg:pt-[88px] ${isHuskChips ? "border-x-2 border-[#9B6BDB] bg-[#F2FFFC]" : isCoirMatting ? "bg-brand-soft" : "bg-ivory"}`}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: productStructuredData }}
+      />
+      <section className={`relative overflow-hidden pt-20 lg:pt-[88px] ${isHuskChips ? "border-x-2 border-brand/20 bg-surface-teal-light" : isCoirMatting ? "bg-brand-soft" : "bg-ivory"}`}>
         <img
           src={coconutIcon}
           alt=""
           className="pointer-events-none absolute -right-24 top-24 hidden w-[340px] opacity-[0.05] lg:block"
           aria-hidden="true"
         />
-        <div className="container grid items-stretch gap-8 py-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-12 lg:py-10">
+        <div className="container py-8 lg:py-10">
+          <Breadcrumbs
+            className="mb-6"
+            items={[
+              { label: "Home", to: "/" },
+              { label: "Products", to: "/products" },
+              { label: p.name },
+            ]}
+          />
+          <div className="grid items-stretch gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-12">
           <div
+              onMouseEnter={() => setGalleryPaused(true)}
+              onMouseLeave={() => setGalleryPaused(false)}
               className="relative h-full min-h-[400px] w-full min-w-0 overflow-hidden rounded-md border border-brand/15 bg-surface-teal-dark shadow-[0_20px_60px_rgba(31,45,40,.12)] sm:min-h-[480px] lg:min-h-[540px]"
           >
-            {isCoirMatting && <div className="grid h-full min-h-[400px] grid-cols-2 gap-3 p-4 sm:min-h-[480px] sm:gap-4 sm:p-6 lg:min-h-[540px]">
-              {heroGallery.map((photo, index) => <div key={photo.label} className="flex items-center justify-center rounded-md border-2 border-dashed border-[#16777A]/60 bg-[#F2FFFC] p-2 text-center text-base font-bold text-charcoal sm:text-xl">
-                {index === 0 ? "06 - Product Pictures" : `Product Picture ${index + 1}`}
-              </div>)}
-            </div>}
             {isCocoPeatBlocks || isGramBlock || isHuskChips ? (
               <>
                 <div className="absolute inset-x-0 top-0 bottom-[84px] flex items-center justify-center bg-surface-teal-dark">
@@ -563,6 +588,7 @@ function ProductDetail() {
                         type="button"
                         onClick={() => setActivePhoto(photo)}
                         aria-label={`Show ${photo.label}`}
+                        aria-pressed={activePhoto?.image === photo.image}
                         className={`group relative h-14 w-14 shrink-0 overflow-hidden rounded-sm border-2 bg-surface-teal-dark transition duration-300 ${
                           activePhoto?.image === photo.image
                             ? "border-aqua shadow-[0_0_0_3px_rgba(104,230,194,.18)]"
@@ -585,7 +611,7 @@ function ProductDetail() {
             <div className="w-full">
               {!isHuskChips && <Label className="text-brand">{isGramBlock ? "ABOUT" : `${p.category} collection`}</Label>}
               <h1 className={`display mt-6 ${isCocoPeatBlocks || isGramBlock || isHuskChips || isCoirMatting ? "text-[clamp(2rem,4vw,3.25rem)] leading-[1.05] whitespace-normal" : "max-w-[16ch] text-[clamp(2.5rem,4.2vw,4.5rem)] leading-[1.02]"}`}>
-                {isCoirMatting ? "Coir Mattings" : p.name}
+                {p.name}
               </h1>
               <p className={`mt-7 text-left text-charcoal/70 ${isCocoPeatBlocks || isGramBlock || isHuskChips || isCoirMatting ? "max-w-[560px] text-base font-normal leading-[1.7]" : "max-w-xl text-lg font-medium leading-relaxed"}`}>
                 {isHuskChips
@@ -594,7 +620,7 @@ function ProductDetail() {
                   ? "Arjuna Exports supplies premium 650g Coco Coir Bricks, manufactured from natural coconut husk fibres and processed into compact, lightweight blocks for convenient storage, transportation, and use. Once hydrated, these compressed coco coir bricks expand into a growing medium suitable for potting mixes, seed starting, nurseries, home gardening, and horticultural applications."
                   : isCocoPeatBlocks
                   ? "Coco Peat Blocks are manufactured from selected coconut husks, a natural by-product of the coconut and coir industry. The coir material is carefully washed, screened, graded, and compressed to produce consistent coco peat growing media. Our premium coco peat blocks are suitable for greenhouse cultivation, nurseries, potting mixes, and commercial horticulture. Available in washed, low EC, and customized specifications to meet specific growing requirements. Natural, renewable, and biodegradable, coco peat provides an efficient and sustainable growing medium for professional cultivation."
-                  : isCoirMatting ? "Made from 100% natural coir (coconut fiber), a byproduct of coconut trees (Cocos nucifera), these carpets are completely biodegradable. Machine-woven from coir fiber yarn, they offer a perfect blend of sustainability and craftsmanship." : p.short}
+                  : isCoirMatting ? "Made from 100% natural coir fibre, a by-product of coconut trees (Cocos nucifera), these carpets are completely biodegradable. Machine-woven from coir fibre yarn, they offer a blend of sustainability and craftsmanship." : p.short}
               </p>
               {isCoirMatting && <p className="mt-4 max-w-[560px] text-left text-base font-normal leading-[1.7] text-charcoal/70">Coir Carpets are versatile and ideal for floor coverings in both indoor and outdoor settings, including living rooms, hallways, staircases, cottages, function halls, and exhibition centres. Their natural texture and resilience make them suitable for both residential and commercial spaces.</p>}
               {isHuskChips && <p className="mt-4 max-w-[560px] text-left text-base font-normal leading-[1.7] text-charcoal/70">
@@ -613,8 +639,23 @@ function ProductDetail() {
                   <dd className="mt-3 text-sm font-semibold leading-relaxed">{p.application}</dd>
                 </div>
               </dl>}
-              {!isHuskChips && !isCoirMatting && <div className={`${isCocoPeatBlocks || isGramBlock ? "mt-7" : "mt-9"} flex flex-wrap gap-3`}>
-                <PrimaryButton to="/contact">Request information</PrimaryButton>
+              <div className={`${isCocoPeatBlocks || isGramBlock ? "mt-7" : "mt-9"} flex flex-wrap gap-3`}>
+                <Link
+                  to="/contact"
+                  search={{ product: p.slug, request: "quote" }}
+                  aria-label={`Request a quote for ${p.name}`}
+                  className="group inline-flex min-h-12 items-center gap-3 rounded-sm bg-primary-green px-6 text-sm font-semibold tracking-[0.04em] text-pure-white uppercase shadow-[var(--shadow-button)] transition-colors hover:bg-primary-green-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-green"
+                >
+                  Request a quote <Arrow className="group-hover:translate-x-1" />
+                </Link>
+                <Link
+                  to="/contact"
+                  search={{ product: p.slug, request: "sample" }}
+                  aria-label={`Request a sample of ${p.name}`}
+                  className="group inline-flex min-h-12 items-center gap-3 rounded-sm border border-brand px-6 text-sm font-semibold tracking-[0.04em] text-brand uppercase transition-colors hover:bg-brand hover:text-pure-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+                >
+                  Request a sample <Arrow className="group-hover:translate-x-1" />
+                </Link>
                 <a
                   href={downloadHref}
                   download={`${p.slug}-specification.txt`}
@@ -622,19 +663,10 @@ function ProductDetail() {
                 >
                   Download specification <Arrow className="group-hover:translate-x-1" />
                 </a>
-              </div>}
-              {isCoirMatting && <div className="mt-7 flex flex-wrap gap-3">
-                <PrimaryButton to="/contact">Request information</PrimaryButton>
-                <a
-                  href={downloadHref}
-                  download={`${p.slug}-specification.txt`}
-                  className="group inline-flex min-h-[52px] items-center gap-3 rounded-sm border border-brand px-6 text-[13px] font-semibold tracking-[.06em] text-brand uppercase transition-colors hover:bg-brand hover:text-pure-white"
-                >
-                  Download specification <Arrow className="group-hover:translate-x-1" />
-                </a>
-              </div>}
+              </div>
             </div>
           </Reveal>
+          </div>
         </div>
       </section>
 
@@ -752,7 +784,7 @@ function ProductDetail() {
 
       {isCoirMatting && <CoirMattingFeatures />}
 
-      <section className={`bg-brand-soft py-20 lg:py-28 ${isHuskChips ? "border-x-2 border-[#9B6BDB] bg-[#F2FFFC]" : ""}`}>
+      <section className={`bg-brand-soft py-20 lg:py-28 ${isHuskChips ? "border-x-2 border-brand/20 bg-surface-teal-light" : ""}`}>
         <div className="container">
           <Reveal>
             <div className="flex items-end justify-between gap-6">
@@ -872,7 +904,7 @@ function ProductDetail() {
                   <table className="w-full min-w-[640px] border-collapse text-left">
                     <caption className="sr-only">Coco Husk Chips technical specification</caption>
                     <thead>
-                      <tr className="bg-[#0B4B50] text-pure-white">
+                      <tr className="bg-brand-deep text-pure-white">
                         <th className="w-[12%] border-r border-pure-white/20 px-5 py-4 text-center text-sm font-bold uppercase tracking-[.08em]">
                           S.No
                         </th>
@@ -939,7 +971,7 @@ function ProductDetail() {
                 <a
                   href={downloadHref}
                   download={`${p.slug}-specification.txt`}
-                  className={`font-semibold text-brand hover:text-brand-deep ${isCocoPeatBlocks || isGramBlock ? "inline-flex items-center gap-2 rounded-full bg-[#d8f3ed] px-4 py-2" : ""}`}
+                  className={`font-semibold text-brand hover:text-brand-deep ${isCocoPeatBlocks || isGramBlock ? "inline-flex items-center gap-2 rounded-sm bg-brand-soft px-4 py-2" : ""}`}
                 >
                   {(isCocoPeatBlocks || isGramBlock) && <FileDown aria-hidden="true" className="h-4 w-4" />}
                   Download Technical Sheet {(isCocoPeatBlocks || isGramBlock) && <Arrow />}
@@ -951,18 +983,18 @@ function ProductDetail() {
       </section>
 
       {(isCocoPeatBlocks || isGramBlock || isHuskChips || isCoirMatting) && (
-        <section className={`py-12 lg:py-16 ${isHuskChips ? "border-x-2 border-[#9B6BDB] bg-[#F2FFFC]" : "bg-[#F5F2EA]"}`}>
+        <section className={`py-12 lg:py-16 ${isHuskChips ? "border-x-2 border-brand/20 bg-surface-teal-light" : "bg-surface-cream"}`}>
           <div className="container">
             <div className={`mx-auto flex w-full flex-col ${isHuskChips ? "" : "xl:aspect-[16/9] xl:p-8"}`}>
-              <Label className="mb-4 text-[#0B6B6B]">{isCoirMatting ? "PACKING & LOGISTICS" : "PACKING OPTIONS"}</Label>
-              <h2 className="display mb-7 whitespace-normal text-[clamp(1.75rem,3.2vw,3.25rem)] leading-tight text-[#0B6B6B] xl:whitespace-nowrap">
+              <Label className="mb-4 text-brand">{isCoirMatting ? "PACKING & LOGISTICS" : "PACKING OPTIONS"}</Label>
+              <h2 className="display mb-7 whitespace-normal text-h2 leading-tight text-brand xl:whitespace-nowrap">
                 {isCoirMatting ? "Packing & Logistics" : "Packing Options & Logistics"}
               </h2>
               <div className={`grid grid-cols-1 gap-4 sm:grid-cols-2 ${isGramBlock || isHuskChips ? "md:grid-cols-3" : "md:grid-cols-2 xl:min-h-0 xl:flex-1 xl:grid-cols-4"}`}>
-                {((isCoirMatting ? coirMattingPacking : isHuskChips ? huskChipsPackingOptions : isGramBlock ? gramBlockPackingOptions : packingOptions) as Array<{ number?: string; title: string; description?: string; image: any; alt: string }>).map((option, index, options) => (
+                {((isCoirMatting ? coirMattingPacking : isHuskChips ? huskChipsPackingOptions : isGramBlock ? gramBlockPackingOptions : packingOptions) as Array<{ number?: string; title: string; description?: string; image: string; alt: string }>).map((option, index, options) => (
                   <article
                     key={option.title}
-                    className={`flex flex-col border-[#0B6B6B]/25 xl:h-full ${
+                    className={`flex flex-col border-brand/25 xl:h-full ${
                       index < options.length - 1 ? "border-b md:border-b-0 md:border-r" : ""
                     } ${index === 0 ? "md:border-r xl:border-r" : ""} ${
                       index === 2 ? "md:border-r-0 xl:border-r" : ""
@@ -976,13 +1008,13 @@ function ProductDetail() {
                     />
                     <div className="flex flex-1 flex-col px-5 py-5 xl:px-5 xl:py-4">
                       {Boolean(option.number && !isGramBlock && !isHuskChips) && (
-                        <span className="text-[11px] font-bold tracking-[0.18em] text-[#0B6B6B]">{option.number}</span>
+                        <span className="text-[11px] font-bold tracking-[0.18em] text-brand">{option.number}</span>
                       )}
-                      <h3 className={`display mt-3 min-h-[2.5em] text-[clamp(1rem,1.45vw,1.35rem)] leading-tight text-[#0B6B6B] ${isGramBlock || isHuskChips || isCoirMatting ? "text-center" : ""}`}>
+                      <h3 className={`display mt-3 min-h-[2.5em] text-h3 leading-tight text-brand ${isGramBlock || isHuskChips || isCoirMatting ? "text-center" : ""}`}>
                         {option.title}
                       </h3>
                       {Boolean(option.description) && (
-                        <p className={`mt-3 text-[12px] leading-[1.55] text-[#0B6B6B] ${isCoirMatting ? "hidden" : "text-justify"}`}>
+                        <p className={`mt-3 text-sm leading-body text-body-text ${isCoirMatting ? "hidden" : "text-justify"}`}>
                           {option.description}
                         </p>
                       )}
@@ -995,7 +1027,7 @@ function ProductDetail() {
         </section>
       )}
 
-      {!isCoirMatting && <section className={`bg-brand-soft py-20 lg:py-28 ${isHuskChips ? "border-x-2 border-[#9B6BDB] bg-[#F2FFFC]" : ""}`}>
+      {!isCoirMatting && <section className={`bg-brand-soft py-20 lg:py-28 ${isHuskChips ? "border-x-2 border-brand/20 bg-surface-teal-light" : ""}`}>
         <div className="container">
           <Reveal>
             <Label className="text-brand">{isHuskChips ? "Applications Section" : "Applications"}</Label>
@@ -1006,7 +1038,7 @@ function ProductDetail() {
               <Reveal
                 key={application.name}
                 delay={i * 70}
-                className={`group relative min-h-80 overflow-hidden ${isHuskChips ? "text-[#0B4B50]" : ""}`}
+                className={`group relative min-h-80 overflow-hidden ${isHuskChips ? "text-brand-deep" : ""}`}
               >
                 <img
                   src={application.image}
@@ -1078,7 +1110,7 @@ function ProductDetail() {
               <Reveal key={product.slug} delay={i * 70} className="group">
                 <a href={`/products/${product.slug}`}>
                   <div
-                    className={`aspect-[4/3] overflow-hidden rounded-md border border-brand/15 ${
+                    className={`aspect-[4/5] overflow-hidden rounded-md border border-brand/15 ${
                       product.slug === "coir-matting"
                         ? "bg-brand-soft"
                         : "flex items-center justify-center bg-pure-white p-4"
@@ -1111,6 +1143,7 @@ function ProductDetail() {
           </div>
         </div>
       </section>
+      <ContentTodo request="Confirm product-specific MOQ, lead times, export FAQ content and downloadable specification sheets." />
     </>
   );
 }

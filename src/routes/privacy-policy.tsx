@@ -2,7 +2,12 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageHero, pageMeta } from "@/components/site/PageHero";
 
 export const Route = createFileRoute("/privacy-policy")({
-  head: () => pageMeta("Privacy Policy", "How Arjuna Exports collects, uses, and protects personal data."),
+  head: () =>
+    pageMeta(
+      "Privacy Policy",
+      "How Arjuna Exports collects, uses, and protects personal data.",
+      "/privacy-policy",
+    ),
   component: PrivacyPolicy,
 });
 
@@ -138,7 +143,7 @@ function PrivacyPolicy() {
         title="Privacy Policy"
         intro="How we collect, use, and protect your personal data."
       />
-      <main className="bg-offwhite py-12 sm:py-16">
+      <div className="bg-offwhite py-12 sm:py-16">
         <div className="container max-w-4xl">
           <div className="space-y-10">
             {sections.map((section) => (
@@ -157,7 +162,7 @@ function PrivacyPolicy() {
             ))}
           </div>
         </div>
-      </main>
+      </div>
     </>
   );
 }

@@ -173,7 +173,7 @@ function JourneyItem({ step, index, total, reducedMotion }: { step: Step; index:
         </motion.span>
 
         <motion.div
-          className="journey-illustration relative flex h-[104px] w-[104px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#EAF1E7] sm:h-[96px] sm:w-[96px] md:h-[88px] md:w-[88px]"
+          className="journey-illustration relative flex h-[104px] w-[104px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-surface-teal-light sm:h-[96px] sm:w-[96px] md:h-[88px] md:w-[88px]"
           {...(reducedMotion
             ? {}
             : {

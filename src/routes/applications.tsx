@@ -26,6 +26,7 @@ export const Route = createFileRoute("/applications")({
     pageMeta(
       "Applications",
       "Explore professional coco coir growing solutions for commercial greenhouses, soft fruits, vegetables, floriculture, landscaping and more.",
+      "/applications",
     ),
   component: Applications,
 });
@@ -134,7 +135,7 @@ const coirBenefits: { title: string; description: string; Icon: LucideIcon }[] =
 
 function Applications() {
   return (
-    <main className="overflow-hidden text-charcoal [overflow-wrap:break-word] [word-break:normal]">
+    <div className="overflow-hidden text-charcoal [overflow-wrap:break-word] [word-break:normal]">
       <section className="bg-offwhite">
         <div className="container grid min-h-[580px] items-stretch gap-10 py-10 sm:py-14 lg:min-h-[650px] lg:grid-cols-[1.05fr_.95fr] lg:gap-14 lg:py-16">
           <div className="flex flex-col justify-center py-2 lg:py-8">
@@ -321,7 +322,7 @@ function Applications() {
           <div className="flex flex-wrap gap-3 lg:flex-col"><PrimaryButton to="/contact" className="min-h-12 px-5">Discuss Your Requirement</PrimaryButton><SecondaryButton to="/products" onDark className="min-h-12 px-5">View Our Products</SecondaryButton></div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }
 
@@ -331,7 +332,6 @@ function IndustryCard({
   image,
   alt,
   icon: Icon,
-  href,
 }: (typeof industrySolutions)[number]) {
   const [imageLoaded, setImageLoaded] = useState(false);
 
@@ -341,10 +341,10 @@ function IndustryCard({
       hash={title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}
       id={title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}
       aria-label={`${title}: ${description} Explore`}
-      className="industry-card group block h-full overflow-hidden rounded-2xl border border-[#D7E3E1] bg-[#F9F9F5] text-left shadow-[0_4px_18px_rgba(11,92,92,0.06)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0B5C5C]"
+      className="industry-card group block h-full overflow-hidden rounded-sm border border-brand/15 bg-surface-cream text-left shadow-[var(--shadow-card)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
     >
       <article className="flex h-full min-w-0 flex-col">
-        <div className="industry-media relative aspect-[16/10] overflow-hidden bg-[#e7f0ee]">
+        <div className="industry-media relative aspect-[16/10] overflow-hidden bg-surface-teal-light">
           <div className="industry-image-skeleton" aria-hidden="true" data-loaded={imageLoaded} />
           <img
             src={image}

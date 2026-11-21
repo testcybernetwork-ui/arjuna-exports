@@ -1,16 +1,18 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import logo from "@/assets/logo.svg";
 import { navItems } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 import { PrimaryButton } from "./primitives";
 
-const menuItems = navItems.filter((item) => item.to !== "/");
+const menuItems = navItems;
 
 export function Header({ overHero = false }: { overHero?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -28,6 +30,46 @@ export function Header({ overHero = false }: { overHero?: boolean }) {
     };
   }, [open]);
 
+  useEffect(() => {
+    if (!open) return;
+    const menu = menuRef.current;
+    if (!menu) return;
+
+    const getFocusableItems = () =>
+      Array.from(
+        menu.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ),
+      );
+    getFocusableItems()[0]?.focus();
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+        menuButtonRef.current?.focus();
+        return;
+      }
+      if (event.key !== "Tab") return;
+
+      const items = getFocusableItems();
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      menuButtonRef.current?.focus();
+    };
+  }, [open]);
+
   const splitProductHero = pathname.startsWith("/products/");
   const transparentOverHero = overHero && pathname === "/";
   const solid = scrolled || !transparentOverHero || splitProductHero;
@@ -36,7 +78,7 @@ export function Header({ overHero = false }: { overHero?: boolean }) {
     <>
       <header
         className={cn(
-          "fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+          "fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow] duration-250 ease-[cubic-bezier(0.22,1,0.36,1)]",
           solid ? "bg-ivory/92 backdrop-blur-md" : "bg-transparent",
         )}
       >
@@ -51,7 +93,7 @@ export function Header({ overHero = false }: { overHero?: boolean }) {
               src={logo}
               alt="Arjuna Exports"
               className={cn(
-                "h-auto w-[158px] transition-[filter] duration-500 sm:w-[174px]",
+                "h-auto w-[158px] transition-[filter] duration-250 sm:w-[174px]",
                 !solid && "brightness-0 invert",
               )}
             />
@@ -59,17 +101,18 @@ export function Header({ overHero = false }: { overHero?: boolean }) {
 
           <nav
             className={cn(
-              "site-menu-font hidden items-center gap-[clamp(24px,2vw,32px)] transition-colors duration-500 xl:flex",
+              "site-menu-font hidden items-center gap-[clamp(24px,2vw,32px)] transition-colors duration-250 xl:flex",
               solid ? "text-brand" : "text-pure-white",
             )}
             aria-label="Primary"
           >
             {menuItems.map((item) => {
-              const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
+              const active = pathname.startsWith(item.to);
               return (
                 <Link
                   key={item.to}
                   to={item.to}
+                  aria-current={active ? "page" : undefined}
                   className={cn(
                     "group relative inline-flex min-h-11 items-center whitespace-nowrap py-1 text-sm tracking-[0.01em] transition-opacity duration-300 hover:opacity-70",
                     active && "opacity-100",
@@ -78,7 +121,7 @@ export function Header({ overHero = false }: { overHero?: boolean }) {
                   {item.label}
                   <span
                     className={cn(
-                      "absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-current transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100",
+                      "absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-current transition-transform duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100",
                       active && "scale-x-100",
                     )}
                   />
@@ -97,8 +140,11 @@ export function Header({ overHero = false }: { overHero?: boolean }) {
             </PrimaryButton>
 
             <button
+              ref={menuButtonRef}
               onClick={() => setOpen(true)}
               aria-label="Open menu"
+              aria-expanded={open}
+              aria-controls="mobile-menu"
               className="flex h-11 w-11 items-center justify-center xl:hidden"
             >
               <span className="relative block h-3 w-7">
@@ -112,8 +158,15 @@ export function Header({ overHero = false }: { overHero?: boolean }) {
 
       {/* Mobile full-screen menu */}
       <div
+        ref={menuRef}
+        id="mobile-menu"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Mobile menu"
+        aria-hidden={!open}
+        inert={!open}
         className={cn(
-          "fixed inset-0 z-[60] overflow-y-auto bg-ivory transition-[opacity,visibility] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] xl:hidden",
+          "fixed inset-0 z-[60] overflow-y-auto bg-ivory transition-[opacity,visibility] duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] xl:hidden",
           open ? "visible opacity-100" : "invisible opacity-0",
         )}
       >
@@ -139,7 +192,7 @@ export function Header({ overHero = false }: { overHero?: boolean }) {
         >
           <ul className="site-menu-font text-brand">
             {menuItems.map((item) => {
-              const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
+              const active = pathname.startsWith(item.to);
               return (
                 <li key={item.to} className="border-b border-charcoal/10">
                   <Link

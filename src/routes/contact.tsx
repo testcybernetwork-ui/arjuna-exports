@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   CheckCircle2,
   Container,
@@ -15,18 +15,21 @@ import {
 import { useState, type FormEvent } from "react";
 import { img, products } from "@/lib/site-data";
 import { PageHero, pageMeta } from "@/components/site/PageHero";
-import { Label, PrimaryButton, Reveal } from "@/components/site/primitives";
+import { ContentTodo, Label, PrimaryButton, Reveal } from "@/components/site/primitives";
 import { DeskPhoneIcon } from "@/components/site/DeskPhoneIcon";
 import { submitEnquiry } from "@/lib/submit-enquiry";
+import { countries } from "@/lib/countries";
 
 export const Route = createFileRoute("/contact")({
   head: () =>
     pageMeta(
       "Contact",
       "Talk to Arjuna Exports about coco products, specifications, samples and global supply.",
+      "/contact",
     ),
   validateSearch: (search: Record<string, unknown>) => ({
-      product: typeof search["product"] === "string" ? search["product"] : undefined,
+    product: typeof search["product"] === "string" ? search["product"] : undefined,
+    request: search["request"] === "sample" ? "sample" : "quote",
   }),
   component: Contact,
 });
@@ -77,13 +80,13 @@ const responseSteps = [
 ];
 
 const commonFields = [
-  { label: "First name", name: "firstName", required: true },
-  { label: "Last name", name: "lastName", required: true },
-  { label: "Company", name: "company", required: true },
-  { label: "Country", name: "country", required: true },
-  { label: "Email", name: "email", type: "email", required: true },
-  { label: "Website", name: "website", type: "url", required: false },
-  { label: "Phone", name: "phone", type: "tel", required: false },
+  { label: "First name", name: "firstName", autoComplete: "given-name", required: true },
+  { label: "Last name", name: "lastName", autoComplete: "family-name", required: true },
+  { label: "Company", name: "company", autoComplete: "organization", required: true },
+  { label: "Country", name: "country", autoComplete: "country-name", required: true },
+  { label: "Email", name: "email", type: "email", autoComplete: "email", required: true },
+  { label: "Website", name: "website", type: "url", autoComplete: "url", required: false },
+  { label: "Phone", name: "phone", type: "tel", autoComplete: "tel", required: false },
 ];
 
 const enquiryTypes = [
@@ -103,7 +106,7 @@ const marketSegmentOptions = [
   "Professional Greenhouse Grower",
   "Lawn and Landscapers",
   "Substrate Manufacturers",
-  "Retailer/Garden Centre/ Nurseries",
+  "Retailer/Garden Centre/Nurseries",
   "Horticulture & Floriculture",
   "Potting Mix Suppliers",
   "Importer/Distributor/Wholesaler",
@@ -127,6 +130,7 @@ const inputClass =
 function Contact() {
   const search = Route.useSearch();
   const initialProduct = products.find((product) => product.slug === search.product);
+  const requestPurpose = search.request === "sample" ? "sample" : "quote";
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -144,11 +148,41 @@ function Contact() {
     e.preventDefault();
     if (sending) return;
 
+    const form = e.currentTarget;
+    const requiredFields = Array.from(
+      form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
+        "input[required], select[required], textarea[required]",
+      ),
+    );
+    const validationErrors: Record<string, string> = {};
+    let firstInvalidField: (typeof requiredFields)[number] | undefined;
+
+    for (const field of requiredFields) {
+      if (field.validity.valid) continue;
+
+      const label = field.labels?.[0]?.textContent?.replace(/\s*\*/g, "").trim() || field.name;
+      if (field.validity.typeMismatch) {
+        validationErrors[field.name] = "Please provide a valid email address.";
+      } else if (field.name === "partnershipRequirements") {
+        validationErrors[field.name] = "Please enter your detailed requirements and inputs.";
+      } else {
+        validationErrors[field.name] = `${label} is required.`;
+      }
+      firstInvalidField ??= field;
+    }
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrorMessage("Please fix the highlighted fields.");
+      setFieldErrors(validationErrors);
+      firstInvalidField?.focus();
+      return;
+    }
+
     setSending(true);
     setErrorMessage(null);
     setFieldErrors({});
 
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(form);
 
     const payload = {
       firstName: (formData.get("firstName") as string) || "",
@@ -159,6 +193,7 @@ function Contact() {
       website: (formData.get("website") as string) || "",
       phone: (formData.get("phone") as string) || "",
       enquiryType,
+      requestPurpose,
       marketingConsent: formData.get("marketingConsent") === "on",
       // Honeypot field
       _hp_website: (formData.get("_hp_website") as string) || "",
@@ -199,7 +234,11 @@ function Contact() {
   function fieldErrorEl(fieldName: string) {
     const err = fieldErrors[fieldName];
     if (!err) return null;
-    return <span className="mt-1 block text-xs text-red-600">{err}</span>;
+    return (
+      <span id={`contact-${fieldName}-error`} className="mt-1 block text-sm text-red-700" role="alert">
+        {err}
+      </span>
+    );
   }
 
   return (
@@ -224,34 +263,38 @@ function Contact() {
           <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
             <div>
               <div className="grid auto-rows-fr gap-6 md:grid-cols-2">
-              {contactCards.map((card) => (
-                <Reveal key={card.key} className="h-full">
-                  <a
-                    href={card.href}
-                    aria-label={`${card.label}: ${card.value}`}
-                    className="contact-card group flex h-full min-h-[140px] overflow-hidden transition-transform hover:-translate-y-1"
-                  >
-                    <span className="flex w-24 shrink-0 items-center justify-center bg-brand sm:w-28 lg:w-24 xl:w-28">
-                      <card.icon
-                        className="h-10 w-10 text-pure-white sm:h-12 sm:w-12"
-                        strokeWidth={1.7}
-                        aria-hidden
-                      />
-                    </span>
-                    <span className="flex min-w-0 flex-1 items-center justify-center px-3.5 py-5 text-center sm:px-4 sm:py-6 lg:px-3 xl:px-5">
-                      <span
-                        className={`min-w-0 font-semibold leading-tight text-body-text ${
-                          card.isEmail ? "whitespace-nowrap text-sm" : "whitespace-nowrap text-base"
-                        }`}
-                      >
-                        {card.value}
+                {contactCards.map((card) => (
+                  <Reveal key={card.key} className="h-full">
+                    <a
+                      href={card.href}
+                      aria-label={`${card.label}: ${card.value}`}
+                      className="contact-card group flex h-full min-h-[140px] overflow-hidden transition-transform hover:-translate-y-1"
+                    >
+                      <span className="flex w-24 shrink-0 items-center justify-center bg-brand sm:w-28 lg:w-24 xl:w-28">
+                        <card.icon
+                          className="h-10 w-10 text-pure-white sm:h-12 sm:w-12"
+                          strokeWidth={1.7}
+                          aria-hidden
+                        />
                       </span>
-                    </span>
-                  </a>
-                </Reveal>
-              ))}
+                      <span className="flex min-w-0 flex-1 items-center justify-center px-3.5 py-5 text-center sm:px-4 sm:py-6 lg:px-3 xl:px-5">
+                        <span
+                          className={`min-w-0 font-semibold leading-tight text-body-text ${
+                            card.isEmail ? "whitespace-nowrap text-sm" : "whitespace-nowrap text-base"
+                          }`}
+                        >
+                          {card.value}
+                        </span>
+                      </span>
+                    </a>
+                  </Reveal>
+                ))}
               </div>
               <p className="contact-response-note mt-5">We&apos;ll respond within 24 hours.</p>
+              <p className="mt-1 text-sm leading-body text-text-muted">
+                India Standard Time (IST, UTC+5:30).
+              </p>
+              <ContentTodo request="Confirm and publish the business hours." />
             </div>
 
             <Reveal delay={120} className="h-full">
@@ -295,6 +338,7 @@ function Contact() {
             <form
               id="contact-form"
               onSubmit={submit}
+              noValidate
               className="contact-form rounded-md border bg-pure-white p-5 sm:p-8 lg:p-10"
             >
               {sent ? (
@@ -344,7 +388,9 @@ function Contact() {
                             );
                             const currentIndex = tabs.indexOf(event.currentTarget);
                             const direction = event.key === "ArrowRight" ? 1 : -1;
-                            tabs[(currentIndex + direction + tabs.length) % tabs.length]?.click();
+                            const nextTab = tabs[(currentIndex + direction + tabs.length) % tabs.length];
+                            nextTab?.focus();
+                            nextTab?.click();
                           }}
                           className="contact-tab group flex min-h-12 min-w-0 flex-col items-center gap-3 px-1 py-2 text-center text-pure-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pure-white"
                         >
@@ -365,6 +411,7 @@ function Contact() {
                     })}
                   </div>
                   <input type="hidden" name="category" value={enquiryType} />
+                  <input type="hidden" name="requestPurpose" value={requestPurpose} />
                   <div
                     id="enquiry-tab-panel"
                     role="tabpanel"
@@ -373,7 +420,7 @@ function Contact() {
                   >
 
                   {/* Honeypot – hidden from real users, traps bots */}
-                  <div aria-hidden="true" tabIndex={-1} style={{ position: "absolute", left: "-9999px", top: "-9999px", opacity: 0, height: 0, overflow: "hidden" }}>
+                  <div className="contact-honeypot" aria-hidden="true" tabIndex={-1}>
                     <label>
                       Don&apos;t fill this out
                       <input type="text" name="_hp_website" tabIndex={-1} autoComplete="off" />
@@ -386,14 +433,18 @@ function Contact() {
                       {enquiryType === "partnership"
                         ? "We don't just fulfil orders; we participate in every partnership."
                         : enquiryType === "product"
-                          ? "Products inquiry form"
+                          ? requestPurpose === "sample"
+                            ? "Product sample request"
+                            : "Product enquiry form"
                           : "General inquiry form"}
                     </h2>
                     <p className="mt-3 text-sm leading-relaxed text-charcoal/58">
                       {enquiryType === "partnership"
                         ? "Complete the partnership form below, and our team will reach out to you."
                         : enquiryType === "product"
-                          ? "Tell us which products, documents and order format you require."
+                          ? requestPurpose === "sample"
+                            ? "Tell us which product you would like to sample and where it needs to be delivered."
+                            : "Tell us which products, documents and order format you require."
                           : "Send your comments or questions and we'll connect you with the right team."}
                     </p>
                   </div>
@@ -413,12 +464,26 @@ function Contact() {
                           {f.required ? " *" : " (optional)"}
                         </span>
                         <input
+                          id={`contact-${f.name}`}
                           name={f.name}
                           required={f.required}
                           type={f.type ?? "text"}
                           placeholder={f.label}
+                          autoComplete={f.autoComplete}
+                          list={f.name === "country" ? "contact-country-options" : undefined}
+                          aria-invalid={Boolean(fieldErrors[f.name])}
+                          aria-describedby={
+                            fieldErrors[f.name] ? `contact-${f.name}-error` : undefined
+                          }
                           className={`${inputClass} ${fieldErrors[f.name] ? "!border-red-400" : ""}`}
                         />
+                        {f.name === "country" && (
+                          <datalist id="contact-country-options">
+                            {countries.map((country) => (
+                              <option key={country} value={country} />
+                            ))}
+                          </datalist>
+                        )}
                         {fieldErrorEl(f.name)}
                       </label>
                     ))}
@@ -429,21 +494,39 @@ function Contact() {
                       <label className="block">
                         <span className="micro-label text-brand">Market segment *</span>
                         <select
+                          id="contact-marketSegment"
                           name="marketSegment"
                           className={inputClass}
                           required
                           value={marketSegment}
+                          aria-invalid={Boolean(fieldErrors["marketSegment"])}
+                          aria-describedby={
+                            fieldErrors["marketSegment"] ? "contact-marketSegment-error" : undefined
+                          }
                           onChange={(event) => setMarketSegment(event.target.value)}
                         >
                           {marketSegmentOptions.map((option) => (
                             <option key={option}>{option}</option>
                           ))}
                         </select>
+                        {fieldErrorEl("marketSegment")}
                       </label>
                       {marketSegment === "Others" && (
                         <label className="block">
                           <span className="micro-label text-brand">Others (Please Specify) *</span>
-                          <input name="marketSegmentOther" required className={inputClass} />
+                          <input
+                            id="contact-marketSegmentOther"
+                            name="marketSegmentOther"
+                            required
+                            className={inputClass}
+                            aria-invalid={Boolean(fieldErrors["marketSegmentOther"])}
+                            aria-describedby={
+                              fieldErrors["marketSegmentOther"]
+                                ? "contact-marketSegmentOther-error"
+                                : undefined
+                            }
+                          />
+                          {fieldErrorEl("marketSegmentOther")}
                         </label>
                       )}
                       <label className="block">
@@ -462,7 +545,19 @@ function Contact() {
                       {partnershipRole === "Others" && (
                         <label className="block">
                           <span className="micro-label text-brand">Others (Please Specify) *</span>
-                          <input name="partnershipRoleOther" required className={inputClass} />
+                          <input
+                            id="contact-partnershipRoleOther"
+                            name="partnershipRoleOther"
+                            required
+                            className={inputClass}
+                            aria-invalid={Boolean(fieldErrors["partnershipRoleOther"])}
+                            aria-describedby={
+                              fieldErrors["partnershipRoleOther"]
+                                ? "contact-partnershipRoleOther-error"
+                                : undefined
+                            }
+                          />
+                          {fieldErrorEl("partnershipRoleOther")}
                         </label>
                       )}
                       <label className="block sm:col-span-2">
@@ -470,9 +565,16 @@ function Contact() {
                           Detailed requirements and inputs *
                         </span>
                         <textarea
+                          id="contact-partnershipRequirements"
                           name="partnershipRequirements"
                           required
                           rows={5}
+                          aria-invalid={Boolean(fieldErrors["partnershipRequirements"])}
+                          aria-describedby={
+                            fieldErrors["partnershipRequirements"]
+                              ? "contact-partnershipRequirements-error"
+                              : undefined
+                          }
                           className={`mt-2 block w-full resize-y rounded-sm border border-brand/18 bg-pure-white px-4 py-3 text-base font-medium text-brand-deep outline-none transition-colors focus:border-brand ${fieldErrors["partnershipRequirements"] ? "!border-red-400" : ""}`}
                         />
                         {fieldErrorEl("partnershipRequirements")}
@@ -499,11 +601,16 @@ function Contact() {
                       <label className="block">
                         <span className="micro-label text-brand">Product name *</span>
                         <select
+                          id="contact-product"
                           name="product"
                           className={inputClass}
                           value={selectedProduct}
                           onChange={(event) => setSelectedProduct(event.target.value)}
                           required
+                          aria-invalid={Boolean(fieldErrors["product"])}
+                          aria-describedby={
+                            fieldErrors["product"] ? "contact-product-error" : undefined
+                          }
                         >
                           <option value="" disabled>
                             Select an option
@@ -514,6 +621,7 @@ function Contact() {
                             </option>
                           ))}
                         </select>
+                        {fieldErrorEl("product")}
                       </label>
                       <label className="block">
                         <span className="micro-label text-brand">Product category (optional)</span>
@@ -531,7 +639,19 @@ function Contact() {
                       {productCategory === "Others" && (
                         <label className="block">
                           <span className="micro-label text-brand">Others (Please Specify) *</span>
-                          <input name="productCategoryOther" required className={inputClass} />
+                          <input
+                            id="contact-productCategoryOther"
+                            name="productCategoryOther"
+                            required
+                            className={inputClass}
+                            aria-invalid={Boolean(fieldErrors["productCategoryOther"])}
+                            aria-describedby={
+                              fieldErrors["productCategoryOther"]
+                                ? "contact-productCategoryOther-error"
+                                : undefined
+                            }
+                          />
+                          {fieldErrorEl("productCategoryOther")}
                         </label>
                       )}
                       <label className="block sm:col-span-2">
@@ -539,15 +659,24 @@ function Contact() {
                           Required documents or information *
                         </span>
                         <textarea
+                          id="contact-requiredDocuments"
                           name="requiredDocuments"
                           rows={4}
                           required
+                          aria-invalid={Boolean(fieldErrors["requiredDocuments"])}
+                          aria-describedby={
+                            fieldErrors["requiredDocuments"]
+                              ? "contact-requiredDocuments-error"
+                              : undefined
+                          }
                           className="mt-2 block w-full resize-y rounded-sm border border-brand/18 bg-pure-white px-4 py-3 text-base font-medium text-brand-deep outline-none transition-colors focus:border-brand"
                         />
+                        {fieldErrorEl("requiredDocuments")}
                       </label>
                       <label className="block sm:col-span-2">
                         <span className="micro-label text-brand">Additional information (optional)</span>
                         <textarea
+                          id="contact-additionalInformation"
                           name="additionalInformation"
                           rows={4}
                           className="mt-2 block w-full resize-y rounded-sm border border-brand/18 bg-pure-white px-4 py-3 text-base font-medium text-brand-deep outline-none transition-colors focus:border-brand"
@@ -581,9 +710,16 @@ function Contact() {
                       <label className="block">
                         <span className="micro-label text-brand">Your comments / questions *</span>
                         <textarea
+                          id="contact-generalComments"
                           name="generalComments"
                           required
                           rows={6}
+                          aria-invalid={Boolean(fieldErrors["generalComments"])}
+                          aria-describedby={
+                            fieldErrors["generalComments"]
+                              ? "contact-generalComments-error"
+                              : undefined
+                          }
                           className={`mt-2 block w-full resize-y rounded-sm border border-brand/18 bg-pure-white px-4 py-3 text-base font-medium text-brand-deep outline-none transition-colors focus:border-brand ${fieldErrors["generalComments"] ? "!border-red-400" : ""}`}
                         />
                         {fieldErrorEl("generalComments")}
@@ -591,21 +727,25 @@ function Contact() {
                     </div>
                   )}
 
-                  <label className="mt-6 flex items-start gap-3 text-xs leading-relaxed text-charcoal/65">
+                  <label className="mt-6 flex items-start gap-3 text-sm leading-relaxed text-charcoal/65">
                     <input
                       type="checkbox"
                       name="marketingConsent"
-                      required
                       className="mt-1 h-4 w-4 accent-brand"
                     />
                     <span>
-                      <strong aria-hidden="true">*</strong>{" "}
-                      By opting in, I agree to receive marketing offers, updates and other
-                      communications from Arjuna Exports, and understand that my personal data will
-                      be stored and processed in line with the privacy policy.
+                      <strong>Marketing updates (optional).</strong> Check this box if you would
+                      like to receive product news and offers from Arjuna Exports. Your enquiry
+                      details are handled according to our{" "}
+                      <Link
+                        to="/privacy-policy"
+                        className="font-semibold underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+                      >
+                        privacy policy
+                      </Link>
+                      .
                     </span>
                   </label>
-                  {fieldErrorEl("marketingConsent")}
 
                   <div className="mt-9 flex flex-wrap items-center justify-between gap-5 border-t border-charcoal/10 pt-7">
                     <div className="max-w-md">
@@ -617,11 +757,16 @@ function Contact() {
                         product or export follow-up.
                       </p>
                     </div>
-                    <PrimaryButton type="submit" disabled={sending} className="relative w-full sm:w-auto">
+                    <PrimaryButton
+                      type="submit"
+                      disabled={sending}
+                      className="relative w-full sm:w-auto"
+                      aria-busy={sending}
+                    >
                       {sending && (
-                        <Loader2 className="absolute left-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 animate-spin" aria-hidden />
+                        <Loader2 className="h-5 w-5 animate-spin" aria-hidden />
                       )}
-                      <span className={sending ? "invisible" : ""}>Submit</span>
+                      <span>{sending ? "Sending…" : "Submit"}</span>
                     </PrimaryButton>
                   </div>
                   </div>

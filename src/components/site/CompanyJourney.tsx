@@ -96,12 +96,12 @@ export function CompanyJourney() {
               <article className="relative flex overflow-hidden rounded-md border border-brand/16 bg-offwhite p-10 shadow-[0_30px_90px_rgba(31,45,40,.12)]">
                 <div className="absolute inset-x-0 top-0 h-1 bg-brand/12">
                   <span
-                    className="block h-full bg-[#ffc21a] transition-[width] duration-500"
+                    className="block h-full bg-accent-green transition-[width] duration-300"
                     style={{ width: `${progress * 100}%` }}
                   />
                 </div>
                 <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full border border-brand/10" />
-                <div className="absolute bottom-10 right-10 h-28 w-28 rounded-full border border-[#ffc21a]/35" />
+                <div className="absolute bottom-10 right-10 h-28 w-28 rounded-full border border-accent-green/35" />
 
                 <div className="relative mt-auto max-w-3xl">
                   <Label className="text-brand">{active.year}</Label>

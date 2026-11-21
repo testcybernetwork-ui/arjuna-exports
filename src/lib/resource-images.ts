@@ -13,7 +13,7 @@ import coirBoard from "@/assets/certifications/coir-board.jpg";
 import productBlock from "@/assets/product-block.jpg";
 import productCocoPeat5kg from "@/assets/product-coco-peat-5kg.png";
 import productCocoPeat650g from "@/assets/product-coco-peat-650g.png";
-import productCocoHushChips4kg from "@/assets/product-coco-hush-chips-4kg.png";
+import productCocoHuskChips4kg from "@/assets/product-coco-husk-chips-4kg.png";
 import productGrowbag from "@/assets/product-growbag.jpg";
 import productErosion from "@/assets/product-erosion.jpg";
 import productFloor from "@/assets/product-floor.jpg";
@@ -50,7 +50,7 @@ export {
   productBlock,
   productCocoPeat5kg,
   productCocoPeat650g,
-  productCocoHushChips4kg,
+  productCocoHuskChips4kg,
   productGrowbag,
   productErosion,
   productFloor,

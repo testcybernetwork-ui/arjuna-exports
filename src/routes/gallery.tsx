@@ -7,6 +7,7 @@ export const Route = createFileRoute("/gallery")({
     pageMeta(
       "Gallery",
       "Explore Arjuna Exports products, processing infrastructure, quality control and global growing applications.",
+      "/gallery",
     ),
   component: Gallery,
 });

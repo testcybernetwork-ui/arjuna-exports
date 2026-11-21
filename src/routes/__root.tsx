@@ -13,6 +13,28 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { Header } from "../components/site/Header";
 import { Footer } from "../components/site/Footer";
+import brandLogo from "@/assets/logo.svg?url";
+import displayFont from "../BowlbyOne-Regular.ttf";
+
+const siteOrigin = "https://www.arjunaexports.com";
+const organizationStructuredData = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": `${siteOrigin}/#organization`,
+  name: "Arjuna Exports",
+  url: `${siteOrigin}/`,
+  logo: new URL(brandLogo, siteOrigin).toString(),
+  email: "info@arjunaexports.com",
+  telephone: ["+919629874555", "+914288250125"],
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "1/140-12, GM Complex, Opposite TMB Bank",
+    addressLocality: "Kumaramangalam",
+    addressRegion: "Tamil Nadu",
+    postalCode: "637205",
+    addressCountry: "IN",
+  },
+}).replace(/</g, "\\u003c");
 
 function NotFoundComponent() {
   return (
@@ -96,7 +118,6 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
-      { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Arjuna Exports | Coco Growing Media from India" },
       {
@@ -120,11 +141,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { rel: "icon", href: "/favicon.png", type: "image/png" },
       { rel: "apple-touch-icon", href: "/favicon.png" },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap",
+        rel: "preload",
+        href: displayFont,
+        as: "font",
+        type: "font/ttf",
+        crossOrigin: "anonymous",
       },
     ],
   }),
@@ -138,6 +160,11 @@ function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
+        <meta charSet="utf-8" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: organizationStructuredData }}
+        />
         <HeadContent />
       </head>
       <body>
@@ -161,8 +188,11 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <a className="skip-link" href="#main-content">
+        Skip to content
+      </a>
       <Header overHero />
-      <main className="site-compact">
+      <main id="main-content" tabIndex={-1} className="site-compact">
         <Outlet />
       </main>
       <Footer />

@@ -124,11 +124,14 @@ const features = [
 
 export function CoirMattingFeatures() {
   return (
-    <section aria-labelledby="coir-matting-features-title" className="coir-features-section bg-[#fcfaf4]">
+    <section
+      aria-labelledby="coir-matting-features-title"
+      className="coir-features-section bg-surface-cream"
+    >
       <div className="container coir-features-inner">
         <h2
           id="coir-matting-features-title"
-          className="display text-[clamp(2.4rem,4.6vw,3rem)] font-normal leading-[1.05] tracking-[-0.01em] text-[#0f4c42]"
+          className="display text-h2 font-normal text-heading"
         >
           Key Features
         </h2>
@@ -136,10 +139,10 @@ export function CoirMattingFeatures() {
           {features.map(({ title, Icon }) => (
             <li
               key={title}
-              className="coir-feature-card flex min-h-[204px] flex-col items-center justify-center gap-2 rounded-[3px] border border-[#e5e9e2] bg-white px-4 py-4 text-center shadow-[0_2px_8px_rgba(15,76,66,.035)] transition-shadow hover:shadow-[0_12px_28px_rgba(15,76,66,.09)]"
+              className="coir-feature-card flex min-h-[204px] flex-col items-center justify-center gap-2 rounded-sm border border-brand/15 bg-surface-teal-light px-4 py-4 text-center shadow-[var(--shadow-card)] transition-shadow hover:shadow-[var(--shadow-card)]"
             >
               <Icon />
-              <span className="max-w-[28ch] font-sans text-[clamp(1.05rem,1.6vw,1.25rem)] font-semibold leading-snug text-[#172b28]">
+              <span className="max-w-[28ch] font-sans text-base font-semibold leading-snug text-body-text">
                 {title}
               </span>
             </li>

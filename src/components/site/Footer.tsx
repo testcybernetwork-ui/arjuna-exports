@@ -107,8 +107,8 @@ export function Footer() {
                   key={label}
                   href={href}
                   target="_blank"
-                  rel="noopener"
-                  aria-label={label === "Instagram" ? "Instagram" : label === "Facebook" ? "Facebook" : `Visit Arjuna Exports on ${label} (opens in a new tab)`}
+                  rel="noopener noreferrer"
+                  aria-label={label}
                   className="footer-social-link"
                 >
                   <SocialIcon label={label} />
@@ -160,7 +160,6 @@ export function Footer() {
                   <span>Tiruchengode Taluk,</span>
                   <span>Namakkal District,</span>
                   <span>Tamil Nadu – 637205,</span>
-                  <span>India</span>
                 </div>
               </div>
               <a href="mailto:info@arjunaexports.com" className="footer-contact-item footer-contact-link">
@@ -195,7 +194,6 @@ export function Footer() {
           </div>
           <div className="footer-legal-links">
             <Link to="/privacy-policy" className="footer-policy-link">Privacy Policy</Link>
-            <span>India</span>
           </div>
         </div>
       </div>

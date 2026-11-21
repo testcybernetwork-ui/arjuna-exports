@@ -33,6 +33,7 @@ export function Header({ overHero = false }: { overHero?: boolean }) {
   useEffect(() => {
     if (!open) return;
     const menu = menuRef.current;
+    const menuButton = menuButtonRef.current;
     if (!menu) return;
 
     const getFocusableItems = () =>
@@ -46,7 +47,7 @@ export function Header({ overHero = false }: { overHero?: boolean }) {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setOpen(false);
-        menuButtonRef.current?.focus();
+        menuButton?.focus();
         return;
       }
       if (event.key !== "Tab") return;
@@ -66,7 +67,7 @@ export function Header({ overHero = false }: { overHero?: boolean }) {
     document.addEventListener("keydown", onKeyDown);
     return () => {
       document.removeEventListener("keydown", onKeyDown);
-      menuButtonRef.current?.focus();
+      menuButton?.focus();
     };
   }, [open]);
 
@@ -88,7 +89,11 @@ export function Header({ overHero = false }: { overHero?: boolean }) {
             solid ? "text-charcoal" : "text-pure-white",
           )}
         >
-          <Link to="/" className="flex min-h-11 shrink-0 items-center" aria-label="Arjuna Exports home">
+          <Link
+            to="/"
+            className="flex min-h-11 shrink-0 items-center"
+            aria-label="Arjuna Exports home"
+          >
             <img
               src={logo}
               alt="Arjuna Exports"
@@ -107,7 +112,7 @@ export function Header({ overHero = false }: { overHero?: boolean }) {
             aria-label="Primary"
           >
             {menuItems.map((item) => {
-              const active = pathname.startsWith(item.to);
+              const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
               return (
                 <Link
                   key={item.to}
@@ -192,7 +197,7 @@ export function Header({ overHero = false }: { overHero?: boolean }) {
         >
           <ul className="site-menu-font text-brand">
             {menuItems.map((item) => {
-              const active = pathname.startsWith(item.to);
+              const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
               return (
                 <li key={item.to} className="border-b border-charcoal/10">
                   <Link

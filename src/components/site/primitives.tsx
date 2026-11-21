@@ -57,11 +57,7 @@ export function Reveal({
 /* ---------- editorial atoms ---------- */
 
 export function Label({ children, className }: { children: ReactNode; className?: string }) {
-  return (
-    <span className={cn("micro-label inline-flex items-center", className)}>
-      {children}
-    </span>
-  );
+  return <span className={cn("micro-label inline-flex items-center", className)}>{children}</span>;
 }
 
 export function Arrow({ className }: { className?: string }) {
@@ -90,21 +86,25 @@ const baseBtn =
 export function PrimaryButton({
   to,
   hash,
+  search,
   children,
   onClick,
   type,
   className,
   disabled = false,
   "aria-busy": ariaBusy,
+  "aria-label": ariaLabel,
 }: {
   to?: string;
   hash?: string;
+  search?: { product?: string; variant?: string; request?: "quote" | "sample" };
   children: ReactNode;
   onClick?: () => void;
   type?: "submit" | "button";
   className?: string;
   disabled?: boolean;
   "aria-busy"?: boolean;
+  "aria-label"?: string;
 }) {
   const inner = (
     <>
@@ -122,9 +122,11 @@ export function PrimaryButton({
       <Link
         to={to}
         {...(hash !== undefined ? { hash } : {})}
+        {...(search !== undefined ? { search } : {})}
         className={cls}
         aria-disabled={disabled || undefined}
         aria-busy={ariaBusy}
+        aria-label={ariaLabel}
         tabIndex={disabled ? -1 : undefined}
         onClick={disabled ? (event) => event.preventDefault() : undefined}
       >
@@ -212,10 +214,14 @@ export function ChapterHeading({
   action?: ReactNode;
 }) {
   return (
-    <div className={cn(action && "section-heading", align === "center" && "text-center", className)}>
+    <div
+      className={cn(action && "section-heading", align === "center" && "text-center", className)}
+    >
       <div>
         {label && (
-          <Label className={cn("mb-6 block", align === "center" && "justify-center")}>{label}</Label>
+          <Label className={cn("mb-6 block", align === "center" && "justify-center")}>
+            {label}
+          </Label>
         )}
         <h2 className="display max-w-[22ch] text-[clamp(2.25rem,4vw,4rem)] leading-[1.02]">
           {lines.map((l, i) => (
@@ -262,6 +268,12 @@ export function Breadcrumbs({
   );
 }
 
-export function ContentTodo(_props: { request: string }): null {
-  return null;
+export function ContentTodo({ request }: { request: string }) {
+  if (!import.meta.env.DEV) return null;
+
+  return (
+    <p className="content-todo" role="note">
+      TODO: {request}
+    </p>
+  );
 }

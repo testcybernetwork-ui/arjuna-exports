@@ -1,4 +1,13 @@
-﻿import { Droplets, Factory, Flower2, Leaf, Mountain, Sprout, Store, type LucideIcon } from "lucide-react";
+﻿import {
+  Droplets,
+  Factory,
+  Flower2,
+  Leaf,
+  Mountain,
+  Sprout,
+  Store,
+  type LucideIcon,
+} from "lucide-react";
 import heroPlantation from "@/assets/hero-plantation.jpg";
 import stageCoconut from "@/assets/stage-coconut.jpg";
 import stageHusk from "@/assets/stage-husk.jpg";
@@ -122,6 +131,7 @@ export const cropIcons: Record<string, string> = {
 };
 
 export const navItems = [
+  { label: "Home", to: "/" },
   { label: "About Us", to: "/our-story" },
   { label: "Products", to: "/products" },
   { label: "Applications", to: "/applications" },
@@ -143,6 +153,8 @@ export type Product = {
   benefits: string[];
   specs: { label: string; value: string }[];
   applications: string[];
+  imageTodo?: string;
+  variantOptions?: ProductVariantOption[];
   industrySolutions?: {
     title: string;
     description: string;
@@ -150,6 +162,11 @@ export type Product = {
     alt: string;
     icon: LucideIcon;
   }[];
+};
+
+export type ProductVariantOption = {
+  slug: string;
+  label: string;
 };
 
 export type IndustrySolution = {
@@ -191,10 +208,34 @@ export const products: Product[] = [
     ],
     applications: ["Nurseries", "Horticulture", "Plant Propagation", "Home Gardening"],
     industrySolutions: [
-      { title: "Professional Horticulture", description: "Commercial growing media for greenhouse and controlled cultivation.", image: industryProfessionalHorticulture, alt: "Rows of young seedlings in a modern commercial nursery", icon: Sprout },
-      { title: "Greenhouse Growers", description: "Coir substrates designed for controlled irrigation and root-zone management.", image: industryGreenhouseGrowers, alt: "Tomato and cucumber plants growing inside a bright commercial greenhouse", icon: Leaf },
-      { title: "Substrate Manufacturers", description: "Coir materials suited to professional substrate formulations.", image: industrySubstrateManufacturers, alt: "Compressed coir block prepared for professional substrate manufacturing", icon: Factory },
-      { title: "Plant Propagation", description: "Suitable substrate conditions for establishing young plants.", image: industryPlantPropagation, alt: "Young plants growing in organized propagation trays", icon: Sprout },
+      {
+        title: "Professional Horticulture",
+        description: "Commercial growing media for greenhouse and controlled cultivation.",
+        image: industryProfessionalHorticulture,
+        alt: "Rows of young seedlings in a modern commercial nursery",
+        icon: Sprout,
+      },
+      {
+        title: "Greenhouse Growers",
+        description: "Coir substrates designed for controlled irrigation and root-zone management.",
+        image: industryGreenhouseGrowers,
+        alt: "Tomato and cucumber plants growing inside a bright commercial greenhouse",
+        icon: Leaf,
+      },
+      {
+        title: "Substrate Manufacturers",
+        description: "Coir materials suited to professional substrate formulations.",
+        image: industrySubstrateManufacturers,
+        alt: "Compressed coir block prepared for professional substrate manufacturing",
+        icon: Factory,
+      },
+      {
+        title: "Plant Propagation",
+        description: "Suitable substrate conditions for establishing young plants.",
+        image: industryPlantPropagation,
+        alt: "Young plants growing in organized propagation trays",
+        icon: Sprout,
+      },
     ],
   },
   {
@@ -226,7 +267,13 @@ export const products: Product[] = [
     ],
     applications: ["Home Gardening", "Nurseries", "Plant Propagation"],
     industrySolutions: [
-      { title: "Retail Garden Centres", description: "Convenient coir formats for professional and consumer gardening.", image: industryRetailGardenCentres, alt: "Coir and garden products arranged for retail garden use", icon: Store },
+      {
+        title: "Retail Garden Centres",
+        description: "Convenient coir formats for professional and consumer gardening.",
+        image: industryRetailGardenCentres,
+        alt: "Coir and garden products arranged for retail garden use",
+        icon: Store,
+      },
     ],
   },
   {
@@ -258,7 +305,13 @@ export const products: Product[] = [
     ],
     applications: ["Floriculture", "Nurseries", "Hydroponics"],
     industrySolutions: [
-      { title: "Floriculture", description: "Growing solutions for cut flowers and ornamental cultivation.", image: industryFloriculture, alt: "Fresh colorful flowers growing on a flower farm", icon: Flower2 },
+      {
+        title: "Floriculture",
+        description: "Growing solutions for cut flowers and ornamental cultivation.",
+        image: industryFloriculture,
+        alt: "Fresh colourful flowers growing on a flower farm",
+        icon: Flower2,
+      },
     ],
   },
   {
@@ -266,6 +319,7 @@ export const products: Product[] = [
     name: "Coir Matting",
     category: "Coir Matting",
     image: detailCoirFlooring,
+    imageTodo: "Coir Matting product photography from the client",
     short: "Durable natural coir matting for entrances, interiors and contract flooring.",
     format: "Rolls / cut mats / custom sizes",
     application: "Interiors, hospitality, retail and contract flooring",
@@ -290,10 +344,119 @@ export const products: Product[] = [
     ],
     applications: ["Landscaping", "Home Gardening"],
     industrySolutions: [
-      { title: "Landscaping", description: "Natural growing media for landscape and planting applications.", image: industryLandscaping, alt: "Freshly planted garden bed with natural mulch and leafy plants", icon: Mountain },
-      { title: "Industrial Oil Absorption", description: "Natural coir-based material for selected absorption applications.", image: industryIndustrialOilAbsorption, alt: "Coir fiber mats absorbing an oil spill on a factory floor beside machinery", icon: Droplets },
-      { title: "Animal Bedding", description: "Natural coir material for applicable animal bedding uses.", image: industryAnimalBedding, alt: "Brown horse standing in a wooden stable with coir bedding", icon: Leaf },
+      {
+        title: "Landscaping",
+        description: "Natural growing media for landscape and planting applications.",
+        image: industryLandscaping,
+        alt: "Freshly planted garden bed with natural mulch and leafy plants",
+        icon: Mountain,
+      },
+      {
+        title: "Industrial Oil Absorption",
+        description: "Natural coir-based material for selected absorption applications.",
+        image: industryIndustrialOilAbsorption,
+        alt: "Coir fiber mats absorbing an oil spill on a factory floor beside machinery",
+        icon: Droplets,
+      },
+      {
+        title: "Animal Bedding",
+        description: "Natural coir material for applicable animal bedding uses.",
+        image: industryAnimalBedding,
+        alt: "Brown horse standing in a wooden stable with coir bedding",
+        icon: Leaf,
+      },
     ],
+  },
+  {
+    slug: "coco-coir-grow-bags",
+    name: "Coco Coir Grow Bags",
+    category: "Grow Bags & Loose Fill",
+    image: productGrowbag,
+    short:
+      "1 Gallon Coco Coir Grow Bags are manufactured from premium natural coco coir, creating an excellent growing medium for propagation and professional horticulture.",
+    format: "Open-top grow bags",
+    application: "Greenhouse cultivation, hydroponics and nursery production",
+    overview: "",
+    benefits: [
+      "Premium Quality Substrate",
+      "High Volume Expansion",
+      "Compressed for Easy Handling",
+      "Low EC/Stable pH",
+      "Double Washed",
+      "Biodegradable",
+    ],
+    specs: [
+      { label: "Material composition", value: "100% COCO COIR" },
+      { label: "Material type", value: "Double Washed to Remove Salts" },
+      { label: "Moisture content", value: "Less than 15%" },
+      { label: "pH value", value: "5.2 to 6.8" },
+      { label: "Electrical conductivity", value: "Less than 0.5 mS/cm" },
+      { label: "Test method", value: "1 : 1.5 Wet Extraction Method" },
+      { label: "Grow bag type", value: "Open Top Grow bag" },
+    ],
+    applications: [
+      "Tomato cultivation",
+      "Bell pepper cultivation",
+      "Cucumber cultivation",
+      "Blueberries and soft fruits",
+      "Greenhouse vegetables",
+      "Hydroponic cultivation",
+      "Drip irrigation systems",
+      "Soilless growing systems",
+      "Nursery production",
+      "Professional horticulture",
+    ],
+    variantOptions: [
+      { slug: "half-gallon", label: "Half Gallon" },
+      { slug: "1-gallon", label: "1 Gallon" },
+      { slug: "1-2-gallon", label: "1.2 Gallon" },
+      { slug: "1-7-gallon", label: "1.7 Gallon" },
+      { slug: "2-gallon", label: "2 Gallon" },
+      { slug: "3-gallon", label: "3 Gallon" },
+    ],
+    imageTodo: "Coco Coir Grow Bags product photography",
+  },
+  {
+    slug: "loose-fill-bags",
+    name: "50L Loose Fill Bags",
+    category: "Grow Bags & Loose Fill",
+    image: productGarden,
+    short:
+      "Made from 100% natural coco coir, this loose-fill growing medium supports healthy root development and plant growth.",
+    format: "50 litre loose-fill bags",
+    application: "Greenhouse cultivation, nurseries and container gardening",
+    overview: "",
+    benefits: [
+      "Premium Quality Substrate",
+      "High Volume Expansion",
+      "Compressed for Easy Handling",
+      "Low EC/Stable pH",
+      "Double Washed",
+      "Biodegradable",
+    ],
+    specs: [
+      { label: "Material grade", value: "Triple Washed to Remove Salts" },
+      { label: "Outer bag", value: "PP Bag" },
+      { label: "Bag capacity", value: "50 Liters" },
+      { label: "Moisture content", value: "70%" },
+      { label: "pH value", value: "5.5 to 6.8" },
+      { label: "Electrical conductivity", value: "Less than 0.5 mS/cm" },
+      { label: "Test method", value: "1: 1.5 Wet Extraction Method" },
+      { label: "No. per pallet", value: "90 Bags" },
+      { label: "No. per 40ft HC container", value: "1900 Bags" },
+    ],
+    applications: [
+      "Greenhouse cultivation",
+      "Nursery production",
+      "Container gardening",
+      "Professional horticulture",
+    ],
+    variantOptions: [
+      { slug: "100-coco-coir", label: "100% Coco Coir" },
+      { slug: "70-coco-coir-30-perlite", label: "70% Coco Coir / 30% Perlite" },
+      { slug: "70-coco-coir-30-husk-chips", label: "70% Coco Coir / 30% Husk Chips" },
+    ],
+    imageTodo: "50L Loose Fill Bags product photography",
   },
 ];
 
@@ -318,7 +481,14 @@ export const industrySolutions: IndustrySolution[] = products
   )
   .sort((a, b) => industrySolutionOrder.indexOf(a.title) - industrySolutionOrder.indexOf(b.title));
 
-export const productFilters = ["All", ...products.map((product) => product.name)];
+export const productFilterGroups = [
+  {
+    label: "Growing Media",
+    productSlugs: ["coco-peat-blocks", "coco-peat-650g-bricks", "coco-husk-chips"],
+  },
+  { label: "Grow Bags & Loose Fill", productSlugs: ["coco-coir-grow-bags", "loose-fill-bags"] },
+  { label: "Coir Products", productSlugs: ["coir-matting"] },
+];
 
 export const transformationStages = [
   {

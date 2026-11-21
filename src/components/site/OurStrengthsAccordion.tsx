@@ -6,27 +6,50 @@ const strengthsData = [
     title: "Process-Driven Production",
     text: "Structured production processes and defined quality controls help us maintain consistency across every batch and shipment.",
     ArtSvg: () => (
-      <svg className="art" viewBox="0 0 400 400" fill="none" stroke="#00362F" strokeWidth="3" aria-hidden="true">
-        <circle cx="200" cy="200" r="180" opacity=".18" strokeDasharray="3 12" strokeLinecap="round" />
+      <svg
+        className="art"
+        viewBox="0 0 400 400"
+        fill="none"
+        stroke="var(--brand-deep)"
+        strokeWidth="3"
+        aria-hidden="true"
+      >
+        <circle
+          cx="200"
+          cy="200"
+          r="180"
+          opacity=".18"
+          strokeDasharray="3 12"
+          strokeLinecap="round"
+        />
         <circle cx="200" cy="200" r="130" opacity=".25" />
         <circle cx="200" cy="200" r="80" opacity=".35" />
-        <circle cx="200" cy="200" r="34" fill="#00362F" stroke="none" opacity=".85" />
-        <circle cx="200" cy="20" r="12" fill="#00362F" stroke="none" />
-        <circle cx="330" cy="330" r="9" fill="#00362F" stroke="none" opacity=".6" />
+        <circle cx="200" cy="200" r="34" fill="var(--brand-deep)" stroke="none" opacity=".85" />
+        <circle cx="200" cy="20" r="12" fill="var(--brand-deep)" stroke="none" />
+        <circle cx="330" cy="330" r="9" fill="var(--brand-deep)" stroke="none" opacity=".6" />
       </svg>
     ),
   },
   {
     num: "02",
     title: "Transparent Product Specifications",
-    text: "Clear specifications, measurable parameters, and transparent documentation give customers a clear understanding of what they are purchasing.",
+    text: "Clear specifications, measurable parameters, and transparent communication give customers a clear understanding of what they are purchasing.",
     ArtSvg: () => (
-      <svg className="art" viewBox="0 0 400 400" fill="#00362F" aria-hidden="true">
+      <svg className="art" viewBox="0 0 400 400" fill="var(--brand-deep)" aria-hidden="true">
         <rect x="40" y="70" width="320" height="22" rx="11" opacity=".9" />
         <rect x="40" y="120" width="250" height="22" rx="11" opacity=".6" />
         <rect x="40" y="170" width="290" height="22" rx="11" opacity=".4" />
         <rect x="40" y="220" width="190" height="22" rx="11" opacity=".25" />
-        <line x1="40" y1="290" x2="360" y2="290" stroke="#00362F" strokeWidth="16" strokeDasharray="3 17" opacity=".4" />
+        <line
+          x1="40"
+          y1="290"
+          x2="360"
+          y2="290"
+          stroke="var(--brand-deep)"
+          strokeWidth="16"
+          strokeDasharray="3 17"
+          opacity=".4"
+        />
       </svg>
     ),
   },
@@ -35,36 +58,69 @@ const strengthsData = [
     title: "Consistent Export-Grade Quality",
     text: "Rigorous quality checks at every stage help ensure that our coco substrate products consistently meet agreed specifications and customer requirements.",
     ArtSvg: () => (
-      <svg className="art" viewBox="0 0 400 400" fill="none" stroke="#00362F" strokeWidth="3" aria-hidden="true">
-        <circle cx="200" cy="200" r="170" strokeDasharray="3 11" strokeLinecap="round" opacity=".35" />
+      <svg
+        className="art"
+        viewBox="0 0 400 400"
+        fill="none"
+        stroke="var(--brand-deep)"
+        strokeWidth="3"
+        aria-hidden="true"
+      >
+        <circle
+          cx="200"
+          cy="200"
+          r="170"
+          strokeDasharray="3 11"
+          strokeLinecap="round"
+          opacity=".35"
+        />
         <circle cx="200" cy="200" r="125" opacity=".4" />
-        <path d="M130 205l50 50 95-110" strokeWidth="22" strokeLinecap="round" strokeLinejoin="round" opacity=".9" />
+        <path
+          d="M130 205l50 50 95-110"
+          strokeWidth="22"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          opacity=".9"
+        />
       </svg>
     ),
   },
   {
     num: "04",
     title: "Long-Term B2B Partnerships",
-    text: "We focus on building lasting business relationships that rely on clear communication, reliable execution, and a clear understanding of each customer's requirements.",
+    text: "We focus on building lasting business relationships through responsive communication, reliable execution, and a clear understanding of our customers' requirements.",
     ArtSvg: () => (
-      <svg className="art" viewBox="0 0 400 400" fill="none" stroke="#00362F" strokeWidth="4" aria-hidden="true">
+      <svg
+        className="art"
+        viewBox="0 0 400 400"
+        fill="none"
+        stroke="var(--brand-deep)"
+        strokeWidth="4"
+        aria-hidden="true"
+      >
         <circle cx="140" cy="200" r="100" opacity=".9" />
-        <circle cx="260" cy="200" r="100" fill="#00362F" fillOpacity=".15" />
-        <circle cx="200" cy="200" r="30" fill="#00362F" stroke="none" />
+        <circle cx="260" cy="200" r="100" fill="var(--brand-deep)" fillOpacity=".15" />
+        <circle cx="200" cy="200" r="30" fill="var(--brand-deep)" stroke="none" />
       </svg>
     ),
   },
 ];
 
-export function OurStrengthsAccordion() {
+export function OurStrengthsAccordion({ label = "Our Strengths" }: { label?: string } = {}) {
   const [activeIdx, setActiveIdx] = useState(0);
 
   return (
-    <section className="strengths-section-root bg-surface-teal-dark text-[#F5F2EA] font-sans leading-[1.6]">
+    <section className="strengths-section-root bg-surface-teal-dark font-sans leading-[1.6] text-pure-white">
       <style>{`
         .strengths-wrap {
           width: 100%;
-          padding: clamp(32px,4vw,56px) clamp(20px,4vw,40px);
+          padding-block: var(--section-space-mobile);
+        }
+
+        @media (min-width:1024px) {
+          .strengths-wrap {
+            padding-block: var(--section-space);
+          }
         }
 
         .strengths-head {
@@ -72,38 +128,38 @@ export function OurStrengthsAccordion() {
           flex-direction: column;
           align-items: flex-start;
           gap: 16px;
-          margin-bottom: clamp(28px,4vw,48px);
+          margin-bottom: var(--heading-content-gap);
         }
 
         .strengths-eyebrow {
           display: flex;
           align-items: center;
           gap: 12px;
-          font-size: .75rem;
+          font-size: var(--text-label);
           font-weight: 600;
-          letter-spacing: .22em;
+          letter-spacing: var(--letter-label);
           text-transform: uppercase;
-          color: #7FE0CB;
+          color: var(--accent-green);
           margin: 0;
         }
 
         .strengths-eyebrow i {
           width: 44px;
           height: 2px;
-          background: #7FE0CB;
+          background: var(--accent-green);
           transform-origin: left;
-          animation: grow .9s .1s both cubic-bezier(.2,.8,.2,1);
+          animation: grow .25s .1s both ease;
         }
 
         .strengths-head h2 {
           font-family: var(--font-display);
           font-weight: 400;
           margin: 0;
-          font-size: clamp(1.8rem,3.8vw,3.6rem);
-          line-height: .98;
-          letter-spacing: -.02em;
-          color: #F5F2EA !important;
-          white-space: nowrap;
+          font-size: var(--text-h2);
+          line-height: var(--line-heading);
+          letter-spacing: var(--letter-heading);
+          color: var(--pure-white) !important;
+          text-wrap: balance;
         }
 
         .strengths-head h2 span {
@@ -115,15 +171,7 @@ export function OurStrengthsAccordion() {
         .strengths-head h2 b {
           display: block;
           font-weight: inherit;
-          animation: rise .9s both cubic-bezier(.2,.8,.2,1);
-        }
-
-        .strengths-intro {
-          margin: 4px 0 0;
-          color: #BFE0D8;
-          font-size: 1.05rem;
-          padding-left: 18px;
-          border-left: 3px solid #7FE0CB;
+          animation: rise .25s both ease;
         }
 
         @keyframes rise { from { transform: translateY(105%); } }
@@ -140,29 +188,24 @@ export function OurStrengthsAccordion() {
           flex: 1 1 0;
           min-width: 0;
           overflow: hidden;
-          border-radius: 28px;
+          border-radius: var(--radius-card);
           cursor: pointer;
-          color: #F5F2EA;
-          background: var(--bg-c);
-          transition: flex-grow .8s cubic-bezier(.2,.8,.2,1), background-color .6s, color .6s;
+          color: var(--pure-white);
+          background: var(--brand-deep);
+          transition: flex-grow .25s ease, background-color .25s ease, color .25s ease;
           outline-offset: 3px;
         }
 
-        .strengths-panel:nth-child(1) { --bg-c: #00514A; }
-        .strengths-panel:nth-child(2) { --bg-c: #004A43; }
-        .strengths-panel:nth-child(3) { --bg-c: #00433D; }
-        .strengths-panel:nth-child(4) { --bg-c: #003C37; }
-
-        .strengths-panel:hover:not(.on) { background: #0A6158; }
+        .strengths-panel:hover:not(.on) { background: var(--brand); }
 
         .strengths-panel.on {
           flex-grow: 7;
-          background: #7FE0CB;
-          color: #00362F;
+          background: var(--brand-soft);
+          color: var(--brand-deep);
           cursor: default;
         }
 
-        .strengths-panel:focus-visible { outline: 3px solid #F5F2EA; }
+        .strengths-panel:focus-visible { outline: 2px solid var(--pure-white); }
 
         .strengths-panel .n {
           position: absolute;
@@ -176,13 +219,13 @@ export function OurStrengthsAccordion() {
           font-size: .8rem;
           font-weight: 600;
           letter-spacing: .2em;
-          transition: opacity .3s;
+          transition: opacity .25s ease;
         }
 
         .strengths-panel .n i {
           width: 2px;
           height: 34px;
-          background: #7FE0CB;
+          background: var(--accent-green);
         }
 
         .strengths-panel .vt {
@@ -192,7 +235,7 @@ export function OurStrengthsAccordion() {
           width: 100%;
           display: flex;
           justify-content: center;
-          transition: opacity .3s;
+          transition: opacity .25s ease;
         }
 
         .strengths-panel .vt span {
@@ -216,7 +259,7 @@ export function OurStrengthsAccordion() {
           width: min(460px,70%);
           opacity: 0;
           transform: scale(.85) rotate(-8deg);
-          transition: opacity .6s .15s, transform .9s .1s cubic-bezier(.2,.8,.2,1);
+          transition: opacity .25s .1s ease, transform .25s .1s ease;
           pointer-events: none;
         }
 
@@ -232,9 +275,9 @@ export function OurStrengthsAccordion() {
           font-family: var(--font-display);
           font-size: clamp(7rem,15vw,12rem);
           line-height: 1;
-          color: #00362F;
+          color: var(--brand-deep);
           opacity: 0;
-          transition: opacity .5s .2s;
+          transition: opacity .25s .1s ease;
           letter-spacing: -.04em;
         }
 
@@ -248,30 +291,30 @@ export function OurStrengthsAccordion() {
           padding: 0 clamp(24px,3vw,40px) clamp(26px,3vw,40px);
           opacity: 0;
           transform: translateY(24px);
-          transition: opacity .35s, transform .35s;
+          transition: opacity .25s ease, transform .25s ease;
         }
 
         .strengths-panel.on .content {
           opacity: 1;
           transform: none;
-          transition: opacity .6s .3s, transform .7s .3s cubic-bezier(.2,.8,.2,1);
+          transition: opacity .25s .1s ease, transform .25s .1s ease;
         }
 
         .strengths-panel .content h3 {
           font-family: var(--font-display);
           font-weight: 400;
-          font-size: clamp(1.8rem,3.6vw,3rem);
-          line-height: 1.02;
-          margin: 0 0 14px;
+          font-size: var(--text-h3);
+          line-height: var(--line-heading);
+          margin: 0 0 var(--space-4);
           letter-spacing: -.01em;
-          color: #00362F !important;
+          color: var(--brand-deep) !important;
         }
 
         .strengths-panel .content p {
           margin: 0;
           font-size: 1rem;
           font-weight: 500;
-          color: #00362F;
+          color: var(--brand-deep);
         }
 
         .strengths-panel .bar {
@@ -279,14 +322,13 @@ export function OurStrengthsAccordion() {
           width: 56px;
           height: 5px;
           border-radius: 3px;
-          background: #00362F;
-          margin-bottom: 20px;
+          background: var(--brand-deep);
+          margin-bottom: var(--space-6);
         }
 
         @media (max-width:900px){
-          .strengths-head h2 { white-space: normal; }
           .strengths-rail { flex-direction: column; height: auto; }
-          .strengths-panel { flex: none; height: 76px; transition: height .7s cubic-bezier(.2,.8,.2,1), background-color .6s, color .6s; border-radius: 24px; }
+          .strengths-panel { flex: none; height: 76px; transition: height .25s ease, background-color .25s ease, color .25s ease; border-radius: var(--radius-card); }
           .strengths-panel.on { height: 400px; }
           .strengths-panel .n { top: 0; left: 22px; width: auto; height: 76px; flex-direction: row; align-items: center; }
           .strengths-panel .n i { width: 30px; height: 2px; }
@@ -304,15 +346,17 @@ export function OurStrengthsAccordion() {
         }
       `}</style>
 
-      <div className="strengths-wrap" aria-labelledby="t-strengths">
+      <div className="container strengths-wrap" aria-labelledby="t-strengths">
         <div className="strengths-head">
-          <p className="strengths-eyebrow"><i />Our Strengths</p>
-          <h2 id="t-strengths">
-            <span><b>Built on process. Driven by quality.</b></span>
-          </h2>
-          <p className="strengths-intro">
-            Clear systems turn specialised knowledge into dependable results. Every step is designed around specification, consistency, and lasting customer confidence.
+          <p className="strengths-eyebrow">
+            <i />
+            {label}
           </p>
+          <h2 id="t-strengths">
+            <span>
+              <b>Built on Process. Driven by Quality.</b>
+            </span>
+          </h2>
         </div>
 
         <div className="strengths-rail">

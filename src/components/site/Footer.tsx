@@ -3,6 +3,7 @@ import { Globe2, Leaf, Mail, MapPin, MessageCircle, Phone, Sprout, Trees } from 
 import logo from "@/assets/logo.svg";
 import plantation from "@/assets/stage-husk.jpg";
 import { navItems, products } from "@/lib/site-data";
+import { ContentTodo } from "./primitives";
 
 const socialLinks = [
   { label: "LinkedIn", href: "https://www.linkedin.com/company/arjunaexports" },
@@ -12,9 +13,13 @@ const socialLinks = [
 
 const footerValues = [
   { title: "Renewable Resource", description: "Giving value to nature’s by-product", icon: Leaf },
-  { title: "Sustainable Solutions", description: "Supporting nature conservation", icon: Sprout },
+  { title: "Sustainable Solutions", description: "Supporting greener cultivation", icon: Sprout },
   { title: "Global Impact", description: "Serving growers worldwide", icon: Globe2 },
-  { title: "Long-Term Partnerships", description: "Growing together for a better tomorrow", icon: Trees },
+  {
+    title: "Long-Term Partnerships",
+    description: "Growing together for a better tomorrow",
+    icon: Trees,
+  },
 ];
 
 function SocialIcon({ label }: { label: string }) {
@@ -30,7 +35,16 @@ function SocialIcon({ label }: { label: string }) {
             </linearGradient>
           </defs>
           <circle cx="12" cy="12" r="12" fill="url(#footer-instagram-gradient)" />
-          <rect x="5.5" y="5.5" width="13" height="13" rx="3.5" fill="none" stroke="white" strokeWidth="1.8" />
+          <rect
+            x="5.5"
+            y="5.5"
+            width="13"
+            height="13"
+            rx="3.5"
+            fill="none"
+            stroke="white"
+            strokeWidth="1.8"
+          />
           <circle cx="12" cy="12" r="3.2" fill="none" stroke="white" strokeWidth="1.8" />
           <circle cx="16.3" cy="7.9" r="1" fill="white" />
         </>
@@ -55,7 +69,11 @@ function SocialIcon({ label }: { label: string }) {
       {label === "Facebook" && (
         <>
           <circle cx="12" cy="12" r="12" fill="#0866FF" />
-          <path d="M13.7 24V13.1h3.6l.55-4.25H13.7V6.14c0-1.23.34-2.07 2.1-2.07H18V.27C17.62.22 16.3.1 14.76.1c-3.2 0-5.4 1.95-5.4 5.54v3.21H5.74v4.25h3.62V24h4.34Z" fill="white" transform="translate(1.8 0) scale(.84)" />
+          <path
+            d="M13.7 24V13.1h3.6l.55-4.25H13.7V6.14c0-1.23.34-2.07 2.1-2.07H18V.27C17.62.22 16.3.1 14.76.1c-3.2 0-5.4 1.95-5.4 5.54v3.21H5.74v4.25h3.62V24h4.34Z"
+            fill="white"
+            transform="translate(1.8 0) scale(.84)"
+          />
         </>
       )}
     </svg>
@@ -99,7 +117,10 @@ export function Footer() {
               <img src={logo} alt="Arjuna Exports" className="footer-logo" />
             </Link>
             <p className="footer-description">
-              We supply premium coconut-based growing media to professional growers across global markets. Founded in 2019 and based in Tamil Nadu, India, Arjuna Exports is committed to consistent quality, transparent communication, reliable execution, and building long-term partnerships with customers worldwide.
+              We supply premium coconut-based growing media to professional growers across global
+              markets. Founded in 2019 and based in Tamil Nadu, India, Arjuna Exports is committed
+              to consistent quality, transparent communication, reliable execution, and building
+              long-term partnerships with customers worldwide.
             </p>
             <nav className="footer-socials" aria-label="Arjuna Exports social media">
               {socialLinks.map(({ label, href }) => (
@@ -112,6 +133,7 @@ export function Footer() {
                   className="footer-social-link"
                 >
                   <SocialIcon label={label} />
+                  <span>{label}</span>
                 </a>
               ))}
             </nav>
@@ -159,10 +181,13 @@ export function Footer() {
                   <span>Kumaramangalam Post,</span>
                   <span>Tiruchengode Taluk,</span>
                   <span>Namakkal District,</span>
-                  <span>Tamil Nadu – 637205,</span>
+                  <span>Tamil Nadu – 637205, India</span>
                 </div>
               </div>
-              <a href="mailto:info@arjunaexports.com" className="footer-contact-item footer-contact-link">
+              <a
+                href="mailto:info@arjunaexports.com"
+                className="footer-contact-item footer-contact-link"
+              >
                 <Mail aria-hidden="true" className="footer-contact-icon" />
                 <span>info@arjunaexports.com</span>
               </a>
@@ -174,7 +199,12 @@ export function Footer() {
                 <Phone aria-hidden="true" className="footer-contact-icon" />
                 <span>+91 4288 250125</span>
               </a>
-              <a href="https://wa.me/919629874555" target="_blank" rel="noopener noreferrer" className="footer-contact-item footer-contact-link">
+              <a
+                href="https://wa.me/919629874555"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-contact-item footer-contact-link"
+              >
                 <MessageCircle aria-hidden="true" className="footer-contact-icon" />
                 <span>WhatsApp</span>
               </a>
@@ -184,19 +214,28 @@ export function Footer() {
 
         <div className="footer-legal">
           <div className="footer-legal-copy">
-            <span>© {new Date().getFullYear()} Arjuna Exports. All rights reserved.</span>
+            <span>© 2026 Arjuna Exports. All rights reserved.</span>
             <span className="footer-credit">
               Crafted by{" "}
-              <a href="https://www.devstudioco.com" target="_blank" rel="noopener" className="footer-credit-link">
+              <a
+                href="https://www.devstudioco.com"
+                target="_blank"
+                rel="noopener"
+                className="footer-credit-link"
+              >
                 The Development Studio
               </a>
             </span>
           </div>
           <div className="footer-legal-links">
-            <Link to="/privacy-policy" className="footer-policy-link">Privacy Policy</Link>
+            <Link to="/privacy-policy" className="footer-policy-link">
+              Privacy Policy
+            </Link>
+            <span className="footer-region">Location: India</span>
           </div>
         </div>
       </div>
+      <ContentTodo request="Supply Terms of Use text before publishing a Terms of Use page." />
     </footer>
   );
 }

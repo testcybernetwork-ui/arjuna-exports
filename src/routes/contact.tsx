@@ -7,12 +7,13 @@ import {
   Loader2,
   Mail,
   MapPin,
+  MessageCircle,
   Orbit,
   Phone,
   ShoppingCart,
   Sparkles,
 } from "lucide-react";
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { img, products } from "@/lib/site-data";
 import { PageHero, pageMeta } from "@/components/site/PageHero";
 import { ContentTodo, Label, PrimaryButton, Reveal } from "@/components/site/primitives";
@@ -29,6 +30,7 @@ export const Route = createFileRoute("/contact")({
     ),
   validateSearch: (search: Record<string, unknown>) => ({
     product: typeof search["product"] === "string" ? search["product"] : undefined,
+    variant: typeof search["variant"] === "string" ? search["variant"] : undefined,
     request: search["request"] === "sample" ? "sample" : "quote",
   }),
   component: Contact,
@@ -44,6 +46,14 @@ const contactCards = [
     isEmail: true,
   },
   {
+    key: "landline",
+    label: "Landline",
+    value: "+91 4288 250125",
+    href: "tel:+914288250125",
+    icon: DeskPhoneIcon,
+    isEmail: false,
+  },
+  {
     key: "mobile",
     label: "Mobile / WhatsApp",
     value: "+91 96298 74555",
@@ -52,11 +62,10 @@ const contactCards = [
     isEmail: false,
   },
   {
-    key: "landline",
-    label: "Landline",
-    value: "+91 4288 250125",
-    href: "tel:+914288250125",
-    icon: DeskPhoneIcon,
+    key: "response",
+    label: "Response time",
+    value: "We'll respond within 24 hours.",
+    icon: MessageCircle,
     isEmail: false,
   },
 ];
@@ -75,7 +84,7 @@ const responseSteps = [
   {
     icon: CheckCircle2,
     title: "Quote follow-up",
-    text: "You receive the next steps or a clear quotation.",
+    text: "You receive the next steps or a clear quotation after our review.",
   },
 ];
 
@@ -130,6 +139,9 @@ const inputClass =
 function Contact() {
   const search = Route.useSearch();
   const initialProduct = products.find((product) => product.slug === search.product);
+  const initialVariant = initialProduct?.variantOptions?.find(
+    (variant) => variant.slug === search.variant,
+  );
   const requestPurpose = search.request === "sample" ? "sample" : "quote";
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
@@ -139,10 +151,19 @@ function Contact() {
     initialProduct ? "product" : "partnership",
   );
   const [selectedProduct, setSelectedProduct] = useState(initialProduct?.slug ?? "");
+  const [selectedVariant, setSelectedVariant] = useState(initialVariant?.label ?? "");
   const [generalRole, setGeneralRole] = useState("Vendor");
   const [productCategory, setProductCategory] = useState("Bulk Purchase (FCL)");
   const [marketSegment, setMarketSegment] = useState("Professional Greenhouse Grower");
   const [partnershipRole, setPartnershipRole] = useState("Business Owner/Partner/CEO");
+
+  useEffect(() => {
+    const product = products.find((item) => item.slug === search.product);
+    const variant = product?.variantOptions?.find((item) => item.slug === search.variant);
+    setSelectedProduct(product?.slug ?? "");
+    setSelectedVariant(variant?.label ?? "");
+    setEnquiryType(product ? "product" : "partnership");
+  }, [search.product, search.variant]);
 
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -206,6 +227,7 @@ function Contact() {
       // Product fields
       currentCustomer: (formData.get("currentCustomer") as string) || undefined,
       product: (formData.get("product") as string) || undefined,
+      variant: (formData.get("variant") as string) || undefined,
       productCategory: (formData.get("productCategory") as string) || undefined,
       productCategoryOther: (formData.get("productCategoryOther") as string) || undefined,
       requiredDocuments: (formData.get("requiredDocuments") as string) || undefined,
@@ -235,7 +257,11 @@ function Contact() {
     const err = fieldErrors[fieldName];
     if (!err) return null;
     return (
-      <span id={`contact-${fieldName}-error`} className="mt-1 block text-sm text-red-700" role="alert">
+      <span
+        id={`contact-${fieldName}-error`}
+        className="mt-1 block text-sm text-red-700"
+        role="alert"
+      >
         {err}
       </span>
     );
@@ -247,14 +273,14 @@ function Contact() {
         eyebrow="Contact"
         title={
           <span className="block">
-            <span className="block">Share Your Requirement…</span>
+            <span className="block">Share Your Requirement…</span>{" "}
             <span className="block">We'll Take It From There!</span>
           </span>
         }
         titleClassName="contact-hero-title max-w-none pb-1 text-body-text"
-        introClassName="contact-hero-intro"
+        introClassName="contact-hero-intro text-heading"
         gridClassName="lg:grid-cols-[1.45fr_.55fr] xl:grid-cols-[1.5fr_.5fr]"
-        intro="Tell us what you need to source, where it needs to go and in what volume. We'll evaluate your requirements and guide you through product specification, packaging and shipment planning."
+        intro="Tell us what you need to source, where it needs to go and in what volume. We'll evaluate your requirements and guide you through product specification, packaging and shipment planning. The more details you share, the better we can recommend the right product, specification and export solution."
         image={img.exportPort}
       />
 
@@ -265,33 +291,51 @@ function Contact() {
               <div className="grid auto-rows-fr gap-6 md:grid-cols-2">
                 {contactCards.map((card) => (
                   <Reveal key={card.key} className="h-full">
-                    <a
-                      href={card.href}
-                      aria-label={`${card.label}: ${card.value}`}
-                      className="contact-card group flex h-full min-h-[140px] overflow-hidden transition-transform hover:-translate-y-1"
-                    >
-                      <span className="flex w-24 shrink-0 items-center justify-center bg-brand sm:w-28 lg:w-24 xl:w-28">
-                        <card.icon
-                          className="h-10 w-10 text-pure-white sm:h-12 sm:w-12"
-                          strokeWidth={1.7}
-                          aria-hidden
-                        />
-                      </span>
-                      <span className="flex min-w-0 flex-1 items-center justify-center px-3.5 py-5 text-center sm:px-4 sm:py-6 lg:px-3 xl:px-5">
-                        <span
-                          className={`min-w-0 font-semibold leading-tight text-body-text ${
-                            card.isEmail ? "whitespace-nowrap text-sm" : "whitespace-nowrap text-base"
-                          }`}
-                        >
-                          {card.value}
+                    {card.href ? (
+                      <a
+                        href={card.href}
+                        aria-label={`${card.label}: ${card.value}`}
+                        className="contact-card group flex h-full min-h-[140px] overflow-hidden transition-transform hover:-translate-y-1"
+                      >
+                        <span className="flex w-24 shrink-0 items-center justify-center bg-brand sm:w-28 lg:w-24 xl:w-28">
+                          <card.icon
+                            className="h-10 w-10 text-pure-white sm:h-12 sm:w-12"
+                            strokeWidth={1.7}
+                            aria-hidden
+                          />
                         </span>
-                      </span>
-                    </a>
+                        <span className="flex min-w-0 flex-1 items-center justify-center px-3.5 py-5 text-center sm:px-4 sm:py-6 lg:px-3 xl:px-5">
+                          <span
+                            className={`min-w-0 font-semibold leading-tight text-body-text ${
+                              card.isEmail
+                                ? "whitespace-nowrap text-sm"
+                                : "whitespace-nowrap text-base"
+                            }`}
+                          >
+                            {card.value}
+                          </span>
+                        </span>
+                      </a>
+                    ) : (
+                      <div className="contact-card flex h-full min-h-[140px] overflow-hidden">
+                        <span className="flex w-24 shrink-0 items-center justify-center bg-brand sm:w-28 lg:w-24 xl:w-28">
+                          <card.icon
+                            className="h-10 w-10 text-pure-white sm:h-12 sm:w-12"
+                            strokeWidth={1.7}
+                            aria-hidden
+                          />
+                        </span>
+                        <span className="flex min-w-0 flex-1 items-center justify-center px-3.5 py-5 text-center sm:px-4 sm:py-6 lg:px-3 xl:px-5">
+                          <span className="min-w-0 text-sm font-semibold leading-tight text-body-text">
+                            {card.value}
+                          </span>
+                        </span>
+                      </div>
+                    )}
                   </Reveal>
                 ))}
               </div>
-              <p className="contact-response-note mt-5">We&apos;ll respond within 24 hours.</p>
-              <p className="mt-1 text-sm leading-body text-text-muted">
+              <p className="mt-5 text-sm leading-body text-text-muted">
                 India Standard Time (IST, UTC+5:30).
               </p>
               <ContentTodo request="Confirm and publish the business hours." />
@@ -307,9 +351,7 @@ function Contact() {
                   />
                 </span>
                 <span className="flex min-w-0 flex-1 items-center justify-center px-4 py-6 sm:px-6 xl:px-8">
-                  <div
-                    className="flex min-w-0 flex-col justify-center text-left text-sm font-semibold leading-body tracking-normal text-body-text"
-                  >
+                  <div className="flex min-w-0 flex-col justify-center text-left text-sm font-semibold leading-body tracking-normal text-body-text">
                     <span>1/140-12, GM Complex,</span>
                     <span>Opposite TMB Bank,</span>
                     <span>Kumaramangalam Post,</span>
@@ -337,12 +379,17 @@ function Contact() {
           <Reveal className="lg:order-2">
             <form
               id="contact-form"
+              method="post"
               onSubmit={submit}
               noValidate
               className="contact-form rounded-md border bg-pure-white p-5 sm:p-8 lg:p-10"
             >
               {sent ? (
-                <div className="grid min-h-[480px] place-items-center rounded-sm bg-brand-soft p-8 text-center" role="status" aria-live="polite">
+                <div
+                  className="grid min-h-[480px] place-items-center rounded-sm bg-brand-soft p-8 text-center"
+                  role="status"
+                  aria-live="polite"
+                >
                   <div className="max-w-lg">
                     <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand text-pure-white">
                       <CheckCircle2 className="h-8 w-8" strokeWidth={1.7} aria-hidden />
@@ -354,7 +401,15 @@ function Contact() {
                     <p className="mt-5 text-center text-charcoal/65">
                       Thanks — we&apos;ll be in touch soon.
                     </p>
-                    <PrimaryButton type="button" onClick={() => { setSent(false); setErrorMessage(null); setFieldErrors({}); }} className="mt-8">
+                    <PrimaryButton
+                      type="button"
+                      onClick={() => {
+                        setSent(false);
+                        setErrorMessage(null);
+                        setFieldErrors({});
+                      }}
+                      className="mt-8"
+                    >
                       Send another enquiry
                     </PrimaryButton>
                   </div>
@@ -388,7 +443,8 @@ function Contact() {
                             );
                             const currentIndex = tabs.indexOf(event.currentTarget);
                             const direction = event.key === "ArrowRight" ? 1 : -1;
-                            const nextTab = tabs[(currentIndex + direction + tabs.length) % tabs.length];
+                            const nextTab =
+                              tabs[(currentIndex + direction + tabs.length) % tabs.length];
                             nextTab?.focus();
                             nextTab?.click();
                           }}
@@ -404,7 +460,11 @@ function Contact() {
                                 : "bg-pure-white/10 group-hover:-translate-y-0.5"
                             }`}
                           >
-                            <Icon className="h-7 w-7 text-pure-white sm:h-8 sm:w-8" strokeWidth={1.8} aria-hidden />
+                            <Icon
+                              className="h-7 w-7 text-pure-white sm:h-8 sm:w-8"
+                              strokeWidth={1.8}
+                              aria-hidden
+                            />
                           </span>
                         </button>
                       );
@@ -418,357 +478,406 @@ function Contact() {
                     aria-labelledby={`${enquiryType}-tab`}
                     tabIndex={0}
                   >
-
-                  {/* Honeypot – hidden from real users, traps bots */}
-                  <div className="contact-honeypot" aria-hidden="true" tabIndex={-1}>
-                    <label>
-                      Don&apos;t fill this out
-                      <input type="text" name="_hp_website" tabIndex={-1} autoComplete="off" />
-                    </label>
-                  </div>
-
-                  <div className="mt-9">
-                    <Label className="text-brand">{enquiryType} enquiry</Label>
-                    <h2 className="mt-4 text-2xl leading-tight sm:text-3xl">
-                      {enquiryType === "partnership"
-                        ? "We don't just fulfil orders; we participate in every partnership."
-                        : enquiryType === "product"
-                          ? requestPurpose === "sample"
-                            ? "Product sample request"
-                            : "Product enquiry form"
-                          : "General inquiry form"}
-                    </h2>
-                    <p className="mt-3 text-sm leading-relaxed text-charcoal/58">
-                      {enquiryType === "partnership"
-                        ? "Complete the partnership form below, and our team will reach out to you."
-                        : enquiryType === "product"
-                          ? requestPurpose === "sample"
-                            ? "Tell us which product you would like to sample and where it needs to be delivered."
-                            : "Tell us which products, documents and order format you require."
-                          : "Send your comments or questions and we'll connect you with the right team."}
-                    </p>
-                  </div>
-
-                  {/* Error banner */}
-                  {errorMessage && (
-                    <div className="mt-6 rounded-sm border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
-                      {errorMessage}
-                    </div>
-                  )}
-
-                  <div className="mt-6 grid gap-x-5 gap-y-6 sm:grid-cols-2">
-                    {commonFields.map((f) => (
-                      <label key={f.name} className="block">
-                        <span className="micro-label text-brand">
-                          {f.label}
-                          {f.required ? " *" : " (optional)"}
-                        </span>
-                        <input
-                          id={`contact-${f.name}`}
-                          name={f.name}
-                          required={f.required}
-                          type={f.type ?? "text"}
-                          placeholder={f.label}
-                          autoComplete={f.autoComplete}
-                          list={f.name === "country" ? "contact-country-options" : undefined}
-                          aria-invalid={Boolean(fieldErrors[f.name])}
-                          aria-describedby={
-                            fieldErrors[f.name] ? `contact-${f.name}-error` : undefined
-                          }
-                          className={`${inputClass} ${fieldErrors[f.name] ? "!border-red-400" : ""}`}
-                        />
-                        {f.name === "country" && (
-                          <datalist id="contact-country-options">
-                            {countries.map((country) => (
-                              <option key={country} value={country} />
-                            ))}
-                          </datalist>
-                        )}
-                        {fieldErrorEl(f.name)}
-                      </label>
-                    ))}
-                  </div>
-
-                  {enquiryType === "partnership" && (
-                    <div className="mt-6 grid gap-6 sm:grid-cols-2">
-                      <label className="block">
-                        <span className="micro-label text-brand">Market segment *</span>
-                        <select
-                          id="contact-marketSegment"
-                          name="marketSegment"
-                          className={inputClass}
-                          required
-                          value={marketSegment}
-                          aria-invalid={Boolean(fieldErrors["marketSegment"])}
-                          aria-describedby={
-                            fieldErrors["marketSegment"] ? "contact-marketSegment-error" : undefined
-                          }
-                          onChange={(event) => setMarketSegment(event.target.value)}
-                        >
-                          {marketSegmentOptions.map((option) => (
-                            <option key={option}>{option}</option>
-                          ))}
-                        </select>
-                        {fieldErrorEl("marketSegment")}
-                      </label>
-                      {marketSegment === "Others" && (
-                        <label className="block">
-                          <span className="micro-label text-brand">Others (Please Specify) *</span>
-                          <input
-                            id="contact-marketSegmentOther"
-                            name="marketSegmentOther"
-                            required
-                            className={inputClass}
-                            aria-invalid={Boolean(fieldErrors["marketSegmentOther"])}
-                            aria-describedby={
-                              fieldErrors["marketSegmentOther"]
-                                ? "contact-marketSegmentOther-error"
-                                : undefined
-                            }
-                          />
-                          {fieldErrorEl("marketSegmentOther")}
-                        </label>
-                      )}
-                      <label className="block">
-                        <span className="micro-label text-brand">Best describes me (optional)</span>
-                        <select
-                          name="partnershipRole"
-                          className={inputClass}
-                          value={partnershipRole}
-                          onChange={(event) => setPartnershipRole(event.target.value)}
-                        >
-                          {partnershipRoleOptions.map((option) => (
-                            <option key={option}>{option}</option>
-                          ))}
-                        </select>
-                      </label>
-                      {partnershipRole === "Others" && (
-                        <label className="block">
-                          <span className="micro-label text-brand">Others (Please Specify) *</span>
-                          <input
-                            id="contact-partnershipRoleOther"
-                            name="partnershipRoleOther"
-                            required
-                            className={inputClass}
-                            aria-invalid={Boolean(fieldErrors["partnershipRoleOther"])}
-                            aria-describedby={
-                              fieldErrors["partnershipRoleOther"]
-                                ? "contact-partnershipRoleOther-error"
-                                : undefined
-                            }
-                          />
-                          {fieldErrorEl("partnershipRoleOther")}
-                        </label>
-                      )}
-                      <label className="block sm:col-span-2">
-                        <span className="micro-label text-brand">
-                          Detailed requirements and inputs *
-                        </span>
-                        <textarea
-                          id="contact-partnershipRequirements"
-                          name="partnershipRequirements"
-                          required
-                          rows={5}
-                          aria-invalid={Boolean(fieldErrors["partnershipRequirements"])}
-                          aria-describedby={
-                            fieldErrors["partnershipRequirements"]
-                              ? "contact-partnershipRequirements-error"
-                              : undefined
-                          }
-                          className={`mt-2 block w-full resize-y rounded-sm border border-brand/18 bg-pure-white px-4 py-3 text-base font-medium text-brand-deep outline-none transition-colors focus:border-brand ${fieldErrors["partnershipRequirements"] ? "!border-red-400" : ""}`}
-                        />
-                        {fieldErrorEl("partnershipRequirements")}
+                    {/* Honeypot – hidden from real users, traps bots */}
+                    <div className="contact-honeypot" aria-hidden="true" tabIndex={-1}>
+                      <label>
+                        Don&apos;t fill this out
+                        <input type="text" name="_hp_website" tabIndex={-1} autoComplete="off" />
                       </label>
                     </div>
-                  )}
 
-                  {enquiryType === "product" && (
-                    <div className="mt-6 grid gap-6 sm:grid-cols-2">
-                      <fieldset className="sm:col-span-2">
-                        <legend className="micro-label text-brand">
-                          Are you a current Arjuna Exports customer? (optional)
-                        </legend>
-                        <div className="mt-3 flex gap-8 text-sm font-medium text-brand-deep">
-                          <label className="flex items-center gap-2">
-                            <input type="radio" name="currentCustomer" value="yes" defaultChecked />
-                            Yes
-                          </label>
-                          <label className="flex items-center gap-2">
-                            <input type="radio" name="currentCustomer" value="no" /> No
-                          </label>
-                        </div>
-                      </fieldset>
-                      <label className="block">
-                        <span className="micro-label text-brand">Product name *</span>
-                        <select
-                          id="contact-product"
-                          name="product"
-                          className={inputClass}
-                          value={selectedProduct}
-                          onChange={(event) => setSelectedProduct(event.target.value)}
-                          required
-                          aria-invalid={Boolean(fieldErrors["product"])}
-                          aria-describedby={
-                            fieldErrors["product"] ? "contact-product-error" : undefined
-                          }
-                        >
-                          <option value="" disabled>
-                            Select an option
-                          </option>
-                          {products.map((product) => (
-                            <option key={product.slug} value={product.slug}>
-                              {product.name}
-                            </option>
-                          ))}
-                        </select>
-                        {fieldErrorEl("product")}
-                      </label>
-                      <label className="block">
-                        <span className="micro-label text-brand">Product category (optional)</span>
-                        <select
-                          name="productCategory"
-                          className={inputClass}
-                          value={productCategory}
-                          onChange={(event) => setProductCategory(event.target.value)}
-                        >
-                          {productCategoryOptions.map((category) => (
-                            <option key={category}>{category}</option>
-                          ))}
-                        </select>
-                      </label>
-                      {productCategory === "Others" && (
-                        <label className="block">
-                          <span className="micro-label text-brand">Others (Please Specify) *</span>
-                          <input
-                            id="contact-productCategoryOther"
-                            name="productCategoryOther"
-                            required
-                            className={inputClass}
-                            aria-invalid={Boolean(fieldErrors["productCategoryOther"])}
-                            aria-describedby={
-                              fieldErrors["productCategoryOther"]
-                                ? "contact-productCategoryOther-error"
-                                : undefined
-                            }
-                          />
-                          {fieldErrorEl("productCategoryOther")}
-                        </label>
-                      )}
-                      <label className="block sm:col-span-2">
-                        <span className="micro-label text-brand">
-                          Required documents or information *
-                        </span>
-                        <textarea
-                          id="contact-requiredDocuments"
-                          name="requiredDocuments"
-                          rows={4}
-                          required
-                          aria-invalid={Boolean(fieldErrors["requiredDocuments"])}
-                          aria-describedby={
-                            fieldErrors["requiredDocuments"]
-                              ? "contact-requiredDocuments-error"
-                              : undefined
-                          }
-                          className="mt-2 block w-full resize-y rounded-sm border border-brand/18 bg-pure-white px-4 py-3 text-base font-medium text-brand-deep outline-none transition-colors focus:border-brand"
-                        />
-                        {fieldErrorEl("requiredDocuments")}
-                      </label>
-                      <label className="block sm:col-span-2">
-                        <span className="micro-label text-brand">Additional information (optional)</span>
-                        <textarea
-                          id="contact-additionalInformation"
-                          name="additionalInformation"
-                          rows={4}
-                          className="mt-2 block w-full resize-y rounded-sm border border-brand/18 bg-pure-white px-4 py-3 text-base font-medium text-brand-deep outline-none transition-colors focus:border-brand"
-                        />
-                      </label>
+                    <div className="mt-9">
+                      <Label className="text-brand">{enquiryType} enquiry</Label>
+                      <h2 className="mt-4 text-2xl leading-tight sm:text-3xl">
+                        {enquiryType === "partnership"
+                          ? "We don't just fulfil orders; we participate in every partnership."
+                          : enquiryType === "product"
+                            ? requestPurpose === "sample"
+                              ? "Product sample request"
+                              : "Product enquiry form"
+                            : "General enquiry form"}
+                      </h2>
+                      <p className="mt-3 text-sm leading-relaxed text-charcoal/58">
+                        {enquiryType === "partnership"
+                          ? "Complete the partnership form below, and our team will reach out to you."
+                          : enquiryType === "product"
+                            ? requestPurpose === "sample"
+                              ? "Tell us which product you would like to sample and where it needs to be delivered."
+                              : "Tell us which products, documents and order format you require."
+                            : "Send your comments or questions and we'll connect you with the right team."}
+                      </p>
                     </div>
-                  )}
 
-                  {enquiryType === "general" && (
-                    <div className="mt-6 grid gap-6">
-                      <label className="block sm:max-w-[calc(50%-0.625rem)]">
-                        <span className="micro-label text-brand">Best describes me (optional)</span>
-                        <select
-                          name="generalRole"
-                          className={inputClass}
-                          value={generalRole}
-                          onChange={(event) => setGeneralRole(event.target.value)}
-                        >
-                          <option>Vendor</option>
-                          <option>Current Client</option>
-                          <option>Press</option>
-                          <option>Others</option>
-                        </select>
-                      </label>
-                      {generalRole === "Others" && (
-                        <label className="block sm:max-w-[calc(50%-0.625rem)]">
-                          <span className="micro-label text-brand">Others (Please Specify) *</span>
-                          <input name="generalRoleOther" required className={inputClass} />
-                        </label>
-                      )}
-                      <label className="block">
-                        <span className="micro-label text-brand">Your comments / questions *</span>
-                        <textarea
-                          id="contact-generalComments"
-                          name="generalComments"
-                          required
-                          rows={6}
-                          aria-invalid={Boolean(fieldErrors["generalComments"])}
-                          aria-describedby={
-                            fieldErrors["generalComments"]
-                              ? "contact-generalComments-error"
-                              : undefined
-                          }
-                          className={`mt-2 block w-full resize-y rounded-sm border border-brand/18 bg-pure-white px-4 py-3 text-base font-medium text-brand-deep outline-none transition-colors focus:border-brand ${fieldErrors["generalComments"] ? "!border-red-400" : ""}`}
-                        />
-                        {fieldErrorEl("generalComments")}
-                      </label>
-                    </div>
-                  )}
-
-                  <label className="mt-6 flex items-start gap-3 text-sm leading-relaxed text-charcoal/65">
-                    <input
-                      type="checkbox"
-                      name="marketingConsent"
-                      className="mt-1 h-4 w-4 accent-brand"
-                    />
-                    <span>
-                      <strong>Marketing updates (optional).</strong> Check this box if you would
-                      like to receive product news and offers from Arjuna Exports. Your enquiry
-                      details are handled according to our{" "}
-                      <Link
-                        to="/privacy-policy"
-                        className="font-semibold underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+                    {/* Error banner */}
+                    {errorMessage && (
+                      <div
+                        className="mt-6 rounded-sm border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+                        role="alert"
                       >
-                        privacy policy
-                      </Link>
-                      .
-                    </span>
-                  </label>
+                        {errorMessage}
+                      </div>
+                    )}
 
-                  <div className="mt-9 flex flex-wrap items-center justify-between gap-5 border-t border-charcoal/10 pt-7">
-                    <div className="max-w-md">
-                      <p className="font-semibold text-brand-deep">
-                        Your enquiry is reviewed by our export team.
-                      </p>
-                      <p className="mt-1 text-sm leading-relaxed text-charcoal/55">
-                        Your details are used to respond to this enquiry and prepare the right
-                        product or export follow-up.
-                      </p>
+                    <div className="mt-6 grid gap-x-5 gap-y-6 sm:grid-cols-2">
+                      {commonFields.map((f) => (
+                        <label key={f.name} className="block">
+                          <span className="micro-label text-brand">
+                            {f.label}
+                            {f.required ? " *" : " (optional)"}
+                          </span>
+                          <input
+                            id={`contact-${f.name}`}
+                            name={f.name}
+                            required={f.required}
+                            type={f.type ?? "text"}
+                            placeholder={f.label}
+                            autoComplete={f.autoComplete}
+                            list={f.name === "country" ? "contact-country-options" : undefined}
+                            aria-invalid={Boolean(fieldErrors[f.name])}
+                            aria-describedby={
+                              fieldErrors[f.name] ? `contact-${f.name}-error` : undefined
+                            }
+                            className={`${inputClass} ${fieldErrors[f.name] ? "!border-red-400" : ""}`}
+                          />
+                          {f.name === "country" && (
+                            <datalist id="contact-country-options">
+                              {countries.map((country) => (
+                                <option key={country} value={country} />
+                              ))}
+                            </datalist>
+                          )}
+                          {fieldErrorEl(f.name)}
+                        </label>
+                      ))}
                     </div>
-                    <PrimaryButton
-                      type="submit"
-                      disabled={sending}
-                      className="relative w-full sm:w-auto"
-                      aria-busy={sending}
-                    >
-                      {sending && (
-                        <Loader2 className="h-5 w-5 animate-spin" aria-hidden />
-                      )}
-                      <span>{sending ? "Sending…" : "Submit"}</span>
-                    </PrimaryButton>
-                  </div>
+
+                    {enquiryType === "partnership" && (
+                      <div className="mt-6 grid gap-6 sm:grid-cols-2">
+                        <label className="block">
+                          <span className="micro-label text-brand">Market segment *</span>
+                          <select
+                            id="contact-marketSegment"
+                            name="marketSegment"
+                            className={inputClass}
+                            required
+                            value={marketSegment}
+                            aria-invalid={Boolean(fieldErrors["marketSegment"])}
+                            aria-describedby={
+                              fieldErrors["marketSegment"]
+                                ? "contact-marketSegment-error"
+                                : undefined
+                            }
+                            onChange={(event) => setMarketSegment(event.target.value)}
+                          >
+                            {marketSegmentOptions.map((option) => (
+                              <option key={option}>{option}</option>
+                            ))}
+                          </select>
+                          {fieldErrorEl("marketSegment")}
+                        </label>
+                        {marketSegment === "Others" && (
+                          <label className="block">
+                            <span className="micro-label text-brand">
+                              Others (Please Specify) *
+                            </span>
+                            <input
+                              id="contact-marketSegmentOther"
+                              name="marketSegmentOther"
+                              required
+                              className={inputClass}
+                              aria-invalid={Boolean(fieldErrors["marketSegmentOther"])}
+                              aria-describedby={
+                                fieldErrors["marketSegmentOther"]
+                                  ? "contact-marketSegmentOther-error"
+                                  : undefined
+                              }
+                            />
+                            {fieldErrorEl("marketSegmentOther")}
+                          </label>
+                        )}
+                        <label className="block">
+                          <span className="micro-label text-brand">
+                            Best describes me (optional)
+                          </span>
+                          <select
+                            name="partnershipRole"
+                            className={inputClass}
+                            value={partnershipRole}
+                            onChange={(event) => setPartnershipRole(event.target.value)}
+                          >
+                            {partnershipRoleOptions.map((option) => (
+                              <option key={option}>{option}</option>
+                            ))}
+                          </select>
+                        </label>
+                        {partnershipRole === "Others" && (
+                          <label className="block">
+                            <span className="micro-label text-brand">
+                              Others (Please Specify) *
+                            </span>
+                            <input
+                              id="contact-partnershipRoleOther"
+                              name="partnershipRoleOther"
+                              required
+                              className={inputClass}
+                              aria-invalid={Boolean(fieldErrors["partnershipRoleOther"])}
+                              aria-describedby={
+                                fieldErrors["partnershipRoleOther"]
+                                  ? "contact-partnershipRoleOther-error"
+                                  : undefined
+                              }
+                            />
+                            {fieldErrorEl("partnershipRoleOther")}
+                          </label>
+                        )}
+                        <label className="block sm:col-span-2">
+                          <span className="micro-label text-brand">
+                            Detailed requirements and inputs *
+                          </span>
+                          <textarea
+                            id="contact-partnershipRequirements"
+                            name="partnershipRequirements"
+                            required
+                            rows={5}
+                            aria-invalid={Boolean(fieldErrors["partnershipRequirements"])}
+                            aria-describedby={
+                              fieldErrors["partnershipRequirements"]
+                                ? "contact-partnershipRequirements-error"
+                                : undefined
+                            }
+                            className={`mt-2 block w-full resize-y rounded-sm border border-brand/18 bg-pure-white px-4 py-3 text-base font-medium text-brand-deep outline-none transition-colors focus:border-brand ${fieldErrors["partnershipRequirements"] ? "!border-red-400" : ""}`}
+                          />
+                          {fieldErrorEl("partnershipRequirements")}
+                        </label>
+                      </div>
+                    )}
+
+                    {enquiryType === "product" && (
+                      <div className="mt-6 grid gap-6 sm:grid-cols-2">
+                        <fieldset className="sm:col-span-2">
+                          <legend className="micro-label text-brand">
+                            Are you a current Arjuna Exports customer? (optional)
+                          </legend>
+                          <div className="mt-3 flex gap-8 text-sm font-medium text-brand-deep">
+                            <label className="flex items-center gap-2">
+                              <input
+                                type="radio"
+                                name="currentCustomer"
+                                value="yes"
+                                defaultChecked
+                              />
+                              Yes
+                            </label>
+                            <label className="flex items-center gap-2">
+                              <input type="radio" name="currentCustomer" value="no" /> No
+                            </label>
+                          </div>
+                        </fieldset>
+                        <label className="block">
+                          <span className="micro-label text-brand">Product name *</span>
+                          <select
+                            id="contact-product"
+                            name="product"
+                            className={inputClass}
+                            value={selectedProduct}
+                            onChange={(event) => {
+                              setSelectedProduct(event.target.value);
+                              setSelectedVariant("");
+                            }}
+                            required
+                            aria-invalid={Boolean(fieldErrors["product"])}
+                            aria-describedby={
+                              fieldErrors["product"] ? "contact-product-error" : undefined
+                            }
+                          >
+                            <option value="" disabled>
+                              Select an option
+                            </option>
+                            {products.map((product) => (
+                              <option key={product.slug} value={product.slug}>
+                                {product.name}
+                              </option>
+                            ))}
+                          </select>
+                          {fieldErrorEl("product")}
+                        </label>
+                        {products.find((product) => product.slug === selectedProduct)
+                          ?.variantOptions && (
+                          <label className="block">
+                            <span className="micro-label text-brand">Variant (optional)</span>
+                            <select
+                              name="variant"
+                              className={inputClass}
+                              value={selectedVariant}
+                              onChange={(event) => setSelectedVariant(event.target.value)}
+                            >
+                              <option value="">Select a size or blend</option>
+                              {products
+                                .find((product) => product.slug === selectedProduct)
+                                ?.variantOptions?.map((variant) => (
+                                  <option key={variant.slug} value={variant.label}>
+                                    {variant.label}
+                                  </option>
+                                ))}
+                            </select>
+                          </label>
+                        )}
+                        <label className="block">
+                          <span className="micro-label text-brand">
+                            Product category (optional)
+                          </span>
+                          <select
+                            name="productCategory"
+                            className={inputClass}
+                            value={productCategory}
+                            onChange={(event) => setProductCategory(event.target.value)}
+                          >
+                            {productCategoryOptions.map((category) => (
+                              <option key={category}>{category}</option>
+                            ))}
+                          </select>
+                        </label>
+                        {productCategory === "Others" && (
+                          <label className="block">
+                            <span className="micro-label text-brand">
+                              Others (Please Specify) *
+                            </span>
+                            <input
+                              id="contact-productCategoryOther"
+                              name="productCategoryOther"
+                              required
+                              className={inputClass}
+                              aria-invalid={Boolean(fieldErrors["productCategoryOther"])}
+                              aria-describedby={
+                                fieldErrors["productCategoryOther"]
+                                  ? "contact-productCategoryOther-error"
+                                  : undefined
+                              }
+                            />
+                            {fieldErrorEl("productCategoryOther")}
+                          </label>
+                        )}
+                        <label className="block sm:col-span-2">
+                          <span className="micro-label text-brand">
+                            Required documents or information *
+                          </span>
+                          <textarea
+                            id="contact-requiredDocuments"
+                            name="requiredDocuments"
+                            rows={4}
+                            required
+                            aria-invalid={Boolean(fieldErrors["requiredDocuments"])}
+                            aria-describedby={
+                              fieldErrors["requiredDocuments"]
+                                ? "contact-requiredDocuments-error"
+                                : undefined
+                            }
+                            className="mt-2 block w-full resize-y rounded-sm border border-brand/18 bg-pure-white px-4 py-3 text-base font-medium text-brand-deep outline-none transition-colors focus:border-brand"
+                          />
+                          {fieldErrorEl("requiredDocuments")}
+                        </label>
+                        <label className="block sm:col-span-2">
+                          <span className="micro-label text-brand">
+                            Additional information (optional)
+                          </span>
+                          <textarea
+                            id="contact-additionalInformation"
+                            name="additionalInformation"
+                            rows={4}
+                            className="mt-2 block w-full resize-y rounded-sm border border-brand/18 bg-pure-white px-4 py-3 text-base font-medium text-brand-deep outline-none transition-colors focus:border-brand"
+                          />
+                        </label>
+                      </div>
+                    )}
+
+                    {enquiryType === "general" && (
+                      <div className="mt-6 grid gap-6">
+                        <label className="block sm:max-w-[calc(50%-0.625rem)]">
+                          <span className="micro-label text-brand">
+                            Best describes me (optional)
+                          </span>
+                          <select
+                            name="generalRole"
+                            className={inputClass}
+                            value={generalRole}
+                            onChange={(event) => setGeneralRole(event.target.value)}
+                          >
+                            <option>Vendor</option>
+                            <option>Current Client</option>
+                            <option>Press</option>
+                            <option>Others</option>
+                          </select>
+                        </label>
+                        {generalRole === "Others" && (
+                          <label className="block sm:max-w-[calc(50%-0.625rem)]">
+                            <span className="micro-label text-brand">
+                              Others (Please Specify) *
+                            </span>
+                            <input name="generalRoleOther" required className={inputClass} />
+                          </label>
+                        )}
+                        <label className="block">
+                          <span className="micro-label text-brand">
+                            Your comments / questions *
+                          </span>
+                          <textarea
+                            id="contact-generalComments"
+                            name="generalComments"
+                            required
+                            rows={6}
+                            aria-invalid={Boolean(fieldErrors["generalComments"])}
+                            aria-describedby={
+                              fieldErrors["generalComments"]
+                                ? "contact-generalComments-error"
+                                : undefined
+                            }
+                            className={`mt-2 block w-full resize-y rounded-sm border border-brand/18 bg-pure-white px-4 py-3 text-base font-medium text-brand-deep outline-none transition-colors focus:border-brand ${fieldErrors["generalComments"] ? "!border-red-400" : ""}`}
+                          />
+                          {fieldErrorEl("generalComments")}
+                        </label>
+                      </div>
+                    )}
+
+                    <label className="mt-6 flex items-start gap-3 text-sm leading-relaxed text-charcoal/65">
+                      <input
+                        type="checkbox"
+                        name="marketingConsent"
+                        className="mt-1 h-4 w-4 accent-brand"
+                      />
+                      <span>
+                        <strong>Marketing updates (optional).</strong> Check this box if you would
+                        like to receive product news and offers from Arjuna Exports. Your enquiry
+                        details are handled according to our{" "}
+                        <Link
+                          to="/privacy-policy"
+                          className="font-semibold underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+                        >
+                          privacy policy
+                        </Link>
+                        .
+                      </span>
+                    </label>
+
+                    <div className="mt-9 flex flex-wrap items-center justify-between gap-5 border-t border-charcoal/10 pt-7">
+                      <div className="max-w-md">
+                        <p className="font-semibold text-brand-deep">
+                          Your enquiry is reviewed by our export team.
+                        </p>
+                        <p className="mt-1 text-sm leading-relaxed text-charcoal/55">
+                          Your details are used to respond to this enquiry and prepare the right
+                          product or export follow-up.
+                        </p>
+                      </div>
+                      <PrimaryButton
+                        type="submit"
+                        disabled={sending}
+                        className="relative w-full sm:w-auto"
+                        aria-busy={sending}
+                      >
+                        {sending && <Loader2 className="h-5 w-5 animate-spin" aria-hidden />}
+                        <span>{sending ? "Sending…" : "Submit"}</span>
+                      </PrimaryButton>
+                    </div>
                   </div>
                 </>
               )}
@@ -830,7 +939,7 @@ function Contact() {
               <p className="px-1 text-sm font-medium leading-relaxed text-charcoal/68">
                 To facilitate an accurate and efficient quotation, please provide your target EC,
                 particle grade, packaging requirements, private-label specifications and destination
-                market, where applicable. It would reduce back-and-forth during quoting.
+                market, where applicable. This helps reduce back-and-forth during quoting.
               </p>
             </Reveal>
           </aside>

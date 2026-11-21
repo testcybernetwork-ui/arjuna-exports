@@ -34,6 +34,7 @@ interface EnquiryPayload {
   // Product fields
   currentCustomer?: string;
   product?: string;
+  variant?: string;
   productCategory?: string;
   productCategoryOther?: string;
   requiredDocuments?: string;
@@ -52,8 +53,7 @@ interface EnquiryPayload {
 }
 
 type SubmitResult =
-  | { success: true }
-  | { success: false; error: string; fieldErrors?: Record<string, string> };
+  { success: true } | { success: false; error: string; fieldErrors?: Record<string, string> };
 
 /* ------------------------------------------------------------------ */
 /*  Validation helpers                                                 */
@@ -107,6 +107,7 @@ function isEnquiryPayload(value: unknown): value is EnquiryPayload {
     "partnershipRequirements",
     "currentCustomer",
     "product",
+    "variant",
     "productCategory",
     "productCategoryOther",
     "requiredDocuments",
@@ -189,8 +190,10 @@ function buildEmailHtml(data: EnquiryPayload): string {
     ]);
     if (data.currentCustomer) rows.push(["Current customer", data.currentCustomer]);
     if (data.product) rows.push(["Product", data.product]);
+    if (data.variant) rows.push(["Variant", data.variant]);
     if (data.productCategory) rows.push(["Product category", data.productCategory]);
-    if (data.productCategoryOther) rows.push(["Product category (other)", data.productCategoryOther]);
+    if (data.productCategoryOther)
+      rows.push(["Product category (other)", data.productCategoryOther]);
     if (data.requiredDocuments) rows.push(["Required documents", data.requiredDocuments]);
     if (data.additionalInformation) rows.push(["Additional info", data.additionalInformation]);
   }
@@ -235,7 +238,10 @@ export const submitEnquiry = createServerFn({ method: "POST" })
 
     if (isRateLimited(clientIp)) {
       console.warn(`[enquiry] Rate limited`);
-      return { success: false, error: "Too many requests. Please wait a few minutes and try again." };
+      return {
+        success: false,
+        error: "Too many requests. Please wait a few minutes and try again.",
+      };
     }
 
     // --- Honeypot check ---
@@ -257,6 +263,7 @@ export const submitEnquiry = createServerFn({ method: "POST" })
       ["partnershipRequirements", "Requirements", MAX_LEN],
       ["currentCustomer", "Customer status", MAX_SHORT],
       ["product", "Product", MAX_SHORT],
+      ["variant", "Variant", MAX_SHORT],
       ["productCategory", "Product category", MAX_SHORT],
       ["productCategoryOther", "Product category", MAX_SHORT],
       ["requiredDocuments", "Required documents", MAX_LEN],

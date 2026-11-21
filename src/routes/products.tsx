@@ -1,8 +1,8 @@
 import { createFileRoute, Outlet, useRouterState } from "@tanstack/react-router";
 import { useState } from "react";
-import { img, productFilters, products } from "@/lib/site-data";
+import { img, productFilterGroups, products } from "@/lib/site-data";
 import { PageHero, pageMeta } from "@/components/site/PageHero";
-import { Reveal } from "@/components/site/primitives";
+import { PrimaryButton, Reveal } from "@/components/site/primitives";
 import { ProductCard } from "@/components/site/ProductCard";
 
 export const Route = createFileRoute("/products")({
@@ -17,7 +17,11 @@ export const Route = createFileRoute("/products")({
 function Products() {
   const [filter, setFilter] = useState("All");
   const pathname = useRouterState({ select: (state) => state.location.pathname });
-  const shown = filter === "All" ? products : products.filter((product) => product.name === filter);
+  const activeGroup = productFilterGroups.find((group) => group.label === filter);
+  const shown =
+    filter === "All"
+      ? products
+      : products.filter((product) => activeGroup?.productSlugs.includes(product.slug));
   if (pathname !== "/products" && pathname !== "/products/") return <Outlet />;
   return (
     <>
@@ -29,28 +33,39 @@ function Products() {
       />
       <section className="relative overflow-hidden bg-offwhite py-20 lg:py-24">
         <div className="container relative">
-          <div className="flex flex-wrap gap-2" aria-label="Filter products">
-            {productFilters.map((f) => (
+          <div className="flex flex-wrap gap-2" role="group" aria-label="Filter products">
+            {[
+              { label: "All", count: products.length },
+              ...productFilterGroups.map((group) => ({
+                label: group.label,
+                count: group.productSlugs.length,
+              })),
+            ].map(({ label, count }) => (
               <button
-                key={f}
-                onClick={() => setFilter(f)}
-                aria-pressed={filter === f}
-                className={`min-h-12 rounded-sm border px-4 py-2.5 text-sm transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${filter === f ? "border-brand bg-brand text-pure-white" : "border-charcoal/15 bg-ivory text-charcoal/70 hover:border-brand hover:text-brand"}`}
+                key={label}
+                onClick={() => setFilter(label)}
+                aria-pressed={filter === label}
+                className={`min-h-12 rounded-sm border px-4 py-2.5 text-sm transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${filter === label ? "border-brand bg-brand text-pure-white" : "border-charcoal/15 bg-ivory text-charcoal/70 hover:border-brand hover:text-brand"}`}
               >
-                {f}
+                {label} <span className="ml-1">({count})</span>
               </button>
             ))}
           </div>
-          <div className="mt-10 grid gap-6">
+          <div className="mt-8 grid items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {shown.map((p, i) => (
-              <Reveal
-                key={p.slug}
-                delay={(i % 2) * 70}
-                className="product-card-reveal"
-              >
+              <Reveal key={p.slug} delay={(i % 2) * 70} className="product-card-reveal">
                 <ProductCard product={p} index={i} variant="listing" />
               </Reveal>
             ))}
+          </div>
+          <div className="mt-12 flex flex-col gap-6 border-t border-brand/15 pt-8 sm:flex-row sm:items-center sm:justify-between">
+            <p className="max-w-[65ch] text-base leading-body text-body-text">
+              Need a specific size, EC level, packaging or container quantity? Request a customised
+              quote.
+            </p>
+            <PrimaryButton to="/contact" className="shrink-0">
+              Request a customised quote
+            </PrimaryButton>
           </div>
         </div>
       </section>

@@ -152,7 +152,7 @@ p {
 
 .hero-stats-strip__icon * {
   stroke: var(--brand-deep);
-  fill: var(--brand-deep);
+  fill: none;
 }
 
 .hero-stats-strip__label {
@@ -710,6 +710,41 @@ h1:is(.hero-title-dark, .contact-hero-title, [class*="text-[#20555A]"]) {
   padding: var(--space-6);
 }
 
+.image-slot {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-6);
+  border: 1px dashed var(--brand);
+  background: var(--surface-teal-light);
+  color: var(--brand-deep);
+  text-align: center;
+}
+
+.image-slot__label {
+  font-size: var(--text-small);
+  font-weight: 600;
+}
+
+.image-slot__caption {
+  color: var(--text-muted);
+  font-size: var(--text-small);
+}
+
+.content-todo {
+  margin: var(--space-3) 0 0;
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-card);
+  border-radius: var(--radius-card);
+  background: var(--surface-teal-light);
+  color: var(--brand-deep);
+  font-size: var(--text-label);
+  line-height: var(--line-body);
+}
+
 .product-card--listing .product-card__media {
   aspect-ratio: 4 / 5;
   min-height: 0;
@@ -1045,7 +1080,12 @@ h1:is(.hero-title-dark, .contact-hero-title, [class*="text-[#20555A]"]) {
   .hero-stats-strip__number { font-size: 32px; }
   .hero-stats-strip__label { font-size: 12px; }
   .hero-stats-strip__icon { width: 32px; height: 32px; }
-  .hero-stats-strip__col:nth-child(5) { grid-column: 1 / -1; }
+  .hero-stats-strip__col:nth-child(5) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: 50%;
+    border-left: 0;
+  }
 }
 
 @media (max-width: 374px) {
@@ -1658,7 +1698,7 @@ footer [class~="mt-16"] {
 
 .footer-logo-link {
   display: inline-flex;
-  width: min(100%, 220px);
+  width: min(100%, 300px);
   border-radius: 2px;
 }
 
@@ -1683,21 +1723,22 @@ footer [class~="mt-16"] {
 .footer-socials {
   display: flex;
   flex-wrap: wrap;
-  gap: 7px;
+  gap: 8px;
   margin-top: 7px;
 }
 
 .footer-social-link {
-  display: inline-grid;
-  width: 56px;
-  height: 56px;
-  flex: 0 0 56px;
-  place-items: center;
-  padding: 5px;
-  border: 3px solid #fff;
-  border-radius: 50%;
+  display: inline-flex;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px 4px 4px;
+  border: 1px solid rgb(242 247 245 / 38%);
+  border-radius: var(--radius-control);
   background: rgb(0 61 46 / 48%);
   color: var(--footer-ink);
+  font-size: 14px;
   transition:
     transform 220ms ease,
     border-color 220ms ease,
@@ -1707,8 +1748,8 @@ footer [class~="mt-16"] {
 
 .footer-social-icon {
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 32px;
+  height: 32px;
   flex: none;
   transition: transform 220ms ease;
 }

@@ -17,25 +17,18 @@ import {
   Truck,
   Users,
 } from "lucide-react";
-import founderPortrait from "@/assets/founder-mohanraj-restored.png";
 import heroPlantation from "@/assets/hero-plantation.jpg";
 import exportPort from "@/assets/export-port.jpg";
 import containerTrucks from "@/assets/container-trucks.jpg";
 import closingRoots from "@/assets/closing-roots.jpg";
 import warehousePallets from "@/assets/warehouse-pallets.jpg";
 import storyPeople from "@/assets/story-people.jpg";
-import founderSmall from "@/assets/founder-mohanraj.png";
 import { PurposeSection } from "@/components/site/PurposeSection";
-import { CertificationsSection } from "@/components/site/CertificationsSection";
 import { AboutHeroSection } from "@/components/site/AboutHeroSection";
 import { OurStrengthsAccordion } from "@/components/site/OurStrengthsAccordion";
+import { ImageSlot } from "@/components/site/ProductDetailComponents";
 import { pageMeta } from "@/components/site/PageHero";
-import {
-  Label,
-  PrimaryButton,
-  Reveal,
-  TextLink,
-} from "@/components/site/primitives";
+import { Label, ContentTodo, PrimaryButton, Reveal, TextLink } from "@/components/site/primitives";
 
 export const Route = createFileRoute("/our-story")({
   head: () =>
@@ -76,7 +69,7 @@ const originStats = [
 const founderStory = [
   {
     title: "From Farming to Global Exports",
-    text: "Born into a farming family with deep roots in coconut cultivation, Mohan developed first-hand knowledge of agriculture and the coconut industry from an early age. This foundation continues to shape his understanding of the product, its origin, and the needs of global buyers.",
+    text: "Born into a farming family with deep roots in coconut cultivation, Mohan developed first-hand knowledge of agriculture and the coconut industry from an early age. This foundation continues to shape his understanding of the product, its origin, and the needs of growers and buyers.",
     Icon: Sprout,
   },
   {
@@ -86,12 +79,12 @@ const founderStory = [
   },
   {
     title: "Global Corporate Experience",
-    text: "Before founding Arjuna Exports, Mohan spent over a decade working with global organizations including Accenture and IBM, with experience in SAP, business intelligence, analytics, and enterprise processes. This corporate experience became the foundation for bringing greater structure and professionalism to the export business.",
+    text: "Before founding Arjuna Exports, Mohan spent over a decade working with global organisations including Accenture and IBM, with experience in SAP Business Intelligence, analytics, and enterprise processes. This corporate experience became the foundation for bringing greater structure and professionalism to the export business.",
     Icon: BriefcaseBusiness,
   },
   {
     title: "Building a More Professional Coco Peat Industry",
-    text: "Arjuna Exports was founded in 2019 with a clear vision: to bring greater transparency, consistency, and structure to coco peat exports. The objective is not simply to supply a product, but to create a more reliable and transparent buying experience for international customers.",
+    text: "Mohan founded Arjuna Exports in 2019 with a clear vision: to bring greater transparency, consistency, process discipline, and customer focus to the global coco peat export industry. The objective is not simply to supply a product, but to create a more reliable and transparent buying experience for international customers.",
     Icon: Target,
   },
   {
@@ -128,40 +121,51 @@ const processFeatures = [
 
 function GlobeLeafIcon({ className }: { className?: string }) {
   return (
-    <svg
-      viewBox="0 0 120 120"
-      fill="none"
-      className={className}
-      aria-hidden="true"
-    >
-      <circle cx="60" cy="60" r="56" stroke="#6AF0C4" strokeWidth="2.5" />
-      <ellipse cx="60" cy="60" rx="28" ry="56" stroke="#6AF0C4" strokeWidth="1.5" />
-      <line x1="4" y1="60" x2="116" y2="60" stroke="#6AF0C4" strokeWidth="1.5" />
-      <line x1="12" y1="35" x2="108" y2="35" stroke="#6AF0C4" strokeWidth="1" opacity="0.6" />
-      <line x1="12" y1="85" x2="108" y2="85" stroke="#6AF0C4" strokeWidth="1" opacity="0.6" />
+    <svg viewBox="0 0 120 120" fill="none" className={className} aria-hidden="true">
+      <circle cx="60" cy="60" r="56" stroke="var(--text-secondary)" strokeWidth="2.5" />
+      <ellipse cx="60" cy="60" rx="28" ry="56" stroke="var(--text-secondary)" strokeWidth="1.5" />
+      <line x1="4" y1="60" x2="116" y2="60" stroke="var(--text-secondary)" strokeWidth="1.5" />
+      <line
+        x1="12"
+        y1="35"
+        x2="108"
+        y2="35"
+        stroke="var(--text-secondary)"
+        strokeWidth="1"
+        opacity="0.6"
+      />
+      <line
+        x1="12"
+        y1="85"
+        x2="108"
+        y2="85"
+        stroke="var(--text-secondary)"
+        strokeWidth="1"
+        opacity="0.6"
+      />
       <path
         d="M60 20 C60 20 78 42 78 60 C78 78 60 95 60 95"
-        stroke="#6AF0C4"
+        stroke="var(--text-secondary)"
         strokeWidth="2"
         fill="none"
       />
       <path
         d="M55 40 Q65 50 58 62 Q50 72 60 82"
-        stroke="#6AF0C4"
+        stroke="var(--text-secondary)"
         strokeWidth="2.5"
         strokeLinecap="round"
         fill="none"
       />
       <path
         d="M58 52 Q68 46 76 50"
-        stroke="#6AF0C4"
+        stroke="var(--text-secondary)"
         strokeWidth="1.5"
         strokeLinecap="round"
         fill="none"
       />
       <path
         d="M57 65 Q47 60 42 64"
-        stroke="#6AF0C4"
+        stroke="var(--text-secondary)"
         strokeWidth="1.5"
         strokeLinecap="round"
         fill="none"
@@ -180,6 +184,8 @@ function AboutUs() {
        ═══════════════════════════════════════════════════ */}
       <AboutHeroSection />
 
+      <PurposeSection />
+
       {/* ═══════════════════════════════════════════════════
           SECTION 2 — Founder: Mohanraj Palaniappan
        ═══════════════════════════════════════════════════ */}
@@ -189,11 +195,9 @@ function AboutUs() {
           <div className="flex h-full w-full shrink-0 flex-col overflow-hidden rounded-sm border border-brand/20 bg-surface-teal-dark shadow-[var(--shadow-card)]">
             {/* Photo Container */}
             <div className="relative min-h-[380px] w-full flex-1 overflow-hidden bg-surface-teal-light sm:min-h-[440px]">
-              <img
-                src={founderPortrait}
-                alt="Mohanraj Palaniappan, Founder of Arjuna Exports"
-                className="absolute inset-0 h-full w-full object-cover object-[top_center]"
-                loading="lazy"
+              <ImageSlot
+                todo="Real portrait photo of Mohanraj Palaniappan"
+                className="absolute inset-0 h-full w-full"
               />
               {/* FOUNDER & LEADERSHIP Pill - Top Left */}
               <div className="absolute top-4 left-4 z-10">
@@ -220,9 +224,7 @@ function AboutUs() {
                 </a>
               </div>
 
-              <p className="text-sm font-normal text-pure-white/90">
-                Founder, Arjuna Exports
-              </p>
+              <p className="text-sm font-normal text-pure-white/90">Founder, Arjuna Exports</p>
 
               <p className="text-sm font-normal tracking-wide text-brand-soft">
                 People. Partnerships. Better Growth.
@@ -243,24 +245,26 @@ function AboutUs() {
             {/* Header / Intro */}
             <header className="shrink-0 border-b border-brand/15 pb-4">
               <p className="micro-label text-brand">
-                FOUNDER &amp; LEADERSHIP | AGRICULTURE | ENGINEERING | GLOBAL EXPERIENCE
+                FOUNDER &amp; LEADERSHIP | AGRICULTURE | ENGINEERING | GLOBAL EXPERIENCE | A
+                STRONGER TOMORROW
               </p>
-              <h2 className="display mt-2 text-h2 text-brand-deep">
-                From Roots to Global Growth
-              </h2>
+              <h2 className="display mt-2 text-h2 text-brand-deep">From Roots to Global Growth</h2>
               <p className="mt-3 max-w-[70ch] text-base leading-body text-body-text">
                 Mohan founded Arjuna Exports with a unique combination of agricultural roots,
-                engineering expertise, and global corporate experience. His vision is to bring greater
-                quality consistency, transparency, process discipline, and professionalism to the global
-                coco peat industry, helping international buyers build reliable, long-term partnerships.
+                engineering expertise, and global corporate experience. His vision is to bring
+                greater quality consistency, transparency, process discipline, and professionalism
+                to the global coco peat industry, helping international buyers build reliable,
+                long-term partnerships.
               </p>
-
             </header>
 
             {/* Cards Wrapper - fills remaining height */}
             <div className="flex-1 flex flex-col gap-3 sm:gap-4 mt-4">
               {founderStory.map(({ title, text, Icon }, index) => (
-                <article key={title} className="flex min-h-[90px] flex-1 flex-col overflow-hidden rounded-sm border border-brand/15 bg-surface-cream shadow-[var(--shadow-card)]">
+                <article
+                  key={title}
+                  className="flex min-h-[90px] flex-1 flex-col overflow-hidden rounded-sm border border-brand/15 bg-surface-cream shadow-[var(--shadow-card)]"
+                >
                   {/* Card Header Bar */}
                   <div className="flex shrink-0 h-[48px] sm:h-[54px]">
                     {/* Left Dark Teal Box containing Number + Icon */}
@@ -268,7 +272,11 @@ function AboutUs() {
                       <span className="text-sm font-extrabold tracking-wider">
                         {String(index + 1).padStart(2, "0")}
                       </span>
-                      <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-[#6BF0C6]" strokeWidth={1.8} aria-hidden="true" />
+                      <Icon
+                        className="h-5 w-5 text-text-secondary sm:h-6 sm:w-6"
+                        strokeWidth={1.8}
+                        aria-hidden="true"
+                      />
                     </div>
                     {/* Right Mint Header Bar containing Title */}
                     <h3 className="flex min-w-0 flex-1 items-center justify-start bg-brand-soft px-3 text-left text-sm font-extrabold uppercase leading-snug tracking-[0.04em] text-brand-deep">
@@ -277,9 +285,7 @@ function AboutUs() {
                   </div>
                   {/* Card Body - description centered in card */}
                   <div className="flex-1 flex items-center px-4 py-2.5 sm:px-5 sm:py-3">
-                    <p className="text-sm leading-body text-body-text">
-                      {text}
-                    </p>
+                    <p className="text-sm leading-body text-body-text">{text}</p>
                   </div>
                 </article>
               ))}
@@ -289,20 +295,10 @@ function AboutUs() {
       </section>
 
       {/* ═══════════════════════════════════════════════════
-          SECTION 3 — Purpose in every partnership
-       ═══════════════════════════════════════════════════ */}
-      <PurposeSection />
-
-      {/* ═══════════════════════════════════════════════════
-          SECTION 4 — Standards behind every shipment
-       ═══════════════════════════════════════════════════ */}
-      <CertificationsSection />
-
-
-
-      {/* ═══════════════════════════════════════════════════
           SECTION 6 — Made here. Grown everywhere.
        ═══════════════════════════════════════════════════ */}
+      <OurStrengthsAccordion />
+
       <section className="relative w-full overflow-hidden bg-surface-teal-light py-14 text-brand-deep lg:py-24">
         <div className="container grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16">
           <Reveal>
@@ -311,15 +307,33 @@ function AboutUs() {
                 Exports &amp; Outreach
               </span>
               <h2 className="display text-h2 !text-brand-deep">
-                Made here<br />Grown everywhere.
+                Made here.
+                <br />
+                Grown everywhere.
               </h2>
               <p className="mt-6 text-base leading-body text-body-text">
-                From our roots in Tamil Nadu, India, we deliver professionally prepared coco substrate solutions to customers across key global markets, tailored to their specific growing and commercial requirements.
+                From our roots in Tamil Nadu, India, we deliver professionally prepared coco
+                substrate solutions to customers across key global markets, tailored to their
+                specific growing and commercial requirements.
               </p>
               <div className="mt-8">
-                <PrimaryButton to="/contact">
-                  Start a conversation
-                </PrimaryButton>
+                <PrimaryButton to="/contact">Start a conversation</PrimaryButton>
+              </div>
+              <div className="mt-8">
+                <h3 className="display text-h3 text-brand-deep">
+                  Standards that support international confidence.
+                </h3>
+                <ul className="mt-4 flex flex-wrap gap-3" aria-label="Standards and registrations">
+                  {["MSME", "GST", "Coir Board", "EEPC", "ISO"].map((item) => (
+                    <li
+                      key={item}
+                      className="rounded-sm border border-brand/20 bg-pure-white px-4 py-2 text-sm font-semibold text-brand-deep"
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <ContentTodo request="Supply certification details and logos, and confirm the applicable ISO standard." />
               </div>
             </div>
           </Reveal>
@@ -342,44 +356,41 @@ function AboutUs() {
       </section>
 
       {/* ═══════════════════════════════════════════════════
-          SECTION 8 — Built on process. Driven by quality.
-       ═══════════════════════════════════════════════════ */}
-      <OurStrengthsAccordion />
-
-      {/* ═══════════════════════════════════════════════════
           SECTION 9 — Supply built around confidence
        ═══════════════════════════════════════════════════ */}
       <section className="relative w-full overflow-hidden border-b border-brand/15 bg-surface-teal-light py-14 text-brand-deep lg:py-24">
         <div className="container grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <div className="flex flex-col justify-center">
             <Reveal>
-              <span className="micro-label mb-5 block font-bold !text-brand">
-                Our Commitment
-              </span>
+              <span className="micro-label mb-5 block font-bold !text-brand">Our Commitment</span>
             </Reveal>
             <Reveal delay={100}>
               <h2 className="display text-h2 font-extrabold !text-brand-deep">
-                Supply built<br />around<br />confidence.
+                Supply built
+                <br />
+                around
+                <br />
+                confidence.
               </h2>
             </Reveal>
             <Reveal delay={200}>
               <p className="mt-6 text-base leading-body text-body-text">
-                Our objective extends beyond supplying a product. We aim to create a
-                transparent, professional and dependable buying experience through clear
-                communication, accurate documentation, consistent quality, and reliable execution.
+                Our objective extends beyond supplying a product. We aim to create a transparent,
+                professional and dependable buying experience through clear communication, accurate
+                documentation, consistent quality, and reliable execution.
               </p>
             </Reveal>
             <Reveal delay={300}>
               <p className="mt-4 text-base leading-body text-body-text">
-                Today, our products support growers and horticultural businesses across international
-                markets. From our agricultural roots in Tamil Nadu, we are committed to raising the
-                standard of coco substrate supply around the world.
+                Today, our products support growers and horticultural businesses across
+                international markets. From our agricultural roots in Tamil Nadu, we are committed
+                to raising the standard of coco substrate supply around the world.
               </p>
             </Reveal>
             <Reveal delay={400}>
               <div className="mt-6 border-t border-white/20 pt-6">
                 <p className="micro-label text-brand">
-                  Better Substitutes · Stronger Growers · A Greener Tomorrow
+                  Better Substrates. Stronger Growers. A Greener Tomorrow.
                 </p>
                 <div className="mt-6">
                   <PrimaryButton
@@ -401,7 +412,10 @@ function AboutUs() {
                 className="h-full w-full object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.04]"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-brand-deep/55 mix-blend-multiply" aria-hidden="true" />
+              <div
+                className="absolute inset-0 bg-brand-deep/55 mix-blend-multiply"
+                aria-hidden="true"
+              />
               <div className="absolute inset-0 flex items-center justify-center" aria-hidden="true">
                 <GlobeLeafIcon className="h-[90px] w-[90px] drop-shadow-md sm:h-[110px] sm:w-[110px]" />
               </div>

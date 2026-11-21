@@ -42,6 +42,7 @@ import { Route as ApiAdminSummaryRouteImport } from './routes/api/admin/summary'
 import { Route as ApiAdminUploadRouteImport } from './routes/api/admin/upload'
 import { Route as ApiArticlesSlugRouteImport } from './routes/api/articles.$slug'
 import { Route as ApiPostsSlugRouteImport } from './routes/api/posts.$slug'
+import { Route as ProductsSlugVariantRouteImport } from './routes/products.$slug.$variant'
 import { Route as ResourcesArticlesSlugRouteImport } from './routes/resources.articles.$slug'
 import { Route as AdminArticlesIdEditRouteImport } from './routes/admin.articles.$id.edit'
 import { Route as AdminArticlesIdPreviewRouteImport } from './routes/admin.articles.$id.preview'
@@ -217,6 +218,11 @@ const ApiPostsSlugRoute = ApiPostsSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => ApiPostsRoute,
 } as any)
+const ProductsSlugVariantRoute = ProductsSlugVariantRouteImport.update({
+  id: '/$variant',
+  path: '/$variant',
+  getParentRoute: () => ProductsSlugRoute,
+} as any)
 const ResourcesArticlesSlugRoute = ResourcesArticlesSlugRouteImport.update({
   id: '/articles/$slug',
   path: '/articles/$slug',
@@ -284,7 +290,7 @@ export interface FileRoutesByFullPath {
   '/admin/login': typeof AdminLoginRoute
   '/api/articles': typeof ApiArticlesRouteWithChildren
   '/api/posts': typeof ApiPostsRouteWithChildren
-  '/products/$slug': typeof ProductsSlugRoute
+  '/products/$slug': typeof ProductsSlugRouteWithChildren
   '/resources/$slug': typeof ResourcesSlugRoute
   '/admin/articles/new': typeof AdminArticlesNewRoute
   '/admin/posts/new': typeof AdminPostsNewRoute
@@ -298,6 +304,7 @@ export interface FileRoutesByFullPath {
   '/api/admin/upload': typeof ApiAdminUploadRoute
   '/api/articles/$slug': typeof ApiArticlesSlugRoute
   '/api/posts/$slug': typeof ApiPostsSlugRoute
+  '/products/$slug/$variant': typeof ProductsSlugVariantRoute
   '/resources/articles/$slug': typeof ResourcesArticlesSlugRoute
   '/admin/articles/$id/edit': typeof AdminArticlesIdEditRoute
   '/admin/articles/$id/preview': typeof AdminArticlesIdPreviewRoute
@@ -328,7 +335,7 @@ export interface FileRoutesByTo {
   '/admin/login': typeof AdminLoginRoute
   '/api/articles': typeof ApiArticlesRouteWithChildren
   '/api/posts': typeof ApiPostsRouteWithChildren
-  '/products/$slug': typeof ProductsSlugRoute
+  '/products/$slug': typeof ProductsSlugRouteWithChildren
   '/resources/$slug': typeof ResourcesSlugRoute
   '/admin/articles/new': typeof AdminArticlesNewRoute
   '/admin/posts/new': typeof AdminPostsNewRoute
@@ -342,6 +349,7 @@ export interface FileRoutesByTo {
   '/api/admin/upload': typeof ApiAdminUploadRoute
   '/api/articles/$slug': typeof ApiArticlesSlugRoute
   '/api/posts/$slug': typeof ApiPostsSlugRoute
+  '/products/$slug/$variant': typeof ProductsSlugVariantRoute
   '/resources/articles/$slug': typeof ResourcesArticlesSlugRoute
   '/admin/articles/$id/edit': typeof AdminArticlesIdEditRoute
   '/admin/articles/$id/preview': typeof AdminArticlesIdPreviewRoute
@@ -373,7 +381,7 @@ export interface FileRoutesById {
   '/admin/login': typeof AdminLoginRoute
   '/api/articles': typeof ApiArticlesRouteWithChildren
   '/api/posts': typeof ApiPostsRouteWithChildren
-  '/products/$slug': typeof ProductsSlugRoute
+  '/products/$slug': typeof ProductsSlugRouteWithChildren
   '/resources_/$slug': typeof ResourcesSlugRoute
   '/admin/articles/new': typeof AdminArticlesNewRoute
   '/admin/posts/new': typeof AdminPostsNewRoute
@@ -387,6 +395,7 @@ export interface FileRoutesById {
   '/api/admin/upload': typeof ApiAdminUploadRoute
   '/api/articles/$slug': typeof ApiArticlesSlugRoute
   '/api/posts/$slug': typeof ApiPostsSlugRoute
+  '/products/$slug/$variant': typeof ProductsSlugVariantRoute
   '/resources/articles/$slug': typeof ResourcesArticlesSlugRoute
   '/admin/articles/$id/edit': typeof AdminArticlesIdEditRoute
   '/admin/articles/$id/preview': typeof AdminArticlesIdPreviewRoute
@@ -433,6 +442,7 @@ export interface FileRouteTypes {
     | '/api/admin/upload'
     | '/api/articles/$slug'
     | '/api/posts/$slug'
+    | '/products/$slug/$variant'
     | '/resources/articles/$slug'
     | '/admin/articles/$id/edit'
     | '/admin/articles/$id/preview'
@@ -477,6 +487,7 @@ export interface FileRouteTypes {
     | '/api/admin/upload'
     | '/api/articles/$slug'
     | '/api/posts/$slug'
+    | '/products/$slug/$variant'
     | '/resources/articles/$slug'
     | '/admin/articles/$id/edit'
     | '/admin/articles/$id/preview'
@@ -521,6 +532,7 @@ export interface FileRouteTypes {
     | '/api/admin/upload'
     | '/api/articles/$slug'
     | '/api/posts/$slug'
+    | '/products/$slug/$variant'
     | '/resources/articles/$slug'
     | '/admin/articles/$id/edit'
     | '/admin/articles/$id/preview'
@@ -793,6 +805,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPostsSlugRouteImport
       parentRoute: typeof ApiPostsRoute
     }
+    '/products/$slug/$variant': {
+      id: '/products/$slug/$variant'
+      path: '/$variant'
+      fullPath: '/products/$slug/$variant'
+      preLoaderRoute: typeof ProductsSlugVariantRouteImport
+      parentRoute: typeof ProductsSlugRoute
+    }
     '/resources/articles/$slug': {
       id: '/resources/articles/$slug'
       path: '/articles/$slug'
@@ -895,12 +914,24 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
+interface ProductsSlugRouteChildren {
+  ProductsSlugVariantRoute: typeof ProductsSlugVariantRoute
+}
+
+const ProductsSlugRouteChildren: ProductsSlugRouteChildren = {
+  ProductsSlugVariantRoute: ProductsSlugVariantRoute,
+}
+
+const ProductsSlugRouteWithChildren = ProductsSlugRoute._addFileChildren(
+  ProductsSlugRouteChildren,
+)
+
 interface ProductsRouteChildren {
-  ProductsSlugRoute: typeof ProductsSlugRoute
+  ProductsSlugRoute: typeof ProductsSlugRouteWithChildren
 }
 
 const ProductsRouteChildren: ProductsRouteChildren = {
-  ProductsSlugRoute: ProductsSlugRoute,
+  ProductsSlugRoute: ProductsSlugRouteWithChildren,
 }
 
 const ProductsRouteWithChildren = ProductsRoute._addFileChildren(

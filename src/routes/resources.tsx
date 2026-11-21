@@ -1,18 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
 import { Grid2X2, Handshake, PackageOpen, ShieldCheck, Ship } from "lucide-react";
 import { useState } from "react";
 import { img } from "@/lib/site-data";
-import { resourceCategories as categories } from "@/lib/resource-data";
+import { resourceArticles, resourceCategories as categories } from "@/lib/resource-data";
 import { PageHero, pageMeta } from "@/components/site/PageHero";
 import { Arrow, Label, Reveal } from "@/components/site/primitives";
-
-const loadResourceArticles = createServerFn({ method: "GET" }).handler(async () => {
-  const { listResourceArticles } = await import("@/server/blog-db.server");
-  const firstPage = await listResourceArticles();
-  const rest = await Promise.all(Array.from({ length: Math.max(0, firstPage.pageCount - 1) }, (_, index) => listResourceArticles({ page: index + 2 })));
-  return [...firstPage.articles, ...rest.flatMap((r) => r.articles)];
-});
 
 const categoryKey = (value: string) =>
   value
@@ -31,7 +23,7 @@ const resourceTopicIcons = [
 ];
 
 export const Route = createFileRoute("/resources")({
-  loader: () => loadResourceArticles(),
+  loader: () => resourceArticles,
   head: () =>
     pageMeta(
       "Resources",
@@ -44,10 +36,10 @@ function Resources() {
   const publishedArticles = Route.useLoaderData();
   const [filter, setFilter] = useState("All");
   const shown = publishedArticles.filter(
-    (article) => filter === "All" || categoryKey(article.tag) === categoryKey(filter),
+    (article) => filter === "All" || categoryKey(article.category) === categoryKey(filter),
   );
   const featured = filter === "All" ? publishedArticles[0] : undefined;
-  const gridArticles = featured ? shown.filter((article) => article.id !== featured.id) : shown;
+  const gridArticles = featured ? shown.filter((article) => article.slug !== featured.slug) : shown;
 
   return (
     <>
@@ -116,8 +108,8 @@ function Resources() {
             <Reveal className="group mt-10 grid overflow-hidden rounded-md border-2 border-solid border-[#1B4D2E] bg-brand-deep text-pure-white lg:grid-cols-2">
               <div className="relative min-h-[340px] overflow-hidden lg:min-h-[440px]">
                 <img
-                  src={featured.coverImage ?? ""}
-                  alt={featured.imageAlt}
+                  src={featured.image}
+                  alt={featured.title}
                   loading="lazy"
                   decoding="async"
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
@@ -127,7 +119,7 @@ function Resources() {
                 <div>
                   <div className="flex items-center gap-4">
                     <Label className="text-aqua">Featured guide</Label>
-                    <span className="text-xs text-pure-white/45">{featured.readTime}</span>
+                    <span className="text-xs text-pure-white/75">{featured.read}</span>
                   </div>
                   <h2 className="display mt-6 text-[clamp(2.25rem,3.5vw,3.75rem)] leading-tight">
                     {featured.title}
@@ -166,39 +158,30 @@ function Resources() {
               <div className="mb-8 border-b border-charcoal/15" />
               <div className="grid items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {gridArticles.map((article, index) => (
-                  <Reveal key={article.id} delay={(index % 3) * 70} className="h-full">
+                  <Reveal key={article.slug} delay={(index % 3) * 70} className="h-full">
                     <Link
                       to="/resources/$slug"
                       params={{ slug: article.slug }}
                       className="group flex h-full flex-col overflow-hidden rounded-md border border-[#1B4D2E] bg-ivory transition-transform duration-300 hover:-translate-y-1"
                     >
                       <div className="relative aspect-[16/10] overflow-hidden bg-brand-soft">
-                        {article.coverImage && (
+                        {article.image && (
                           <img
-                            src={article.coverImage}
-                            alt={article.imageAlt}
+                            src={article.image}
+                            alt={article.title}
                             loading="lazy"
                             decoding="async"
                             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                           />
                         )}
                         <span className="micro-label absolute left-4 top-4 rounded-sm bg-ivory px-3 py-2 text-brand shadow-sm">
-                          {article.tag}
+                          {article.category}
                         </span>
                       </div>
                       <div className="flex flex-1 flex-col bg-ivory px-5 pb-6 pt-5">
                         <div className="flex justify-between text-xs text-charcoal/60">
-                          <span>
-                            {article.publishedAt
-                              ? new Date(article.publishedAt).toLocaleDateString("en", {
-                                  month: "long",
-                                  day: "numeric",
-                                  year: "numeric",
-                                  timeZone: "UTC",
-                                })
-                              : "Resource guide"}
-                          </span>
-                          <span>{article.readTime}</span>
+                          <span>Resource guide</span>
+                          <span>{article.read}</span>
                         </div>
                         <h3 className="display mt-4 line-clamp-3 text-3xl leading-tight text-[#006465] transition-colors group-hover:text-brand">
                           {article.title}

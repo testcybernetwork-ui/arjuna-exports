@@ -1,5 +1,4 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
 import { Fragment, useRef } from "react";
 import {
   img,
@@ -18,17 +17,15 @@ import {
   TextLink,
 } from "@/components/site/primitives";
 import { CustomerJourney } from "@/components/site/CustomerJourney";
+import { resourceArticles, type ResourceArticle } from "@/lib/resource-data";
 import logo from "@/assets/logo.svg";
 import heroPlantationWebp from "@/assets/hero-plantation.webp";
 import heroVideo from "@/assets/hero-video.mp4";
 
-const loadHomeArticles = createServerFn({ method: "GET" }).handler(async () => {
-  const { listResourceArticles } = await import("@/server/blog-db.server");
-  const res = await listResourceArticles({ page: 1 });
-  return res.articles.slice(0, 8);
+export const Route = createFileRoute("/")({
+  loader: () => resourceArticles.slice(0, 8),
+  component: Home,
 });
-
-export const Route = createFileRoute("/")({ loader: () => loadHomeArticles(), component: Home });
 
 function ProductCarousel() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -57,15 +54,7 @@ function ProductCarousel() {
 function ArticlesCarousel({
   articles,
 }: {
-  articles: Array<{
-    id: string;
-    slug: string;
-    coverImage: string | null;
-    tag: string;
-    readTime: string;
-    title: string;
-    imageAlt: string;
-  }>;
+  articles: ResourceArticle[];
 }) {
   return (
     <div className="running-carousel mt-12" aria-label="Latest articles">
@@ -78,7 +67,7 @@ function ArticlesCarousel({
           >
             {articles.map((article) => (
               <Link
-                key={article.id}
+                key={article.slug}
                 to="/resources/$slug"
                 params={{ slug: article.slug }}
                 tabIndex={duplicate ? -1 : undefined}
@@ -86,8 +75,8 @@ function ArticlesCarousel({
               >
                 <div className="aspect-[16/10] overflow-hidden bg-brand-soft">
                   <img
-                    src={article.coverImage ?? ""}
-                    alt={article.imageAlt}
+                    src={article.image}
+                    alt={article.title}
                     loading="lazy"
                     decoding="async"
                     className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
@@ -95,8 +84,8 @@ function ArticlesCarousel({
                 </div>
                 <div className="flex flex-1 flex-col p-6">
                   <div className="flex items-center justify-between gap-4 text-[11px] font-semibold uppercase tracking-[.08em] text-brand">
-                    <span className="line-clamp-1">{article.tag}</span>
-                    <span className="shrink-0 text-charcoal/55">{article.readTime}</span>
+                    <span className="line-clamp-1">{article.category}</span>
+                    <span className="shrink-0 text-charcoal/55">{article.read}</span>
                   </div>
                   <h3 className="display mt-4 text-2xl leading-tight transition-colors group-hover:text-brand">
                     {article.title}

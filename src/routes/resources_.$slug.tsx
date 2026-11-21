@@ -1,41 +1,31 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
-import { Check, Clock3, Facebook, Linkedin, Mail } from "lucide-react";
+import { Clock3, Facebook, Linkedin, Mail } from "lucide-react";
 import { Label, PrimaryButton, Reveal } from "@/components/site/primitives";
 import { resourceArticles, resourceCategories } from "@/lib/resource-data";
 
-const loadArticle = createServerFn({ method: "GET" })
-  .validator((slug: string) => slug)
-  .handler(async ({ data: slug }) => {
-    const { findResourceArticle, listResourceArticles } = await import("@/server/blog-db.server");
-    const article = await findResourceArticle(slug);
-    const first = article ? await listResourceArticles({ page: 1 }) : { articles: [] };
+export const Route = createFileRoute("/resources_/$slug")({
+  loader: ({ params }) => {
+    const article = resourceArticles.find((item) => item.slug === params.slug);
+    if (!article) throw notFound();
     return {
       article,
-      related: first.articles.filter((item) => item.id !== article?.id).slice(0, 3),
+      related: resourceArticles.filter((item) => item.slug !== article.slug).slice(0, 3),
     };
-  });
-
-export const Route = createFileRoute("/resources_/$slug")({
-  loader: async ({ params }) => {
-    const result = await loadArticle({ data: params.slug });
-    if (!result.article) throw notFound();
-    return result;
   },
   head: ({ loaderData }) => ({
     meta: [
       { title: `${loaderData?.article.title ?? "Article"} | Arjuna Exports` },
       {
         name: "description",
-        content: loaderData?.article.metaDescription ?? "Arjuna Exports growing guide",
+        content: loaderData?.article.excerpt ?? "Arjuna Exports growing guide",
       },
       { property: "og:title", content: loaderData?.article.title ?? "Arjuna Exports Resources" },
       {
         property: "og:description",
         content: loaderData?.article.excerpt ?? "Practical coir knowledge",
       },
-      ...(loaderData?.article.coverImage
-        ? [{ property: "og:image", content: loaderData.article.coverImage }]
+      ...(loaderData?.article.image
+        ? [{ property: "og:image", content: loaderData.article.image }]
         : []),
     ],
   }),
@@ -56,16 +46,8 @@ function ArticleDetail() {
     .map((name) => ({
       name,
       image:
-        resourceArticles.find((item) => item.category === name)?.image ?? article.coverImage ?? "",
+        resourceArticles.find((item) => item.category === name)?.image ?? article.image,
     }));
-  const date = article.publishedAt
-    ? new Date(article.publishedAt).toLocaleDateString("en", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-        timeZone: "UTC",
-      })
-    : null;
 
   return (
     <article className="bg-offwhite pb-20 pt-24 sm:pt-28">
@@ -77,13 +59,11 @@ function ArticleDetail() {
                 to="/resources"
                 className="resource-ribbon inline-flex min-h-10 items-center bg-[#f39a3c] py-2 pl-4 pr-10 text-xs font-bold uppercase tracking-[.06em] text-charcoal transition-opacity hover:opacity-80"
               >
-                {article.tag}
+                {article.category}
               </Link>
-              {date && (
-                <time className="bg-charcoal px-5 py-3 text-xs font-bold uppercase tracking-[.06em] text-pure-white">
-                  {date}
-                </time>
-              )}
+              <span className="bg-charcoal px-5 py-3 text-xs font-bold uppercase tracking-[.06em] text-pure-white">
+                Resource guide
+              </span>
             </div>
             <h1 className="display mt-9 max-w-5xl text-[clamp(2.5rem,4.5vw,4rem)] uppercase leading-[1.02] text-brand-deep">
               {article.title}
@@ -91,7 +71,7 @@ function ArticleDetail() {
             <div className="mt-9 flex flex-wrap items-center justify-between gap-6 border-b border-charcoal/15 pb-6">
               <span className="inline-flex items-center gap-2 text-sm font-semibold text-charcoal/65">
                 <Clock3 className="h-4 w-4" strokeWidth={1.8} aria-hidden />
-                Reading time: {article.readTime}
+                Reading time: {article.read}
               </span>
               <div
                 className="flex items-center gap-5 text-brand-deep"
@@ -125,25 +105,33 @@ function ArticleDetail() {
             </p>
           </Reveal>
 
-          {article.coverImage && (
+          {article.image && (
             <Reveal className="mt-10">
               <div className="relative aspect-[16/8] overflow-hidden">
                 <img
-                  src={article.coverImage}
-                  alt={article.imageAlt}
+                  src={article.image}
+                  alt={article.title}
                   loading="lazy"
                   decoding="async"
                   className="h-full w-full object-cover"
                 />
                 <span className="absolute bottom-4 left-4 bg-offwhite px-3 py-2 text-xs font-bold uppercase tracking-[.08em] text-brand-deep shadow-sm sm:bottom-6 sm:left-6">
-                  {article.tag}
+                  {article.category}
                 </span>
               </div>
             </Reveal>
           )}
 
           <Reveal className="mt-10 max-w-4xl">
-            <div className="article-body" dangerouslySetInnerHTML={{ __html: article.content }} />
+            <div className="article-body">
+              <p>{article.introduction}</p>
+              {article.sections.map((section) => (
+                <section key={section.heading}>
+                  <h2>{section.heading}</h2>
+                  <p className="whitespace-pre-line">{section.body}</p>
+                </section>
+              ))}
+            </div>
           </Reveal>
 
           <Reveal className="mt-12 flex flex-col items-start justify-between gap-7 border-t border-charcoal/20 pt-9 sm:flex-row sm:items-center">
@@ -194,16 +182,16 @@ function ArticleDetail() {
             <div className="mt-8 grid gap-8">
               {related.map((item) => (
                 <Link
-                  key={item.id}
+                  key={item.slug}
                   to="/resources/$slug"
                   params={{ slug: item.slug }}
                   className="group grid grid-cols-[112px_1fr] gap-4"
                 >
                   <div className="aspect-square overflow-hidden bg-brand-soft">
-                    {item.coverImage && (
+                    {item.image && (
                       <img
-                        src={item.coverImage}
-                        alt={item.imageAlt}
+                        src={item.image}
+                        alt={item.title}
                         loading="lazy"
                         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
@@ -211,12 +199,12 @@ function ArticleDetail() {
                   </div>
                   <div className="min-w-0 py-1">
                     <span className="text-[10px] font-bold uppercase tracking-[.1em] text-brand">
-                      {item.tag}
+                      {item.category}
                     </span>
                     <h3 className="display mt-2 text-xl leading-tight text-brand-deep transition-colors group-hover:text-brand">
                       {item.title}
                     </h3>
-                    <span className="mt-2 block text-xs text-charcoal/55">{item.readTime}</span>
+                    <span className="mt-2 block text-xs text-charcoal/55">{item.read}</span>
                   </div>
                 </Link>
               ))}

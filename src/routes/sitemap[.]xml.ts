@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { listResourceArticles } from "@/server/blog-db.server";
+import { resourceArticles } from "@/lib/resource-data";
 
 const publicPages = [
   "/",
@@ -28,27 +28,11 @@ export const Route = createFileRoute("/sitemap.xml")({
           /\/$/,
           "",
         );
-        const firstPage = await listResourceArticles({ page: 1 });
-        const pages = await Promise.all(
-          Array.from({ length: firstPage.pageCount }, (_, index) =>
-            listResourceArticles({ page: index + 1 }),
-          ),
-        );
-        const articleUrls = pages
-          .map((p) => p.articles)
-          .flat()
-          .flatMap((article) => [
-            { path: `/resources/articles/${article.slug}`, date: article.updatedAt },
-            {
-              path: `/resources/${article.legacySlug ?? article.slug}`,
-              date: article.updatedAt,
-            },
-          ]);
         const urls = [
-          ...publicPages.map((path) => ({ path, date: new Date().toISOString() })),
-          ...articleUrls,
+          ...publicPages,
+          ...resourceArticles.map((article) => `/resources/${article.slug}`),
         ];
-        const body = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.map(({ path, date }) => `<url><loc>${xml(`${origin}${path}`)}</loc><lastmod>${xml(date.slice(0, 10))}</lastmod></url>`).join("")}</urlset>`;
+        const body = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.map((path) => `<url><loc>${xml(`${origin}${path}`)}</loc></url>`).join("")}</urlset>`;
         return new Response(body, {
           headers: {
             "Content-Type": "application/xml; charset=utf-8",

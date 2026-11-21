@@ -1,0 +1,112 @@
+﻿{
+    "data":  [
+                 {
+                     "id":  2,
+                     "documentId":  "ds99u5tk2o74ik382a3i1cai",
+                     "title":  "From coconut husk to growing media",
+                     "slug":  "coconut-husk-to-growing-media",
+                     "summary":  "A look at how responsibly processed coir becomes a reliable growing medium.",
+                     "content":  [
+                                     {
+                                         "type":  "paragraph",
+                                         "children":  [
+                                                          {
+                                                              "type":  "text",
+                                                              "text":  "A coconut husk has a second life after harvest. Its fibres and pith can be processed into a versatile growing medium for professional growers."
+                                                          }
+                                                      ]
+                                     },
+                                     {
+                                         "type":  "heading",
+                                         "level":  2,
+                                         "children":  [
+                                                          {
+                                                              "type":  "text",
+                                                              "text":  "Prepared for consistent growth"
+                                                          }
+                                                      ]
+                                     },
+                                     {
+                                         "type":  "paragraph",
+                                         "children":  [
+                                                          {
+                                                              "type":  "text",
+                                                              "text":  "Washing, screening and careful grading help produce coir with dependable structure. The right blend supports aeration, moisture retention and easier handling."
+                                                          }
+                                                      ]
+                                     }
+                                 ],
+                     "createdAt":  "2026-10-22T14:01:35.939Z",
+                     "updatedAt":  "2026-10-22T14:01:35.939Z",
+                     "publishedAt":  "2026-10-22T14:01:35.944Z",
+                     "cover":  null,
+                     "category":  {
+                                      "id":  1,
+                                      "documentId":  "rj5risl22gak31pdxw823wss",
+                                      "name":  "Growing media",
+                                      "slug":  "growing-media",
+                                      "createdAt":  "2026-10-22T14:01:35.919Z",
+                                      "updatedAt":  "2026-10-22T14:01:35.919Z",
+                                      "publishedAt":  "2026-10-22T14:01:35.915Z"
+                                  }
+                 },
+                 {
+                     "id":  4,
+                     "documentId":  "lypqgsglgd2ot3bg1so5lujz",
+                     "title":  "Why coir supports more circular growing",
+                     "slug":  "circular-growing-with-coir",
+                     "summary":  "Coconut coir turns an agricultural byproduct into a useful resource for growers.",
+                     "content":  [
+                                     {
+                                         "type":  "paragraph",
+                                         "children":  [
+                                                          {
+                                                              "type":  "text",
+                                                              "text":  "Circular growing starts with making better use of available resources. Coir is made from coconut husks, a byproduct of the food industry."
+                                                          }
+                                                      ]
+                                     },
+                                     {
+                                         "type":  "heading",
+                                         "level":  2,
+                                         "children":  [
+                                                          {
+                                                              "type":  "text",
+                                                              "text":  "A practical material choice"
+                                                          }
+                                                      ]
+                                     },
+                                     {
+                                         "type":  "paragraph",
+                                         "children":  [
+                                                          {
+                                                              "type":  "text",
+                                                              "text":  "When processed to meet the needs of a crop, coir can provide a renewable alternative for many growing applications. Product specifications and responsible sourcing matter at every stage."
+                                                          }
+                                                      ]
+                                     }
+                                 ],
+                     "createdAt":  "2026-10-22T14:01:35.958Z",
+                     "updatedAt":  "2026-10-22T14:01:35.958Z",
+                     "publishedAt":  "2026-10-22T14:01:35.961Z",
+                     "cover":  null,
+                     "category":  {
+                                      "id":  2,
+                                      "documentId":  "yqyqlrfijqqd2pf74shoo824",
+                                      "name":  "Sustainability",
+                                      "slug":  "sustainability",
+                                      "createdAt":  "2026-10-22T14:01:35.927Z",
+                                      "updatedAt":  "2026-10-22T14:01:35.927Z",
+                                      "publishedAt":  "2026-10-22T14:01:35.926Z"
+                                  }
+                 }
+             ],
+    "meta":  {
+                 "pagination":  {
+                                    "page":  1,
+                                    "pageSize":  100,
+                                    "pageCount":  1,
+                                    "total":  2
+                                }
+             }
+}

@@ -143,13 +143,7 @@ function Resources() {
           {publishedArticles.length > 0 && (
             <div id="articles" className="scroll-mt-28 pt-20">
               <Reveal className="mb-8">
-                <Label className="text-brand">
-                  <span
-                    aria-hidden="true"
-                    className="mr-3 inline-block w-8 border-t border-brand align-middle"
-                  />
-                  More to explore
-                </Label>
+                <Label className="text-brand">More to explore</Label>
                 <h2 className="display mt-4 text-[clamp(2.25rem,3.8vw,3.75rem)]">Articles</h2>
                 <p className="mt-4 max-w-2xl text-charcoal/60">
                   Practical ideas and insights for making the most of coco coir.

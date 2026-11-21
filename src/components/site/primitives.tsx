@@ -58,8 +58,7 @@ export function Reveal({
 
 export function Label({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <span className={cn("micro-label inline-flex items-center gap-3", className)}>
-      <span className="inline-block h-px w-8 bg-current" aria-hidden />
+    <span className={cn("micro-label inline-flex items-center", className)}>
       {children}
     </span>
   );

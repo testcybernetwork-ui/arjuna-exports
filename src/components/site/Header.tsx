@@ -5,6 +5,8 @@ import { navItems } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 import { PrimaryButton } from "./primitives";
 
+const menuItems = navItems.filter((item) => item.to !== "/");
+
 export function Header({ overHero = false }: { overHero?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -62,7 +64,7 @@ export function Header({ overHero = false }: { overHero?: boolean }) {
             )}
             aria-label="Primary"
           >
-            {navItems.map((item) => {
+            {menuItems.map((item) => {
               const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
               return (
                 <Link
@@ -136,7 +138,7 @@ export function Header({ overHero = false }: { overHero?: boolean }) {
           aria-label="Mobile"
         >
           <ul className="site-menu-font text-brand">
-            {navItems.map((item) => {
+            {menuItems.map((item) => {
               const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
               return (
                 <li key={item.to} className="border-b border-charcoal/10">

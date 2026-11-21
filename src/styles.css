@@ -282,8 +282,8 @@ body {
   --space-12: 48px;
   --space-16: 64px;
   --space-24: 96px;
-  --section-space: 96px;
-  --section-space-mobile: 56px;
+  --section-space: 64px;
+  --section-space-mobile: 40px;
   --heading-content-gap: 32px;
   --card-gap: 24px;
   --container-width: 1200px;
@@ -1399,7 +1399,7 @@ h1:is(.hero-title-dark, .contact-hero-title, [class*="text-[#20555A]"]) {
 .site-compact > section[class*="py-32"],
 .site-compact > section[class*="py-36"],
 .site-compact > section[class*="py-40"] {
-  padding-block: clamp(4rem, 6vw, 5rem) !important;
+  padding-block: clamp(3rem, 4vw, 4rem) !important;
 }
 
 .site-compact [class~="mt-20"],
@@ -1858,7 +1858,7 @@ body > div {
   .site-compact > section[class*="py-12"],
   .site-compact > section[class*="py-14"],
   .site-compact > section[class*="py-16"] {
-    padding-block: clamp(4rem, 5.5vw, 5rem);
+    padding-block: clamp(3rem, 4vw, 4rem) !important;
   }
 }
 
@@ -1878,7 +1878,7 @@ body > div {
 
 @media (max-width: 767px) {
   .site-compact > section[class*="py-"] {
-    padding-block: clamp(2rem, 8vw, 3rem) !important;
+    padding-block: clamp(1.5rem, 6vw, 2.5rem) !important;
   }
 
   .site-compact > section[class*="py-"] > .container,

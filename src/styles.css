@@ -479,7 +479,7 @@ body {
 }
 
 @utility micro-label {
-  font-family: var(--font-sans);
+  font-family: var(--font-display);
   font-size: var(--text-label);
   font-weight: 600;
   line-height: 1.4;
@@ -598,7 +598,7 @@ h1:is(.hero-title-dark, .contact-hero-title, [class*="text-[#20555A]"]) {
 }
 
 .micro-label {
-  font-family: var(--font-sans);
+  font-family: var(--font-display);
   font-size: var(--text-label);
   font-weight: 600;
   line-height: 1.4;
@@ -1503,7 +1503,7 @@ footer [class~="mt-16"] {
   max-width: none !important;
   margin: 0;
   color: #FFFFFF !important;
-  font-family: inherit;
+  font-family: var(--font-display);
   font-size: var(--text-h2) !important;
   font-weight: 700;
   line-height: 1.08 !important;
@@ -1565,7 +1565,7 @@ footer [class~="mt-16"] {
   flex: 0 0 auto;
   margin: 0;
   color: #FFFFFF !important;
-  font-family: inherit;
+  font-family: var(--font-display);
   font-size: var(--text-h2);
   font-weight: 700;
   line-height: 1.2;
@@ -1670,7 +1670,7 @@ footer [class~="mt-16"] {
   margin: 0 0 0.4rem;
   padding-bottom: 0.25rem;
   color: var(--footer-ink) !important;
-  font-family: var(--font-sans);
+  font-family: var(--font-display);
   font-size: 15px;
   font-weight: 700;
   line-height: 1.4;

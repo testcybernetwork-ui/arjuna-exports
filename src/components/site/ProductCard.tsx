@@ -31,7 +31,7 @@ export function ProductCard({ product, index, variant }: ProductCardProps) {
             {String(index + 1).padStart(2, "0")} / {product.category}
           </span>
           <h3 className="display mt-3">{product.name}</h3>
-          <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-charcoal/70">
+          <p className="mt-3 line-clamp-2 font-display text-sm leading-relaxed text-charcoal/70">
             {product.short}
           </p>
         </div>
@@ -59,7 +59,7 @@ export function ProductCard({ product, index, variant }: ProductCardProps) {
             Product {String(index + 1).padStart(2, "0")}
           </span>
           <h2 className="display mt-4 text-charcoal">{product.name}</h2>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-charcoal/68">
+          <p className="mt-5 max-w-2xl font-display text-base leading-relaxed text-charcoal/68">
             {product.short}
           </p>
         </div>

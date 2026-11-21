@@ -57,7 +57,7 @@ export function Header({ overHero = false }: { overHero?: boolean }) {
 
           <nav
             className={cn(
-              "site-menu-font hidden items-center gap-[clamp(12px,1.55vw,24px)] transition-colors duration-500 xl:flex",
+              "site-menu-font hidden items-center gap-[clamp(24px,2vw,32px)] transition-colors duration-500 xl:flex",
               solid ? "text-brand" : "text-pure-white",
             )}
             aria-label="Primary"
@@ -89,10 +89,10 @@ export function Header({ overHero = false }: { overHero?: boolean }) {
             <Link
               to="/contact"
               className={cn(
-                "site-menu-font group hidden min-h-9 items-center gap-2 rounded-sm px-4 text-[11px] tracking-[0.04em] transition-colors duration-300 sm:inline-flex",
+                "site-menu-font group hidden min-h-11 items-center gap-2 rounded-sm px-4 text-[13px] tracking-[0.04em] transition-colors duration-300 sm:inline-flex",
                 solid
                   ? "bg-primary-green text-pure-white hover:bg-primary-green-hover active:bg-primary-green-active"
-                  : "border border-pure-white/70 text-pure-white hover:bg-pure-white hover:text-brand-deep",
+                  : "bg-primary-green text-pure-white hover:bg-primary-green-hover active:bg-primary-green-active",
               )}
             >
               Request a Quote

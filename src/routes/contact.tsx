@@ -41,7 +41,7 @@ const contactCards = [
   },
   {
     key: "mobile",
-    label: "Mobile",
+    label: "Mobile / WhatsApp",
     value: "+91 96298 74555",
     href: "tel:+919629874555",
     icon: Phone,
@@ -131,7 +131,7 @@ const partnershipRoleOptions = [
 type EnquiryType = (typeof enquiryTypes)[number]["value"];
 
 const inputClass =
-  "mt-2 h-12 w-full rounded-sm border border-brand/18 bg-pure-white px-4 text-base font-medium text-brand-deep outline-none transition-colors placeholder:text-charcoal/35 focus:border-brand";
+  "mt-2 h-12 w-full rounded-sm border border-brand/35 bg-pure-white px-4 text-base font-medium text-brand-deep outline-none transition-colors placeholder:text-charcoal/55 focus:border-2 focus:border-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand";
 
 function Contact() {
   const [sent, setSent] = useState(false);
@@ -212,7 +212,7 @@ function Contact() {
         eyebrow="Contact"
         title={
           <span className="block">
-            <span className="block">Share Your Requirement....</span>
+            <span className="block">Share Your Requirement…</span>
             <span className="block">We'll Take It From There!</span>
           </span>
         }
@@ -297,6 +297,14 @@ function Contact() {
                     <span>Tiruchengode Taluk,</span>
                     <span>Namakkal District,</span>
                     <span>Tamil Nadu – 637205, India.</span>
+                    <a
+                      href="https://www.google.com/maps/search/?api=1&query=Kumaramangalam+Namakkal+Tamil+Nadu+637205"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
+                    >
+                      Get directions
+                    </a>
                   </div>
                 </span>
               </address>
@@ -344,19 +352,19 @@ function Contact() {
                           type="button"
                           aria-pressed={selected}
                           onClick={() => setEnquiryType(value)}
-                          className="group flex min-w-0 flex-col items-center gap-3 px-1 py-2 text-center text-pure-white"
+                          className="group flex min-h-[44px] min-w-0 flex-col items-center gap-3 px-1 py-2 text-center text-pure-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pure-white"
                         >
-                          <span className="site-menu-font text-[10px] uppercase tracking-[.08em] sm:text-xs">
+                          <span className="site-menu-font text-xs uppercase tracking-[.08em]">
                             {label}
                           </span>
                           <span
-                            className={`grid h-14 w-14 place-items-center rounded-full transition-all sm:h-16 sm:w-16 ${
+                          className={`grid h-14 w-14 place-items-center rounded-full transition-all sm:h-16 sm:w-16 ${
                               selected
-                                ? "-translate-y-0.5 bg-earth-natural text-pure-white shadow-lg"
-                                : "bg-[#10194f] text-pure-white group-hover:-translate-y-0.5"
+                              ? "-translate-y-0.5 bg-pure-white ring-2 ring-pure-white text-brand shadow-lg"
+                              : "bg-pure-white/15 text-pure-white group-hover:-translate-y-0.5"
                             }`}
                           >
-                            <Icon className="h-7 w-7 sm:h-8 sm:w-8" strokeWidth={1.8} aria-hidden />
+                          <Icon className="h-7 w-7 text-brand sm:h-8 sm:w-8" strokeWidth={1.8} aria-hidden />
                           </span>
                         </button>
                       );
@@ -408,6 +416,7 @@ function Contact() {
                           name={f.name}
                           required={f.required}
                           type={f.type ?? "text"}
+                          placeholder={f.label}
                           className={`${inputClass} ${fieldErrors[f.name] ? "!border-red-400" : ""}`}
                         />
                         {fieldErrorEl(f.name)}
@@ -418,10 +427,11 @@ function Contact() {
                   {enquiryType === "partnership" && (
                     <div className="mt-6 grid gap-6 sm:grid-cols-2">
                       <label className="block">
-                        <span className="micro-label text-brand">Market segment</span>
+                        <span className="micro-label text-brand">Market segment *</span>
                         <select
                           name="marketSegment"
                           className={inputClass}
+                          required
                           value={marketSegment}
                           onChange={(event) => setMarketSegment(event.target.value)}
                         >
@@ -457,7 +467,7 @@ function Contact() {
                       )}
                       <label className="block sm:col-span-2">
                         <span className="micro-label text-brand">
-                          Detailed requirements and inputs
+                          Detailed requirements and inputs *
                         </span>
                         <textarea
                           name="partnershipRequirements"
@@ -520,11 +530,12 @@ function Contact() {
                       )}
                       <label className="block sm:col-span-2">
                         <span className="micro-label text-brand">
-                          Required documents or information
+                          Required documents or information *
                         </span>
                         <textarea
                           name="requiredDocuments"
                           rows={4}
+                          required
                           className="mt-2 block w-full resize-y rounded-sm border border-brand/18 bg-pure-white px-4 py-3 text-base font-medium text-brand-deep outline-none transition-colors focus:border-brand"
                         />
                       </label>
@@ -562,7 +573,7 @@ function Contact() {
                         </label>
                       )}
                       <label className="block">
-                        <span className="micro-label text-brand">Your comments / questions</span>
+                        <span className="micro-label text-brand">Your comments / questions *</span>
                         <textarea
                           name="generalComments"
                           required
@@ -582,6 +593,7 @@ function Contact() {
                       className="mt-1 h-4 w-4 accent-brand"
                     />
                     <span>
+                      <strong aria-hidden="true">*</strong>{" "}
                       By opting in, I agree to receive marketing offers, updates and other
                       communications from Arjuna Exports, and understand that my personal data will
                       be stored and processed in line with the privacy policy.
@@ -614,7 +626,7 @@ function Contact() {
           <aside className="space-y-6 lg:order-1 lg:sticky lg:top-28">
             <Reveal delay={120}>
               <div className="overflow-hidden rounded-md bg-brand-deep text-pure-white">
-                <div className="relative aspect-[4/3]">
+                <div className="relative aspect-[4/3] p-6">
                   <img
                     src={img.appGreenhouse}
                     alt="Greenhouse crops grown in coco medium"
@@ -623,7 +635,7 @@ function Contact() {
                     className="h-full w-full object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-brand-deep via-brand-deep/12 to-transparent" />
-                  <div className="absolute right-5 bottom-5 left-5">
+                  <div className="absolute right-6 bottom-6 left-6">
                     <span className="micro-label text-aqua">Export support</span>
                     <h2 className="display mt-3 text-3xl">From sample to container.</h2>
                   </div>
@@ -637,7 +649,7 @@ function Contact() {
                         </span>
                         <span>
                           <span className="block font-semibold">{title}</span>
-                          <span className="mt-1 block text-sm leading-relaxed text-pure-white/62">
+                          <span className="mt-1 block text-sm leading-relaxed text-pure-white">
                             {text}
                           </span>
                         </span>

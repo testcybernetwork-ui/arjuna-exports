@@ -231,7 +231,7 @@ export const products: Product[] = [
     ],
   },
   {
-    slug: "coco-hush-chips",
+    slug: "coco-husk-chips",
     name: "Coco Husk Chips",
     category: "Coco Husk",
     image: productCocoHushChips4kg,
@@ -325,7 +325,7 @@ export const transformationStages = [
   {
     n: "01",
     title: "Coconut Husk",
-    text: "The husk that surrounds every coconut â€” once discarded, now the beginning of the material.",
+    text: "The husk that surrounds every coconut — once discarded, now the beginning of the material.",
     image: stageHusk,
   },
   {

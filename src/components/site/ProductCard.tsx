@@ -9,6 +9,9 @@ type ProductCardProps = {
 };
 
 export function ProductCard({ product, index, variant }: ProductCardProps) {
+  const cardTitle = product.slug === "coir-650-gram-bricks"
+    ? "Coco Peat 650g Bricks"
+    : product.name;
   return (
     <Link
       to="/products/$slug"
@@ -21,7 +24,7 @@ export function ProductCard({ product, index, variant }: ProductCardProps) {
         )}
         <img
           src={product.image}
-          alt={product.name}
+          alt={cardTitle}
           loading="lazy"
           decoding="async"
           className="product-card__image"
@@ -33,7 +36,7 @@ export function ProductCard({ product, index, variant }: ProductCardProps) {
             <span className="micro-label text-brand">
               {String(index + 1).padStart(2, "0")} / {product.category}
             </span>
-            <h3 className="display mt-3 text-2xl leading-tight">{product.name}</h3>
+            <h3 className="display mt-3 text-2xl leading-tight">{cardTitle}</h3>
             <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-charcoal/70">
               {product.short}
             </p>
@@ -43,7 +46,7 @@ export function ProductCard({ product, index, variant }: ProductCardProps) {
             <div>
               <span className="micro-label text-brand">Export product</span>
               <h2 className="display mt-4 text-[clamp(2.2rem,3.5vw,3.75rem)] text-charcoal">
-                {product.name}
+                {cardTitle}
               </h2>
               <p className="mt-5 max-w-2xl text-base leading-relaxed text-charcoal/68">
                 {product.short}

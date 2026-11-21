@@ -20,7 +20,7 @@ import {
 import { CustomerJourney } from "@/components/site/CustomerJourney";
 import logo from "@/assets/logo.svg";
 import heroPlantationWebp from "@/assets/hero-plantation.webp";
-import heroVideo from "@/assets/Heropage (1).mp4";
+import heroVideo from "@/assets/hero-video.mp4";
 
 const loadHomeArticles = createServerFn({ method: "GET" }).handler(async () => {
   const { listResourceArticles } = await import("@/server/blog-db.server");
@@ -31,20 +31,24 @@ const loadHomeArticles = createServerFn({ method: "GET" }).handler(async () => {
 export const Route = createFileRoute("/")({ loader: () => loadHomeArticles(), component: Home });
 
 function ProductCarousel() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const scrollProducts = (direction: number) => {
+    trackRef.current?.scrollBy({ left: direction * 352, behavior: "smooth" });
+  };
+
   return (
-    <div className="running-carousel mt-12" aria-label="Featured products">
-      <div className="running-carousel-track">
-        {[false, true].map((duplicate) => (
-          <div
-            key={duplicate ? "products-copy" : "products"}
-            className="flex items-stretch gap-6 pr-6"
-            aria-hidden={duplicate || undefined}
-          >
-            {products.map((product, index) => (
-              <ProductCard key={product.slug} product={product} index={index} variant="carousel" />
-            ))}
-          </div>
+    <div className="mt-12" aria-label="Featured products">
+      <div
+        ref={trackRef}
+        className="product-carousel-track flex items-stretch gap-6 overflow-x-auto pb-4"
+      >
+        {products.map((product, index) => (
+          <ProductCard key={product.slug} product={product} index={index} variant="carousel" />
         ))}
+      </div>
+      <div className="mt-4 flex items-center justify-end gap-3" aria-label="Carousel controls">
+        <button type="button" className="product-carousel-arrow" onClick={() => scrollProducts(-1)} aria-label="Previous products">←</button>
+        <button type="button" className="product-carousel-arrow" onClick={() => scrollProducts(1)} aria-label="Next products">→</button>
       </div>
     </div>
   );
@@ -232,8 +236,8 @@ function Home() {
           >
             <path d="M2.0 24.0 L2.0 21.0 L3.0 21.0 L3.0 10.0 L4.0 10.0 L4.0 1.0 L8.0 1.0 L8.0 2.0 L12.0 2.0 L12.0 3.0 L17.0 3.0 L17.0 4.0 L22.0 4.0 L22.0 5.0 L26.0 5.0 L26.0 6.0 L29.0 6.0 L29.0 7.0 L34.0 7.0 L34.0 6.0 L38.0 6.0 L38.0 5.0 L43.0 5.0 L43.0 4.0 L46.0 4.0 L46.0 3.0 L50.0 3.0 L50.0 2.0 L61.0 2.0 L61.0 3.0 L64.0 3.0 L64.0 4.0 L67.0 4.0 L67.0 5.0 L71.0 5.0 L71.0 6.0 L74.0 6.0 L74.0 7.0 L75.0 7.0 L75.0 6.0 L77.0 6.0 L77.0 5.0 L80.0 5.0 L80.0 4.0 L84.0 4.0 L84.0 3.0 L88.0 3.0 L88.0 2.0 L94.0 2.0 L94.0 1.0 L101.0 1.0 L101.0 12.0 L102.0 12.0 L102.0 34.0 L103.0 34.0 L103.0 36.0 L91.0 36.0 L91.0 37.0 L81.0 37.0 L81.0 35.0 L79.0 35.0 L79.0 36.0 L77.0 36.0 L77.0 39.0 L76.0 39.0 L76.0 41.0 L72.0 41.0 L72.0 40.0 L71.0 40.0 L71.0 44.0 L70.0 44.0 L70.0 45.0 L69.0 45.0 L69.0 46.0 L66.0 46.0 L66.0 45.0 L63.0 45.0 L63.0 47.0 L62.0 47.0 L62.0 48.0 L59.0 48.0 L59.0 49.0 L58.0 49.0 L58.0 50.0 L57.0 50.0 L57.0 51.0 L54.0 51.0 L54.0 50.0 L51.0 50.0 L51.0 51.0 L49.0 51.0 L49.0 52.0 L47.0 52.0 L47.0 51.0 L45.0 51.0 L45.0 48.0 L44.0 48.0 L44.0 49.0 L41.0 49.0 L41.0 48.0 L40.0 48.0 L40.0 47.0 L39.0 47.0 L39.0 45.0 L37.0 45.0 L37.0 46.0 L36.0 46.0 L36.0 45.0 L34.0 45.0 L34.0 44.0 L33.0 44.0 L33.0 41.0 L29.0 41.0 L29.0 40.0 L28.0 40.0 L28.0 38.0 L27.0 38.0 L27.0 37.0 L26.0 37.0 L26.0 36.0 L24.0 36.0 L24.0 35.0 L23.0 35.0 L23.0 36.0 L20.0 36.0 L20.0 37.0 L14.0 37.0 L14.0 36.0 L3.0 36.0 L3.0 35.0 L1.0 35.0 L1.0 33.0 L2.0 33.0 L2.0 24.0 Z M47.0 7.0 L46.0 7.0 L46.0 8.0 L45.0 8.0 L45.0 9.0 L43.0 9.0 L43.0 11.0 L42.0 11.0 L42.0 12.0 L41.0 12.0 L41.0 13.0 L40.0 13.0 L40.0 14.0 L39.0 14.0 L39.0 16.0 L38.0 16.0 L38.0 20.0 L44.0 20.0 L44.0 19.0 L46.0 19.0 L46.0 18.0 L47.0 18.0 L47.0 17.0 L48.0 17.0 L48.0 16.0 L50.0 16.0 L50.0 15.0 L52.0 15.0 L52.0 14.0 L56.0 14.0 L56.0 15.0 L58.0 15.0 L58.0 16.0 L59.0 16.0 L59.0 17.0 L60.0 17.0 L60.0 18.0 L61.0 18.0 L61.0 19.0 L62.0 19.0 L62.0 20.0 L63.0 20.0 L63.0 22.0 L65.0 22.0 L65.0 23.0 L66.0 23.0 L66.0 24.0 L67.0 24.0 L67.0 25.0 L68.0 25.0 L68.0 26.0 L69.0 26.0 L69.0 27.0 L70.0 27.0 L70.0 28.0 L72.0 28.0 L72.0 29.0 L73.0 29.0 L73.0 30.0 L74.0 30.0 L74.0 31.0 L75.0 31.0 L75.0 32.0 L76.0 32.0 L76.0 33.0 L77.0 33.0 L77.0 34.0 L79.0 34.0 L79.0 33.0 L80.0 33.0 L80.0 32.0 L81.0 32.0 L81.0 31.0 L80.0 31.0 L80.0 26.0 L79.0 26.0 L79.0 20.0 L78.0 20.0 L78.0 16.0 L77.0 16.0 L77.0 12.0 L76.0 12.0 L76.0 9.0 L74.0 9.0 L74.0 8.0 L71.0 8.0 L71.0 7.0 L68.0 7.0 L68.0 6.0 L64.0 6.0 L64.0 5.0 L61.0 5.0 L61.0 4.0 L51.0 4.0 L51.0 5.0 L48.0 5.0 L48.0 6.0 L47.0 6.0 L47.0 7.0 Z M54.0 41.0 L54.0 42.0 L55.0 42.0 L55.0 44.0 L56.0 44.0 L56.0 45.0 L57.0 45.0 L57.0 46.0 L61.0 46.0 L61.0 42.0 L59.0 42.0 L59.0 41.0 L58.0 41.0 L58.0 40.0 L57.0 40.0 L57.0 39.0 L55.0 39.0 L55.0 38.0 L54.0 38.0 L54.0 37.0 L53.0 37.0 L53.0 36.0 L52.0 36.0 L52.0 34.0 L54.0 34.0 L54.0 35.0 L55.0 35.0 L55.0 36.0 L56.0 36.0 L56.0 37.0 L57.0 37.0 L57.0 38.0 L58.0 38.0 L58.0 39.0 L59.0 39.0 L59.0 40.0 L60.0 40.0 L60.0 41.0 L62.0 41.0 L62.0 42.0 L64.0 42.0 L64.0 43.0 L65.0 43.0 L65.0 44.0 L69.0 44.0 L69.0 40.0 L68.0 40.0 L68.0 38.0 L67.0 38.0 L67.0 37.0 L66.0 37.0 L66.0 36.0 L65.0 36.0 L65.0 35.0 L64.0 35.0 L64.0 34.0 L63.0 34.0 L63.0 33.0 L61.0 33.0 L61.0 32.0 L60.0 32.0 L60.0 31.0 L59.0 31.0 L59.0 30.0 L58.0 30.0 L58.0 29.0 L57.0 29.0 L57.0 28.0 L56.0 28.0 L56.0 27.0 L58.0 27.0 L58.0 28.0 L60.0 28.0 L60.0 29.0 L61.0 29.0 L61.0 30.0 L62.0 30.0 L62.0 31.0 L63.0 31.0 L63.0 32.0 L64.0 32.0 L64.0 33.0 L65.0 33.0 L65.0 34.0 L66.0 34.0 L66.0 35.0 L68.0 35.0 L68.0 36.0 L69.0 36.0 L69.0 37.0 L70.0 37.0 L70.0 38.0 L72.0 38.0 L72.0 39.0 L75.0 39.0 L75.0 36.0 L74.0 36.0 L74.0 34.0 L73.0 34.0 L73.0 33.0 L72.0 33.0 L72.0 32.0 L71.0 32.0 L71.0 30.0 L69.0 30.0 L69.0 29.0 L68.0 29.0 L68.0 28.0 L67.0 28.0 L67.0 27.0 L66.0 27.0 L66.0 26.0 L65.0 26.0 L65.0 25.0 L63.0 25.0 L63.0 24.0 L62.0 24.0 L62.0 23.0 L61.0 23.0 L61.0 22.0 L59.0 22.0 L59.0 21.0 L58.0 21.0 L58.0 20.0 L56.0 20.0 L56.0 19.0 L55.0 19.0 L55.0 18.0 L53.0 18.0 L53.0 17.0 L50.0 17.0 L50.0 18.0 L48.0 18.0 L48.0 19.0 L47.0 19.0 L47.0 20.0 L46.0 20.0 L46.0 21.0 L43.0 21.0 L43.0 22.0 L39.0 22.0 L39.0 21.0 L37.0 21.0 L37.0 20.0 L36.0 20.0 L36.0 16.0 L37.0 16.0 L37.0 14.0 L38.0 14.0 L38.0 13.0 L39.0 13.0 L39.0 12.0 L40.0 12.0 L40.0 10.0 L41.0 10.0 L41.0 9.0 L42.0 9.0 L42.0 8.0 L43.0 8.0 L43.0 7.0 L44.0 7.0 L44.0 6.0 L42.0 6.0 L42.0 7.0 L38.0 7.0 L38.0 8.0 L33.0 8.0 L33.0 9.0 L29.0 9.0 L29.0 13.0 L28.0 13.0 L28.0 16.0 L27.0 16.0 L27.0 19.0 L26.0 19.0 L26.0 23.0 L25.0 23.0 L25.0 28.0 L24.0 28.0 L24.0 32.0 L23.0 32.0 L23.0 33.0 L24.0 33.0 L24.0 34.0 L26.0 34.0 L26.0 35.0 L28.0 35.0 L28.0 33.0 L29.0 33.0 L29.0 32.0 L30.0 32.0 L30.0 31.0 L32.0 31.0 L32.0 30.0 L36.0 30.0 L36.0 31.0 L37.0 31.0 L37.0 32.0 L38.0 32.0 L38.0 33.0 L40.0 33.0 L40.0 32.0 L44.0 32.0 L44.0 33.0 L45.0 33.0 L45.0 34.0 L46.0 34.0 L46.0 37.0 L48.0 37.0 L48.0 36.0 L49.0 36.0 L49.0 37.0 L50.0 37.0 L50.0 38.0 L51.0 38.0 L51.0 41.0 L54.0 41.0 Z M48.0 43.0 L48.0 42.0 L49.0 42.0 L49.0 40.0 L50.0 40.0 L50.0 39.0 L49.0 39.0 L49.0 38.0 L47.0 38.0 L47.0 39.0 L45.0 39.0 L45.0 40.0 L44.0 40.0 L44.0 41.0 L43.0 41.0 L43.0 43.0 L42.0 43.0 L42.0 45.0 L41.0 45.0 L41.0 47.0 L44.0 47.0 L44.0 46.0 L45.0 46.0 L45.0 45.0 L47.0 45.0 L47.0 43.0 L48.0 43.0 Z M41.0 41.0 L41.0 40.0 L42.0 40.0 L42.0 39.0 L43.0 39.0 L43.0 37.0 L44.0 37.0 L44.0 35.0 L43.0 35.0 L43.0 34.0 L39.0 34.0 L39.0 35.0 L38.0 35.0 L38.0 37.0 L37.0 37.0 L37.0 38.0 L36.0 38.0 L36.0 39.0 L35.0 39.0 L35.0 43.0 L36.0 43.0 L36.0 44.0 L38.0 44.0 L38.0 43.0 L39.0 43.0 L39.0 42.0 L40.0 42.0 L40.0 41.0 L41.0 41.0 Z M54.0 48.0 L54.0 49.0 L57.0 49.0 L57.0 47.0 L54.0 47.0 L54.0 48.0 Z M30.0 40.0 L32.0 40.0 L32.0 39.0 L33.0 39.0 L33.0 38.0 L34.0 38.0 L34.0 37.0 L35.0 37.0 L35.0 36.0 L36.0 36.0 L36.0 32.0 L32.0 32.0 L32.0 33.0 L30.0 33.0 L30.0 35.0 L29.0 35.0 L29.0 38.0 L30.0 38.0 L30.0 40.0 Z M49.0 49.0 L51.0 49.0 L51.0 48.0 L52.0 48.0 L52.0 47.0 L53.0 47.0 L53.0 45.0 L54.0 45.0 L54.0 43.0 L51.0 43.0 L51.0 44.0 L49.0 44.0 L49.0 45.0 L48.0 45.0 L48.0 47.0 L47.0 47.0 L47.0 50.0 L49.0 50.0 L49.0 49.0 Z" />
           </svg>
-          <span className="hero-stats-strip__number">7 +</span>
-          <span className="hero-stats-strip__label">Years in Exports</span>
+          <span className="hero-stats-strip__number">4 +</span>
+          <span className="hero-stats-strip__label">Products</span>
         </div>
 
         {/* Column 3 — Countries Served */}
@@ -313,7 +317,7 @@ function Home() {
             <circle cx="48" cy="48" r="1.8" fill="#888" />
           </svg>
           <span className="hero-stats-strip__number">120 +</span>
-          <span className="hero-stats-strip__label">{"Containers\nShipped\nAnnually"}</span>
+          <span className="hero-stats-strip__label">Containers / year</span>
         </div>
 
         {/* Column 5 — MT Coco Peat Exported Annually */}
@@ -378,7 +382,7 @@ function Home() {
             />
           </svg>
           <span className="hero-stats-strip__number">3000 +</span>
-          <span className="hero-stats-strip__label">{"MT Coco Peat\nExported\nAnnually"}</span>
+          <span className="hero-stats-strip__label">MT exported / year</span>
         </div>
       </section>
       <section className="bg-brand-soft py-20 lg:py-28">
@@ -513,8 +517,8 @@ function Home() {
           <div className="grid gap-px bg-charcoal/15 sm:grid-cols-2">
             {homeIndustrySolutions.map((solution, index) => (
               <Reveal key={solution.title} className="group relative min-h-72 overflow-hidden">
-                <Link
-                  to={solution.href}
+                <a
+                  href={`/applications#${solution.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`}
                   aria-label={`Explore ${solution.title} solutions`}
                   className="absolute inset-0 focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-aqua"
                 >
@@ -532,7 +536,7 @@ function Home() {
                     </span>
                     <h3 className="display mt-2 text-3xl">{solution.title}</h3>
                   </div>
-                </Link>
+                </a>
               </Reveal>
             ))}
           </div>

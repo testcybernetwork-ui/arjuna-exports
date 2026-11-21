@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Globe2, Leaf, Mail, MapPin, Phone, Sprout, Trees } from "lucide-react";
+import { Globe2, Leaf, Mail, MapPin, MessageCircle, Phone, Sprout, Trees } from "lucide-react";
 import logo from "@/assets/logo.svg";
 import plantation from "@/assets/stage-husk.jpg";
 import { navItems, products } from "@/lib/site-data";
@@ -99,7 +99,7 @@ export function Footer() {
                   href={href}
                   target="_blank"
                   rel="noopener"
-                  aria-label={`Visit Arjuna Exports on ${label} (opens in a new tab)`}
+                  aria-label={label === "Instagram" ? "Instagram" : label === "Facebook" ? "Facebook" : `Visit Arjuna Exports on ${label} (opens in a new tab)`}
                   className="footer-social-link"
                 >
                   <SocialIcon label={label} />
@@ -162,6 +162,14 @@ export function Footer() {
                 <Phone aria-hidden="true" className="footer-contact-icon" />
                 <span>+91 96298 74555</span>
               </a>
+              <a href="tel:+914288250125" className="footer-contact-item footer-contact-link">
+                <Phone aria-hidden="true" className="footer-contact-icon" />
+                <span>+91 4288 250125</span>
+              </a>
+              <a href="https://wa.me/919629874555" target="_blank" rel="noopener noreferrer" className="footer-contact-item footer-contact-link">
+                <MessageCircle aria-hidden="true" className="footer-contact-icon" />
+                <span>WhatsApp</span>
+              </a>
             </address>
           </div>
         </div>
@@ -178,7 +186,6 @@ export function Footer() {
           </div>
           <div className="footer-legal-links">
             <Link to="/privacy-policy" className="footer-policy-link">Privacy Policy</Link>
-            <span>Terms of Use</span>
             <span>India</span>
           </div>
         </div>

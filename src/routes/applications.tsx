@@ -337,8 +337,9 @@ function IndustryCard({
 
   return (
     <Link
-      to="/products/$slug"
-      params={{ slug: href.split("/").at(-1)! }}
+      to="/applications"
+      hash={title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}
+      id={title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}
       aria-label={`${title}: ${description} Explore`}
       className="industry-card group block h-full overflow-hidden rounded-2xl border border-[#D7E3E1] bg-[#F9F9F5] text-left shadow-[0_4px_18px_rgba(11,92,92,0.06)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0B5C5C]"
     >

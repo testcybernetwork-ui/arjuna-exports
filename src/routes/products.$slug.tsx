@@ -1,4 +1,4 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
   FileDown,
@@ -111,7 +111,7 @@ const productGalleries: Record<string, Array<{ image: string; label: string }>> 
     { image: cocoBrickPalletPhoto, label: "Palletized coco peat bricks prepared for export" },
     { image: cocoBrickPhoto5, label: "650 gram coco peat bricks arranged for dispatch" },
   ],
-  "coco-hush-chips": [
+  "coco-husk-chips": [
     { image: huskPhoto1, label: "Coco Husk Chips product pictures" },
     { image: huskPhoto2, label: "Coco Husk Chips blocks" },
     { image: huskPhoto3, label: "Coco Husk Chips block and loose chips" },
@@ -379,6 +379,13 @@ const huskChipsSpecification = [
 
 export const Route = createFileRoute("/products/$slug")({
   loader: ({ params }) => {
+    if (params.slug === "coco-hush-chips") {
+      throw redirect({
+        to: "/products/$slug",
+        params: { slug: "coco-husk-chips" },
+        statusCode: 301,
+      });
+    }
     const product = products.find((p) => p.slug === params.slug);
     if (!product) throw notFound();
     const { industrySolutions, ...serializableProduct } = product;
@@ -435,7 +442,7 @@ function ProductDetail() {
   const isCocoPeatBlocks = p.slug === "coco-peat-blocks";
   const isCoirMatting = p.slug === "coir-matting";
   const isGramBlock = p.slug === "coir-650-gram-bricks";
-  const isHuskChips = p.slug === "coco-hush-chips";
+  const isHuskChips = p.slug === "coco-husk-chips";
   const applicationVisuals = isHuskChips ? huskChipsApplications : (p.applications ?? []).map((name) => ({
     name,
     image: applications.find((application) => application.title === name)?.image ?? p.image,

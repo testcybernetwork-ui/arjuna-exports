@@ -44,18 +44,28 @@ function ProductCarousel() {
         ))}
       </div>
       <div className="mt-4 flex items-center justify-end gap-3" aria-label="Carousel controls">
-        <button type="button" className="product-carousel-arrow" onClick={() => scrollProducts(-1)} aria-label="Previous products">←</button>
-        <button type="button" className="product-carousel-arrow" onClick={() => scrollProducts(1)} aria-label="Next products">→</button>
+        <button
+          type="button"
+          className="product-carousel-arrow"
+          onClick={() => scrollProducts(-1)}
+          aria-label="Previous products"
+        >
+          ←
+        </button>
+        <button
+          type="button"
+          className="product-carousel-arrow"
+          onClick={() => scrollProducts(1)}
+          aria-label="Next products"
+        >
+          →
+        </button>
       </div>
     </div>
   );
 }
 
-function ArticlesCarousel({
-  articles,
-}: {
-  articles: ResourceArticle[];
-}) {
+function ArticlesCarousel({ articles }: { articles: ResourceArticle[] }) {
   return (
     <div className="running-carousel mt-12" aria-label="Latest articles">
       <div className="running-carousel-track running-carousel-track--articles">
@@ -507,7 +517,10 @@ function Home() {
             {homeIndustrySolutions.map((solution, index) => (
               <Reveal key={solution.title} className="group relative min-h-72 overflow-hidden">
                 <a
-                  href={`/applications#${solution.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`}
+                  href={`/applications#${solution.title
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]+/g, "-")
+                    .replace(/^-|-$/g, "")}`}
                   aria-label={`Explore ${solution.title} solutions`}
                   className="absolute inset-0 focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-aqua"
                 >

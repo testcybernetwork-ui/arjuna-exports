@@ -45,8 +45,7 @@ function ArticleDetail() {
     .filter((category) => category !== "All")
     .map((name) => ({
       name,
-      image:
-        resourceArticles.find((item) => item.category === name)?.image ?? article.image,
+      image: resourceArticles.find((item) => item.category === name)?.image ?? article.image,
     }));
 
   return (

@@ -19,7 +19,7 @@ export function AboutHeroSection() {
           <p className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#25856f]">
             About Us
           </p>
-          <h1 className="mb-6 font-['DM_Sans',system-ui,sans-serif] text-[clamp(2rem,4.2vw,3.5rem)] font-bold leading-[1.08] tracking-[-0.035em] text-[#123f3b]">
+          <h1 className="display mb-6 text-[clamp(2rem,4.2vw,3.5rem)] text-[#123f3b]">
             About Arjuna Exports
           </h1>
           <div className="space-y-4 text-[15px] leading-7 text-[#425c58] sm:text-base">
@@ -32,7 +32,7 @@ export function AboutHeroSection() {
             <p>
               We believe that a growing medium is more than a commodity. Consistency, technical suitability, and reliable execution directly influence growing performance. Our focus is therefore on delivering coco substrate solutions that meet defined specifications and provide customers with greater confidence from sourcing to application.
             </p>
-            <h2 className="pt-2 text-left font-['DM_Sans',system-ui,sans-serif] text-xl font-bold leading-tight text-[#123f3b] sm:text-2xl">
+            <h2 className="display pt-2 text-left text-xl text-[#123f3b] sm:text-2xl">
               Built Around Long-Term Partnerships
             </h2>
             <p>

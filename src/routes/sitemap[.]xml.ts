@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { resourceArticles } from "@/lib/resource-data";
+import { products } from "@/lib/site-data";
 
 const publicPages = [
   "/",
@@ -30,6 +31,7 @@ export const Route = createFileRoute("/sitemap.xml")({
         );
         const urls = [
           ...publicPages,
+          ...products.map((product) => `/products/${product.slug}`),
           ...resourceArticles.map((article) => `/resources/${article.slug}`),
         ];
         const body = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.map((path) => `<url><loc>${xml(`${origin}${path}`)}</loc></url>`).join("")}</urlset>`;

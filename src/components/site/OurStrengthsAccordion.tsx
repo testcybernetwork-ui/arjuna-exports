@@ -60,7 +60,7 @@ export function OurStrengthsAccordion() {
   const [activeIdx, setActiveIdx] = useState(0);
 
   return (
-    <section className="strengths-section-root bg-[#00372F] text-[#F5F2EA] font-['Poppins',system-ui,sans-serif] leading-[1.6]">
+    <section className="strengths-section-root bg-surface-teal-dark text-[#F5F2EA] font-sans leading-[1.6]">
       <style>{`
         .strengths-wrap {
           width: 100%;
@@ -79,7 +79,7 @@ export function OurStrengthsAccordion() {
           display: flex;
           align-items: center;
           gap: 12px;
-          font-size: .68rem;
+          font-size: .75rem;
           font-weight: 600;
           letter-spacing: .22em;
           text-transform: uppercase;
@@ -96,7 +96,7 @@ export function OurStrengthsAccordion() {
         }
 
         .strengths-head h2 {
-          font-family: "Archivo Black", "Dela Gothic One", sans-serif;
+          font-family: var(--font-display);
           font-weight: 400;
           margin: 0;
           font-size: clamp(1.8rem,3.8vw,3.6rem);
@@ -198,7 +198,7 @@ export function OurStrengthsAccordion() {
         .strengths-panel .vt span {
           writing-mode: vertical-rl;
           transform: rotate(180deg);
-          font-family: "Archivo Black", "Dela Gothic One", sans-serif;
+          font-family: var(--font-display);
           font-size: 1.25rem;
           white-space: nowrap;
           letter-spacing: .01em;
@@ -229,7 +229,7 @@ export function OurStrengthsAccordion() {
           position: absolute;
           left: 34px;
           top: 14px;
-          font-family: "Archivo Black", "Dela Gothic One", sans-serif;
+          font-family: var(--font-display);
           font-size: clamp(7rem,15vw,12rem);
           line-height: 1;
           color: #00362F;
@@ -258,7 +258,7 @@ export function OurStrengthsAccordion() {
         }
 
         .strengths-panel .content h3 {
-          font-family: "Archivo Black", "Dela Gothic One", sans-serif;
+          font-family: var(--font-display);
           font-weight: 400;
           font-size: clamp(1.8rem,3.6vw,3rem);
           line-height: 1.02;

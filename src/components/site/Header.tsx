@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import logo from "@/assets/logo.svg";
 import { navItems } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
-import { Arrow } from "./primitives";
+import { PrimaryButton } from "./primitives";
 
 export function Header({ overHero = false }: { overHero?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
@@ -40,11 +40,11 @@ export function Header({ overHero = false }: { overHero?: boolean }) {
       >
         <div
           className={cn(
-            "shell flex h-16 items-center justify-between lg:h-[72px]",
+            "container flex h-16 items-center justify-between lg:h-[72px]",
             solid ? "text-charcoal" : "text-pure-white",
           )}
         >
-          <Link to="/" className="shrink-0" aria-label="Arjuna Exports home">
+          <Link to="/" className="flex min-h-11 shrink-0 items-center" aria-label="Arjuna Exports home">
             <img
               src={logo}
               alt="Arjuna Exports"
@@ -69,7 +69,7 @@ export function Header({ overHero = false }: { overHero?: boolean }) {
                   key={item.to}
                   to={item.to}
                   className={cn(
-                    "group relative whitespace-nowrap py-1 text-[12px] tracking-[0.015em] transition-opacity duration-300 hover:opacity-70",
+                    "group relative inline-flex min-h-11 items-center whitespace-nowrap py-1 text-sm tracking-[0.01em] transition-opacity duration-300 hover:opacity-70",
                     active && "opacity-100",
                   )}
                 >
@@ -86,18 +86,13 @@ export function Header({ overHero = false }: { overHero?: boolean }) {
           </nav>
 
           <div className="flex items-center gap-4">
-            <Link
+            <PrimaryButton
               to="/contact"
-              className={cn(
-                "site-menu-font group hidden min-h-11 items-center gap-2 rounded-sm px-4 text-[13px] tracking-[0.04em] transition-colors duration-300 sm:inline-flex",
-                solid
-                  ? "bg-primary-green text-pure-white hover:bg-primary-green-hover active:bg-primary-green-active"
-                  : "bg-primary-green text-pure-white hover:bg-primary-green-hover active:bg-primary-green-active",
-              )}
+              {...(pathname === "/contact" ? { hash: "contact-form" } : {})}
+              className="hidden sm:inline-flex"
             >
-              Request a Quote
-              <Arrow className="group-hover:translate-x-1.5" />
-            </Link>
+              {pathname === "/contact" ? "Send enquiry" : "Request a quote"}
+            </PrimaryButton>
 
             <button
               onClick={() => setOpen(true)}
@@ -120,7 +115,7 @@ export function Header({ overHero = false }: { overHero?: boolean }) {
           open ? "visible opacity-100" : "invisible opacity-0",
         )}
       >
-        <div className="shell flex h-20 items-center justify-between">
+        <div className="container flex h-20 items-center justify-between">
           <Link to="/" aria-label="Arjuna Exports home">
             <img src={logo} alt="Arjuna Exports" className="h-auto w-[158px]" />
           </Link>
@@ -137,7 +132,7 @@ export function Header({ overHero = false }: { overHero?: boolean }) {
         </div>
 
         <nav
-          className="shell flex min-h-[calc(100dvh-5rem)] flex-col justify-between gap-8 pt-4 pb-8"
+          className="container flex min-h-[calc(100dvh-5rem)] flex-col justify-between gap-8 pt-4 pb-8"
           aria-label="Mobile"
         >
           <ul className="site-menu-font text-brand">
@@ -158,13 +153,13 @@ export function Header({ overHero = false }: { overHero?: boolean }) {
               );
             })}
           </ul>
-          <Link
+          <PrimaryButton
             to="/contact"
-            className="site-menu-font group inline-flex min-h-[56px] items-center justify-center gap-3 rounded-sm bg-primary-green px-8 text-[14px] tracking-[0.04em] text-pure-white transition-colors hover:bg-primary-green-hover active:bg-primary-green-active focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-green focus-visible:ring-offset-2"
+            {...(pathname === "/contact" ? { hash: "contact-form" } : {})}
+            className="w-full justify-center"
           >
-            Request a Quote
-            <Arrow className="group-hover:translate-x-1.5" />
-          </Link>
+            {pathname === "/contact" ? "Send enquiry" : "Request a quote"}
+          </PrimaryButton>
         </nav>
       </div>
     </>

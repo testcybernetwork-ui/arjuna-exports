@@ -431,7 +431,7 @@ function ProductDetail() {
     const interval = window.setInterval(() => {
       setActivePhoto((current) => {
         const currentIndex = gallery.findIndex((photo) => photo.image === current?.image);
-        return gallery[(currentIndex + 1) % gallery.length] ?? gallery[0];
+        return gallery[(currentIndex + 1) % gallery.length] ?? current;
       });
     }, 10_000);
 
@@ -475,7 +475,7 @@ function ProductDetail() {
           ]
         : isGramBlock
           ? [
-              "Coir 650 Gram Bricks - Grade I / Grade II",
+              "Coco Peat 650g Bricks - Grade I / Grade II",
               "",
               ...gramBlockComparison.map(
                 (item) =>
@@ -498,9 +498,9 @@ function ProductDetail() {
           className="pointer-events-none absolute -right-24 top-24 hidden w-[340px] opacity-[0.05] lg:block"
           aria-hidden="true"
         />
-        <div className="shell grid items-stretch gap-8 py-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-12 lg:py-10">
+        <div className="container grid items-stretch gap-8 py-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-12 lg:py-10">
           <div
-              className="relative h-full min-h-[400px] w-full min-w-0 overflow-hidden rounded-md border border-brand/15 bg-[#00372F] shadow-[0_20px_60px_rgba(31,45,40,.12)] sm:min-h-[480px] lg:min-h-[540px]"
+              className="relative h-full min-h-[400px] w-full min-w-0 overflow-hidden rounded-md border border-brand/15 bg-surface-teal-dark shadow-[0_20px_60px_rgba(31,45,40,.12)] sm:min-h-[480px] lg:min-h-[540px]"
           >
             {isCoirMatting && <div className="grid h-full min-h-[400px] grid-cols-2 gap-3 p-4 sm:min-h-[480px] sm:gap-4 sm:p-6 lg:min-h-[540px]">
               {heroGallery.map((photo, index) => <div key={photo.label} className="flex items-center justify-center rounded-md border-2 border-dashed border-[#16777A]/60 bg-[#F2FFFC] p-2 text-center text-base font-bold text-charcoal sm:text-xl">
@@ -509,14 +509,14 @@ function ProductDetail() {
             </div>}
             {isCocoPeatBlocks || isGramBlock || isHuskChips ? (
               <>
-                <div className="absolute inset-x-0 top-0 bottom-[84px] flex items-center justify-center bg-[#00372F]">
+                <div className="absolute inset-x-0 top-0 bottom-[84px] flex items-center justify-center bg-surface-teal-dark">
                   <img
                     src={activePhoto?.image}
                     alt={activePhoto?.label ?? p.name}
                     className="h-full w-full object-contain p-4 sm:p-6"
                   />
                 </div>
-                <div className="absolute inset-x-0 bottom-0 overflow-x-auto bg-[#00372F] px-4 pb-4 pt-2 sm:px-5">
+                <div className="absolute inset-x-0 bottom-0 overflow-x-auto bg-surface-teal-dark px-4 pb-4 pt-2 sm:px-5">
                   <div className="flex w-max gap-2">
                     {gallery.map((photo) => (
                       <button
@@ -525,7 +525,7 @@ function ProductDetail() {
                         onClick={() => setActivePhoto(photo)}
                         aria-label={`Show ${photo.label}`}
                         aria-pressed={activePhoto?.image === photo.image}
-                        className={`h-14 w-14 shrink-0 overflow-hidden rounded-sm border-2 bg-[#00372F] transition-opacity ${
+                        className={`h-14 w-14 shrink-0 overflow-hidden rounded-sm border-2 bg-surface-teal-dark transition-opacity ${
                           activePhoto?.image === photo.image
                             ? "border-[#1B7F3B]"
                             : "border-brand/15 hover:opacity-70"
@@ -538,7 +538,7 @@ function ProductDetail() {
                 </div>
               </>
             ) : isPackagingPhoto ? (
-              <div className="absolute inset-x-0 top-0 bottom-[84px] flex items-center justify-center bg-[#00372F] p-6 sm:p-8">
+              <div className="absolute inset-x-0 top-0 bottom-[84px] flex items-center justify-center bg-surface-teal-dark p-6 sm:p-8">
                 <img
                   src={activePhoto?.image}
                   alt={activePhoto?.label ?? p.name}
@@ -546,7 +546,7 @@ function ProductDetail() {
                 />
               </div>
             ) : (
-              <div className="absolute inset-x-0 top-0 bottom-[84px] flex items-center justify-center bg-[#00372F] p-4 sm:p-6">
+              <div className="absolute inset-x-0 top-0 bottom-[84px] flex items-center justify-center bg-surface-teal-dark p-4 sm:p-6">
                 <img
                   src={activePhoto?.image}
                   alt={activePhoto?.label ?? p.name}
@@ -554,7 +554,7 @@ function ProductDetail() {
                 />
               </div>
             )}
-            {!isCocoPeatBlocks && !isGramBlock && !isHuskChips && <div className="absolute inset-x-0 bottom-0 overflow-x-auto bg-[#00372F] px-4 pb-4 pt-2 sm:px-5">
+            {!isCocoPeatBlocks && !isGramBlock && !isHuskChips && <div className="absolute inset-x-0 bottom-0 overflow-x-auto bg-surface-teal-dark px-4 pb-4 pt-2 sm:px-5">
               <div className="flex w-max gap-2">
                   {gallery.map((photo) => {
                     return (
@@ -563,7 +563,7 @@ function ProductDetail() {
                         type="button"
                         onClick={() => setActivePhoto(photo)}
                         aria-label={`Show ${photo.label}`}
-                        className={`group relative h-14 w-14 shrink-0 overflow-hidden rounded-sm border-2 bg-[#00372F] transition duration-300 ${
+                        className={`group relative h-14 w-14 shrink-0 overflow-hidden rounded-sm border-2 bg-surface-teal-dark transition duration-300 ${
                           activePhoto?.image === photo.image
                             ? "border-aqua shadow-[0_0_0_3px_rgba(104,230,194,.18)]"
                             : "border-pure-white/30 opacity-75 hover:border-pure-white hover:opacity-100"
@@ -585,7 +585,7 @@ function ProductDetail() {
             <div className="w-full">
               {!isHuskChips && <Label className="text-brand">{isGramBlock ? "ABOUT" : `${p.category} collection`}</Label>}
               <h1 className={`display mt-6 ${isCocoPeatBlocks || isGramBlock || isHuskChips || isCoirMatting ? "text-[clamp(2rem,4vw,3.25rem)] leading-[1.05] whitespace-normal" : "max-w-[16ch] text-[clamp(2.5rem,4.2vw,4.5rem)] leading-[1.02]"}`}>
-                {isCoirMatting ? "Coir Mattings" : isGramBlock ? "Coir 650 Gram Bricks" : p.name}
+                {isCoirMatting ? "Coir Mattings" : p.name}
               </h1>
               <p className={`mt-7 text-left text-charcoal/70 ${isCocoPeatBlocks || isGramBlock || isHuskChips || isCoirMatting ? "max-w-[560px] text-base font-normal leading-[1.7]" : "max-w-xl text-lg font-medium leading-relaxed"}`}>
                 {isHuskChips
@@ -639,7 +639,7 @@ function ProductDetail() {
       </section>
 
       {isHuskChips && <section className="bg-ivory py-16 lg:py-20">
-        <div className="shell">
+        <div className="container">
           <Reveal>
             <Label className="text-brand">KEY FEATURES</Label>
             <h2 className="display mt-5 text-[clamp(2rem,4vw,3.25rem)]">Key Features</h2>
@@ -655,7 +655,7 @@ function ProductDetail() {
       </section>}
 
       {!isCocoPeatBlocks && !isGramBlock && !isHuskChips && !isCoirMatting && <section className="bg-offwhite py-20 lg:py-28">
-                <div className="shell">
+                <div className="container">
           <div className="grid gap-8 border-b border-brand/20 pb-10 lg:grid-cols-[.85fr_1.15fr] lg:items-end lg:gap-16">
             <Reveal>
               <Label className="text-brand">Product overview</Label>
@@ -707,7 +707,7 @@ function ProductDetail() {
       </section>}
 
       {!isHuskChips && !isCoirMatting && <section className="bg-ivory py-16 lg:py-20">
-        <div className="shell">
+        <div className="container">
           <Reveal>
             <div>
               <Label className="text-brand">KEY FEATURES</Label>
@@ -740,7 +740,7 @@ function ProductDetail() {
       </section>}
 
       {isCoirMatting && <section className="bg-ivory py-14 lg:py-20">
-        <div className="shell">
+        <div className="container">
           <div>
             <Label className="text-brand">STANDARD SIZES</Label>
             <ul className="mt-5 grid gap-3 text-sm font-semibold text-charcoal sm:grid-cols-2 lg:grid-cols-5">
@@ -753,7 +753,7 @@ function ProductDetail() {
       {isCoirMatting && <CoirMattingFeatures />}
 
       <section className={`bg-brand-soft py-20 lg:py-28 ${isHuskChips ? "border-x-2 border-[#9B6BDB] bg-[#F2FFFC]" : ""}`}>
-        <div className="shell">
+        <div className="container">
           <Reveal>
             <div className="flex items-end justify-between gap-6">
               <div>
@@ -781,10 +781,10 @@ function ProductDetail() {
                         <th className="w-[19%] border-r border-pure-white/20 bg-brand px-4 py-3 text-left text-[11px] font-bold uppercase text-pure-white">
                           Parameter
                         </th>
-                        <th className="w-[31.5%] border-r border-pure-white/20 bg-[#68e6c2] px-4 py-3 text-center text-[11px] font-bold uppercase text-brand">
+                        <th className="w-[31.5%] border-r border-pure-white/20 bg-surface-teal-light px-4 py-3 text-center text-[11px] font-bold uppercase text-brand">
                           Low EC
                         </th>
-                        <th className="w-[31.5%] bg-[#68e6c2] px-4 py-3 text-center text-[11px] font-bold uppercase text-brand">
+                        <th className="w-[31.5%] bg-surface-teal-light px-4 py-3 text-center text-[11px] font-bold uppercase text-brand">
                           High EC
                         </th>
                       </tr>
@@ -810,13 +810,13 @@ function ProductDetail() {
               ) : isGramBlock ? (
                 <div className="overflow-x-auto">
                   <table className="w-full min-w-[760px] border-collapse text-left text-[12px]">
-                    <caption className="sr-only">Coir 650 Gram Bricks Grade I and Grade II specification comparison</caption>
+                    <caption className="sr-only">Coco Peat 650g Bricks Grade I and Grade II specification comparison</caption>
                     <thead>
                       <tr>
                         <th className="w-[18%] bg-brand" aria-label="Specification category" />
                         <th className="w-[19%] border-r border-pure-white/20 bg-brand px-4 py-3 text-left text-[11px] font-bold uppercase text-pure-white">Parameter</th>
-                        <th className="w-[31.5%] border-r border-pure-white/20 bg-brand px-3 py-3 text-center text-[11px] font-bold text-pure-white">Coco Peat 650 Gram Bricks - Grade I</th>
-                        <th className="w-[31.5%] bg-brand px-3 py-3 text-center text-[11px] font-bold text-pure-white">Coco Peat 650 Gram Bricks - Grade II</th>
+                        <th className="w-[31.5%] border-r border-pure-white/20 bg-brand px-3 py-3 text-center text-[12px] font-bold text-pure-white">Coco Peat 650g Bricks - Grade I</th>
+                        <th className="w-[31.5%] bg-brand px-3 py-3 text-center text-[12px] font-bold text-pure-white">Coco Peat 650g Bricks - Grade II</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -952,7 +952,7 @@ function ProductDetail() {
 
       {(isCocoPeatBlocks || isGramBlock || isHuskChips || isCoirMatting) && (
         <section className={`py-12 lg:py-16 ${isHuskChips ? "border-x-2 border-[#9B6BDB] bg-[#F2FFFC]" : "bg-[#F5F2EA]"}`}>
-          <div className="shell">
+          <div className="container">
             <div className={`mx-auto flex w-full flex-col ${isHuskChips ? "" : "xl:aspect-[16/9] xl:p-8"}`}>
               <Label className="mb-4 text-[#0B6B6B]">{isCoirMatting ? "PACKING & LOGISTICS" : "PACKING OPTIONS"}</Label>
               <h2 className="display mb-7 whitespace-normal text-[clamp(1.75rem,3.2vw,3.25rem)] leading-tight text-[#0B6B6B] xl:whitespace-nowrap">
@@ -996,7 +996,7 @@ function ProductDetail() {
       )}
 
       {!isCoirMatting && <section className={`bg-brand-soft py-20 lg:py-28 ${isHuskChips ? "border-x-2 border-[#9B6BDB] bg-[#F2FFFC]" : ""}`}>
-        <div className="shell">
+        <div className="container">
           <Reveal>
             <Label className="text-brand">{isHuskChips ? "Applications Section" : "Applications"}</Label>
             {!isHuskChips && <h2 className="display mt-6 text-[clamp(2.25rem,4vw,4rem)]">Where it performs.</h2>}
@@ -1026,7 +1026,7 @@ function ProductDetail() {
       </section>}
 
       {isCoirMatting && <section className="bg-brand-soft py-14 lg:py-20">
-        <div className="shell">
+        <div className="container">
           <Label className="text-brand">SUITABLE APPLICATIONS</Label>
           <h2 className="display mt-4 text-[clamp(2rem,4vw,3.25rem)]">Suitable Applications</h2>
           <div className="mt-8 grid grid-cols-2 gap-5 sm:grid-cols-3">
@@ -1061,7 +1061,7 @@ function ProductDetail() {
       </section>}
 
       <section className="bg-offwhite py-20 lg:py-28">
-        <div className="shell">
+        <div className="container">
           <div className="flex flex-wrap items-end justify-between gap-8">
             <div>
               <Label className="text-brand">Related products</Label>

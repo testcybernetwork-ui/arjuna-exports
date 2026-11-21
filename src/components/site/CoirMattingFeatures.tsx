@@ -125,7 +125,7 @@ const features = [
 export function CoirMattingFeatures() {
   return (
     <section aria-labelledby="coir-matting-features-title" className="coir-features-section bg-[#fcfaf4]">
-      <div className="shell coir-features-inner">
+      <div className="container coir-features-inner">
         <h2
           id="coir-matting-features-title"
           className="font-sans text-[clamp(2.4rem,4.6vw,3rem)] font-bold leading-[1.05] tracking-[-0.035em] text-[#0f4c42]"

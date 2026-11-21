@@ -25,7 +25,7 @@ function PreviewArticle() {
   const article = Route.useLoaderData();
   return (
     <main className="bg-offwhite pb-20 pt-28">
-      <article className="shell mx-auto max-w-4xl">
+      <article className="container mx-auto max-w-4xl">
         <Link
           to="/admin/articles/$id/edit"
           params={{ id: article.id }}

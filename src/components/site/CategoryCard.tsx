@@ -8,17 +8,17 @@ type CategoryCardProps = {
 };
 
 const cardClassName = (active = false) =>
-  `absolute inset-0 flex w-full items-center justify-start gap-3 px-3 py-2 text-left text-brand ${
-    active ? "ring-2 ring-[#1F7A6D]/30" : ""
+  `absolute inset-0 flex min-h-11 w-full items-center justify-start gap-3 px-3 py-2 text-left text-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${
+    active ? "ring-2 ring-brand/30 bg-brand-soft" : ""
   }`;
 
 export function CategoryCard({ icon, label, onClick, active = false }: CategoryCardProps) {
   const content = (
     <>
-      <span className="shrink-0 text-[#1F7A6D] [&_svg]:h-5 [&_svg]:w-5 [&_svg]:stroke-2">
+      <span className="shrink-0 text-brand [&_svg]:h-5 [&_svg]:w-5 [&_svg]:stroke-2">
         {icon}
       </span>
-      <span className="max-w-[66px] whitespace-pre-line text-[9px] leading-[1.1] font-extrabold uppercase">
+      <span className="max-w-[100px] whitespace-pre-line text-xs leading-tight font-semibold uppercase tracking-[0.08em]">
         {label}
       </span>
     </>

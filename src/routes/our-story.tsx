@@ -303,7 +303,7 @@ function AboutUs() {
           SECTION 6 — Made here. Grown everywhere.
        ═══════════════════════════════════════════════════ */}
       <section className="relative w-full overflow-hidden bg-[#62E0BD] py-8 text-[#003B32] sm:py-10 lg:py-12">
-        <div className="shell grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16">
+        <div className="container grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16">
           <Reveal>
             <div className="flex flex-col justify-center">
               <span className="micro-label mb-6 block font-bold tracking-[0.16em] uppercase text-xs !text-[#003B32]">
@@ -349,7 +349,7 @@ function AboutUs() {
           SECTION 9 — Supply built around confidence
        ═══════════════════════════════════════════════════ */}
       <section className="relative w-full overflow-hidden border-b border-[#174b56] bg-[#62E0BD] py-8 text-[#003B32] sm:py-10 lg:py-12">
-        <div className="shell grid items-center gap-10 lg:grid-cols-2 lg:gap-[60px]">
+        <div className="container grid items-center gap-10 lg:grid-cols-2 lg:gap-[60px]">
           <div className="flex flex-col justify-center">
             <Reveal>
               <span className="micro-label mb-5 block text-xs font-bold uppercase tracking-[0.16em] !text-[#003B32]">

@@ -16,7 +16,7 @@ const palettes = [
   },
   {
     base: "from-ivory via-pure-white to-aqua/75",
-    side: "bg-charcoal",
+    side: "bg-surface-teal-light",
     glow: "bg-brand/25",
     icon: "text-brand",
   },

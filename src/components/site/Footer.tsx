@@ -38,7 +38,16 @@ function SocialIcon({ label }: { label: string }) {
       {label === "LinkedIn" && (
         <>
           <circle cx="12" cy="12" r="12" fill="#0A66C2" />
-          <text x="12" y="17" textAnchor="middle" fill="white" fontFamily="Arial, sans-serif" fontSize="13" fontWeight="700" letterSpacing="-1">
+          <text
+            x="12"
+            y="17"
+            textAnchor="middle"
+            fill="white"
+            fontFamily="Poppins, sans-serif"
+            fontSize="13"
+            fontWeight="700"
+            letterSpacing="-1"
+          >
             in
           </text>
         </>
@@ -65,7 +74,7 @@ export function Footer() {
           decoding="async"
         />
         <div className="footer-story-wash" aria-hidden="true" />
-        <div className="shell footer-story-content">
+        <div className="container footer-story-content">
           <h2 id="footer-story-title" className="footer-headline">
             <span>The journey continues</span>
             <span>From a coconut husk</span>
@@ -83,7 +92,7 @@ export function Footer() {
         </div>
       </section>
 
-      <div className="shell footer-content">
+      <div className="container footer-content">
         <div className="footer-columns">
           <div className="footer-company">
             <Link to="/" aria-label="Arjuna Exports home" className="footer-logo-link">
@@ -131,7 +140,7 @@ export function Footer() {
                     params={{ slug: product.slug }}
                     className="footer-link"
                   >
-                    {product.name === "Coco Hush Chips" ? "Coco Husk Chips" : product.name}
+                    {product.name}
                   </Link>
                 </li>
               ))}

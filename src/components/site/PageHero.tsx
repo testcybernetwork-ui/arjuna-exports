@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Reveal } from "./primitives";
+import { Label, Reveal } from "./primitives";
 import { cn } from "@/lib/utils";
 
 export function PageHero({
@@ -20,18 +20,18 @@ export function PageHero({
   gridClassName?: string;
 }) {
   return (
-    <section className="relative overflow-hidden bg-charcoal pt-12 text-[#20555A] lg:pt-14">
+    <section className="relative overflow-hidden bg-surface-teal-light pt-12 text-body-text lg:pt-14">
       <div
         className={cn(
-          "shell relative z-10 grid min-h-[260px] items-end gap-6 py-8 lg:min-h-[280px] lg:grid-cols-[1.2fr_.8fr] lg:gap-12 lg:py-9",
+          "container relative z-10 grid min-h-[260px] items-end gap-6 py-8 lg:min-h-[280px] lg:grid-cols-[1.2fr_.8fr] lg:gap-12 lg:py-9",
           gridClassName,
         )}
       >
         <Reveal>
-          <span className="micro-label mb-6 block text-[#20555A]">{eyebrow}</span>
+          <Label className="mb-6 text-brand">{eyebrow}</Label>
           <h1
             className={cn(
-              "display max-w-[21ch] text-[clamp(2.25rem,3.8vw,4rem)] leading-[1.02] text-[#20555A]",
+              "display max-w-[21ch] text-h1 text-body-text",
               titleClassName,
             )}
           >
@@ -41,7 +41,7 @@ export function PageHero({
         <Reveal delay={120}>
           <p
             className={cn(
-              "max-w-[46ch] text-base leading-relaxed text-[#20555A] lg:justify-self-end",
+              "max-w-[46ch] text-body leading-body text-body-text lg:justify-self-end",
               introClassName,
             )}
           >
@@ -54,7 +54,7 @@ export function PageHero({
           aria-hidden="true"
           className="absolute inset-0 bg-cover bg-center opacity-30 slow-zoom"
           style={{
-            backgroundImage: `linear-gradient(to right, var(--charcoal), color-mix(in oklab, var(--charcoal) 84%, transparent), color-mix(in oklab, var(--brand) 35%, transparent)), url(${image})`,
+            backgroundImage: `linear-gradient(to right, var(--surface-teal-light), color-mix(in oklab, var(--surface-teal-light) 84%, transparent), color-mix(in oklab, var(--brand) 35%, transparent)), url(${image})`,
           }}
         />
       )}

@@ -7,7 +7,6 @@ import {
   Loader2,
   Mail,
   MapPin,
-  MessageCircleMore,
   Orbit,
   Phone,
   ShoppingCart,
@@ -26,6 +25,9 @@ export const Route = createFileRoute("/contact")({
       "Contact",
       "Talk to Arjuna Exports about coco products, specifications, samples and global supply.",
     ),
+  validateSearch: (search: Record<string, unknown>) => ({
+      product: typeof search["product"] === "string" ? search["product"] : undefined,
+  }),
   component: Contact,
 });
 
@@ -36,7 +38,6 @@ const contactCards = [
     value: "info@arjunaexports.com",
     href: "mailto:info@arjunaexports.com",
     icon: Mail,
-    orderClass: "order-1 md:order-1",
     isEmail: true,
   },
   {
@@ -45,15 +46,6 @@ const contactCards = [
     value: "+91 96298 74555",
     href: "tel:+919629874555",
     icon: Phone,
-    orderClass: "order-2 md:order-2",
-    isEmail: false,
-  },
-  {
-    key: "hours",
-    label: "Hours",
-    value: "We'll Respond within 24 Hours",
-    icon: MessageCircleMore,
-    orderClass: "order-4 md:order-3",
     isEmail: false,
   },
   {
@@ -62,7 +54,6 @@ const contactCards = [
     value: "+91 4288 250125",
     href: "tel:+914288250125",
     icon: DeskPhoneIcon,
-    orderClass: "order-3 md:order-4",
     isEmail: false,
   },
 ];
@@ -81,7 +72,7 @@ const responseSteps = [
   {
     icon: CheckCircle2,
     title: "Quote follow-up",
-    text: "You receive the next steps or a clear quotation within 24 hours.",
+    text: "You receive the next steps or a clear quotation.",
   },
 ];
 
@@ -114,7 +105,7 @@ const marketSegmentOptions = [
   "Substrate Manufacturers",
   "Retailer/Garden Centre/ Nurseries",
   "Horticulture & Floriculture",
-  "Plotting Mix Suppliers",
+  "Potting Mix Suppliers",
   "Importer/Distributor/Wholesaler",
   "Others",
 ] as const;
@@ -131,14 +122,19 @@ const partnershipRoleOptions = [
 type EnquiryType = (typeof enquiryTypes)[number]["value"];
 
 const inputClass =
-  "mt-2 h-12 w-full rounded-sm border border-brand/35 bg-pure-white px-4 text-base font-medium text-brand-deep outline-none transition-colors placeholder:text-charcoal/55 focus:border-2 focus:border-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand";
+  "mt-2 h-12 w-full rounded-sm border border-brand/35 bg-pure-white px-4 text-base font-normal text-brand-deep outline-none transition-colors placeholder:text-charcoal/55 focus:border-2 focus:border-accent-green focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-green";
 
 function Contact() {
+  const search = Route.useSearch();
+  const initialProduct = products.find((product) => product.slug === search.product);
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
-  const [enquiryType, setEnquiryType] = useState<EnquiryType>("partnership");
+  const [enquiryType, setEnquiryType] = useState<EnquiryType>(
+    initialProduct ? "product" : "partnership",
+  );
+  const [selectedProduct, setSelectedProduct] = useState(initialProduct?.slug ?? "");
   const [generalRole, setGeneralRole] = useState("Vendor");
   const [productCategory, setProductCategory] = useState("Bulk Purchase (FCL)");
   const [marketSegment, setMarketSegment] = useState("Professional Greenhouse Grower");
@@ -216,70 +212,51 @@ function Contact() {
             <span className="block">We'll Take It From There!</span>
           </span>
         }
-        titleClassName="contact-hero-title max-w-none text-[clamp(1.15rem,5.1vw,1.6rem)] sm:text-[clamp(1.6rem,3.4vw,3.35rem)] leading-[1.12] pb-1 text-[#20555A]"
+        titleClassName="contact-hero-title max-w-none pb-1 text-body-text"
+        introClassName="contact-hero-intro"
         gridClassName="lg:grid-cols-[1.45fr_.55fr] xl:grid-cols-[1.5fr_.5fr]"
         intro="Tell us what you need to source, where it needs to go and in what volume. We'll evaluate your requirements and guide you through product specification, packaging and shipment planning."
         image={img.exportPort}
       />
 
-      <section className="bg-ivory py-16 lg:py-24">
-        <div className="shell">
+      <section className="bg-surface-cream py-16 lg:py-24">
+        <div className="container">
           <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
-            <div className="grid auto-rows-fr gap-6 md:grid-cols-2">
+            <div>
+              <div className="grid auto-rows-fr gap-6 md:grid-cols-2">
               {contactCards.map((card) => (
-                <Reveal key={card.key} className={`h-full ${card.orderClass}`}>
-                  {card.href ? (
-                    <a
-                      href={card.href}
-                      aria-label={`${card.label}: ${card.value}`}
-                      className="group flex h-full min-h-[140px] overflow-hidden rounded-sm bg-[#68e6c2] shadow-[0_12px_30px_rgba(0,100,101,.08)] transition-transform hover:-translate-y-1"
-                    >
-                      <span className="flex w-24 shrink-0 items-center justify-center bg-[#20555A] sm:w-28 lg:w-24 xl:w-28">
-                        <card.icon
-                          className="h-10 w-10 text-pure-white sm:h-12 sm:w-12"
-                          strokeWidth={1.7}
-                          aria-hidden
-                        />
+                <Reveal key={card.key} className="h-full">
+                  <a
+                    href={card.href}
+                    aria-label={`${card.label}: ${card.value}`}
+                    className="contact-card group flex h-full min-h-[140px] overflow-hidden transition-transform hover:-translate-y-1"
+                  >
+                    <span className="flex w-24 shrink-0 items-center justify-center bg-brand sm:w-28 lg:w-24 xl:w-28">
+                      <card.icon
+                        className="h-10 w-10 text-pure-white sm:h-12 sm:w-12"
+                        strokeWidth={1.7}
+                        aria-hidden
+                      />
+                    </span>
+                    <span className="flex min-w-0 flex-1 items-center justify-center px-3.5 py-5 text-center sm:px-4 sm:py-6 lg:px-3 xl:px-5">
+                      <span
+                        className={`min-w-0 font-semibold leading-tight text-body-text ${
+                          card.isEmail ? "whitespace-nowrap text-sm" : "whitespace-nowrap text-base"
+                        }`}
+                      >
+                        {card.value}
                       </span>
-                      <span className="flex min-w-0 flex-1 items-center justify-center px-3.5 py-5 text-center sm:px-4 sm:py-6 lg:px-3 xl:px-5">
-                        <span
-                          className={`min-w-0 font-extrabold leading-tight tracking-[-.025em] text-[#20555A] text-center ${
-                            card.isEmail
-                              ? "whitespace-nowrap text-[clamp(0.92rem,1.22vw,1.35rem)]"
-                              : "whitespace-nowrap text-[clamp(1.05rem,1.4vw,1.5rem)]"
-                          }`}
-                          style={{ color: "#20555A" }}
-                        >
-                          {card.value}
-                        </span>
-                      </span>
-                    </a>
-                  ) : (
-                    <div className="flex h-full min-h-[140px] overflow-hidden rounded-sm bg-[#68e6c2] shadow-[0_12px_30px_rgba(0,100,101,.08)]">
-                      <span className="flex w-24 shrink-0 items-center justify-center bg-[#20555A] sm:w-28 lg:w-24 xl:w-28">
-                        <card.icon
-                          className="h-10 w-10 text-pure-white sm:h-12 sm:w-12"
-                          strokeWidth={1.7}
-                          aria-hidden
-                        />
-                      </span>
-                      <span className="flex min-w-0 flex-1 items-center justify-center px-4 py-5 text-center sm:px-5 sm:py-6">
-                        <span
-                          className="font-extrabold leading-snug tracking-[-.025em] text-[#20555A] text-[clamp(1rem,1.32vw,1.45rem)]"
-                          style={{ color: "#20555A" }}
-                        >
-                          {card.value}
-                        </span>
-                      </span>
-                    </div>
-                  )}
+                    </span>
+                  </a>
                 </Reveal>
               ))}
+              </div>
+              <p className="contact-response-note mt-5">We&apos;ll respond within 24 hours.</p>
             </div>
 
             <Reveal delay={120} className="h-full">
-              <address className="flex h-full min-h-[140px] overflow-hidden rounded-sm bg-[#68e6c2] not-italic shadow-[0_12px_30px_rgba(0,100,101,.08)]">
-                <span className="flex w-24 shrink-0 items-center justify-center bg-[#20555A] sm:w-28 lg:w-24 xl:w-28">
+              <address className="contact-card flex h-full min-h-[140px] overflow-hidden not-italic">
+                <span className="flex w-24 shrink-0 items-center justify-center bg-brand sm:w-28 lg:w-24 xl:w-28">
                   <MapPin
                     className="h-10 w-10 text-pure-white sm:h-12 sm:w-12"
                     strokeWidth={1.7}
@@ -288,8 +265,7 @@ function Contact() {
                 </span>
                 <span className="flex min-w-0 flex-1 items-center justify-center px-4 py-6 sm:px-6 xl:px-8">
                   <div
-                    className="flex min-w-0 flex-col justify-center text-left text-[14px] font-bold leading-[1.55] tracking-normal text-[#20555A] sm:text-[15px] xl:text-base xl:leading-[1.65]"
-                    style={{ color: "#20555A" }}
+                    className="flex min-w-0 flex-col justify-center text-left text-sm font-semibold leading-body tracking-normal text-body-text"
                   >
                     <span>1/140-12, GM Complex,</span>
                     <span>Opposite TMB Bank,</span>
@@ -313,15 +289,16 @@ function Contact() {
         </div>
       </section>
 
-      <section className="bg-offwhite pb-20 lg:pb-24">
-        <div className="shell grid gap-8 lg:grid-cols-[.82fr_1.18fr] lg:items-start">
+      <section className="bg-surface-cream pb-20 lg:pb-24">
+        <div className="container grid gap-8 lg:grid-cols-[.82fr_1.18fr] lg:items-start">
           <Reveal className="lg:order-2">
             <form
+              id="contact-form"
               onSubmit={submit}
-              className="rounded-md border border-charcoal/10 bg-pure-white p-5 shadow-[0_24px_90px_rgba(31,45,40,.08)] sm:p-8 lg:p-10"
+              className="contact-form rounded-md border bg-pure-white p-5 sm:p-8 lg:p-10"
             >
               {sent ? (
-                <div className="grid min-h-[480px] place-items-center rounded-sm bg-brand-soft p-8 text-center">
+                <div className="grid min-h-[480px] place-items-center rounded-sm bg-brand-soft p-8 text-center" role="status" aria-live="polite">
                   <div className="max-w-lg">
                     <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand text-pure-white">
                       <CheckCircle2 className="h-8 w-8" strokeWidth={1.7} aria-hidden />
@@ -331,7 +308,7 @@ function Contact() {
                       Your enquiry is ready for our team.
                     </h2>
                     <p className="mt-5 text-center text-charcoal/65">
-                      We will respond within 24 hours.
+                      Thanks — we&apos;ll be in touch soon.
                     </p>
                     <PrimaryButton type="button" onClick={() => { setSent(false); setErrorMessage(null); setFieldErrors({}); }} className="mt-8">
                       Send another enquiry
@@ -342,6 +319,7 @@ function Contact() {
                 <>
                   <div
                     className="grid grid-cols-3 rounded-sm bg-brand p-3 sm:p-5"
+                    role="tablist"
                     aria-label="Choose enquiry type"
                   >
                     {enquiryTypes.map(({ value, label, icon: Icon }) => {
@@ -349,31 +327,53 @@ function Contact() {
                       return (
                         <button
                           key={value}
+                          id={`${value}-tab`}
                           type="button"
-                          aria-pressed={selected}
+                          role="tab"
+                          aria-selected={selected}
+                          aria-controls="enquiry-tab-panel"
+                          tabIndex={selected ? 0 : -1}
                           onClick={() => setEnquiryType(value)}
-                          className="group flex min-h-[44px] min-w-0 flex-col items-center gap-3 px-1 py-2 text-center text-pure-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pure-white"
+                          onKeyDown={(event) => {
+                            if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+                            event.preventDefault();
+                            const tabs = Array.from(
+                              event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>(
+                                '[role="tab"]',
+                              ) ?? [],
+                            );
+                            const currentIndex = tabs.indexOf(event.currentTarget);
+                            const direction = event.key === "ArrowRight" ? 1 : -1;
+                            tabs[(currentIndex + direction + tabs.length) % tabs.length]?.click();
+                          }}
+                          className="contact-tab group flex min-h-12 min-w-0 flex-col items-center gap-3 px-1 py-2 text-center text-pure-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pure-white"
                         >
                           <span className="site-menu-font text-xs uppercase tracking-[.08em]">
                             {label}
                           </span>
                           <span
-                          className={`grid h-14 w-14 place-items-center rounded-full transition-all sm:h-16 sm:w-16 ${
+                            className={`contact-tab__icon grid h-14 w-14 place-items-center rounded-full transition-all sm:h-16 sm:w-16 ${
                               selected
-                              ? "-translate-y-0.5 bg-pure-white ring-2 ring-pure-white text-brand shadow-lg"
-                              : "bg-pure-white/15 text-pure-white group-hover:-translate-y-0.5"
+                                ? "-translate-y-0.5 bg-pure-white/25 ring-2 ring-pure-white shadow-lg"
+                                : "bg-pure-white/10 group-hover:-translate-y-0.5"
                             }`}
                           >
-                          <Icon className="h-7 w-7 text-brand sm:h-8 sm:w-8" strokeWidth={1.8} aria-hidden />
+                            <Icon className="h-7 w-7 text-pure-white sm:h-8 sm:w-8" strokeWidth={1.8} aria-hidden />
                           </span>
                         </button>
                       );
                     })}
                   </div>
                   <input type="hidden" name="category" value={enquiryType} />
+                  <div
+                    id="enquiry-tab-panel"
+                    role="tabpanel"
+                    aria-labelledby={`${enquiryType}-tab`}
+                    tabIndex={0}
+                  >
 
                   {/* Honeypot – hidden from real users, traps bots */}
-                  <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "-9999px", opacity: 0, height: 0, overflow: "hidden" }}>
+                  <div aria-hidden="true" tabIndex={-1} style={{ position: "absolute", left: "-9999px", top: "-9999px", opacity: 0, height: 0, overflow: "hidden" }}>
                     <label>
                       Don&apos;t fill this out
                       <input type="text" name="_hp_website" tabIndex={-1} autoComplete="off" />
@@ -410,7 +410,7 @@ function Contact() {
                       <label key={f.name} className="block">
                         <span className="micro-label text-brand">
                           {f.label}
-                          {f.required ? "*" : ""}
+                          {f.required ? " *" : " (optional)"}
                         </span>
                         <input
                           name={f.name}
@@ -442,12 +442,12 @@ function Contact() {
                       </label>
                       {marketSegment === "Others" && (
                         <label className="block">
-                          <span className="micro-label text-brand">Others (Please Specify)</span>
+                          <span className="micro-label text-brand">Others (Please Specify) *</span>
                           <input name="marketSegmentOther" required className={inputClass} />
                         </label>
                       )}
                       <label className="block">
-                        <span className="micro-label text-brand">Best describes me</span>
+                        <span className="micro-label text-brand">Best describes me (optional)</span>
                         <select
                           name="partnershipRole"
                           className={inputClass}
@@ -461,7 +461,7 @@ function Contact() {
                       </label>
                       {partnershipRole === "Others" && (
                         <label className="block">
-                          <span className="micro-label text-brand">Others (Please Specify)</span>
+                          <span className="micro-label text-brand">Others (Please Specify) *</span>
                           <input name="partnershipRoleOther" required className={inputClass} />
                         </label>
                       )}
@@ -484,7 +484,7 @@ function Contact() {
                     <div className="mt-6 grid gap-6 sm:grid-cols-2">
                       <fieldset className="sm:col-span-2">
                         <legend className="micro-label text-brand">
-                          Are you a current Arjuna Exports customer?
+                          Are you a current Arjuna Exports customer? (optional)
                         </legend>
                         <div className="mt-3 flex gap-8 text-sm font-medium text-brand-deep">
                           <label className="flex items-center gap-2">
@@ -497,8 +497,14 @@ function Contact() {
                         </div>
                       </fieldset>
                       <label className="block">
-                        <span className="micro-label text-brand">Product name</span>
-                        <select name="product" className={inputClass} defaultValue="" required>
+                        <span className="micro-label text-brand">Product name *</span>
+                        <select
+                          name="product"
+                          className={inputClass}
+                          value={selectedProduct}
+                          onChange={(event) => setSelectedProduct(event.target.value)}
+                          required
+                        >
                           <option value="" disabled>
                             Select an option
                           </option>
@@ -510,7 +516,7 @@ function Contact() {
                         </select>
                       </label>
                       <label className="block">
-                        <span className="micro-label text-brand">Product category</span>
+                        <span className="micro-label text-brand">Product category (optional)</span>
                         <select
                           name="productCategory"
                           className={inputClass}
@@ -524,7 +530,7 @@ function Contact() {
                       </label>
                       {productCategory === "Others" && (
                         <label className="block">
-                          <span className="micro-label text-brand">Others (Please Specify)</span>
+                          <span className="micro-label text-brand">Others (Please Specify) *</span>
                           <input name="productCategoryOther" required className={inputClass} />
                         </label>
                       )}
@@ -540,7 +546,7 @@ function Contact() {
                         />
                       </label>
                       <label className="block sm:col-span-2">
-                        <span className="micro-label text-brand">Additional information</span>
+                        <span className="micro-label text-brand">Additional information (optional)</span>
                         <textarea
                           name="additionalInformation"
                           rows={4}
@@ -553,7 +559,7 @@ function Contact() {
                   {enquiryType === "general" && (
                     <div className="mt-6 grid gap-6">
                       <label className="block sm:max-w-[calc(50%-0.625rem)]">
-                        <span className="micro-label text-brand">Best describes me</span>
+                        <span className="micro-label text-brand">Best describes me (optional)</span>
                         <select
                           name="generalRole"
                           className={inputClass}
@@ -568,7 +574,7 @@ function Contact() {
                       </label>
                       {generalRole === "Others" && (
                         <label className="block sm:max-w-[calc(50%-0.625rem)]">
-                          <span className="micro-label text-brand">Others (Please Specify)</span>
+                          <span className="micro-label text-brand">Others (Please Specify) *</span>
                           <input name="generalRoleOther" required className={inputClass} />
                         </label>
                       )}
@@ -604,19 +610,20 @@ function Contact() {
                   <div className="mt-9 flex flex-wrap items-center justify-between gap-5 border-t border-charcoal/10 pt-7">
                     <div className="max-w-md">
                       <p className="font-semibold text-brand-deep">
-                        We will respond within 24 hours.
+                        Your enquiry is reviewed by our export team.
                       </p>
                       <p className="mt-1 text-sm leading-relaxed text-charcoal/55">
                         Your details are used to respond to this enquiry and prepare the right
                         product or export follow-up.
                       </p>
                     </div>
-                    <PrimaryButton type="submit" disabled={sending} className="relative">
+                    <PrimaryButton type="submit" disabled={sending} className="relative w-full sm:w-auto">
                       {sending && (
                         <Loader2 className="absolute left-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 animate-spin" aria-hidden />
                       )}
                       <span className={sending ? "invisible" : ""}>Submit</span>
                     </PrimaryButton>
+                  </div>
                   </div>
                 </>
               )}

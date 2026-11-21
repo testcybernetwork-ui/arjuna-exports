@@ -43,7 +43,7 @@ function Sustainability() {
         image={img.stageHusk}
       />
       <section className="bg-ivory py-20 lg:py-24">
-        <div className="shell grid gap-12 lg:grid-cols-2">
+        <div className="container grid gap-12 lg:grid-cols-2">
           <Reveal>
             <img
               src={img.stagePith}
@@ -71,7 +71,7 @@ function Sustainability() {
         </div>
       </section>
       <section className="bg-leaf py-20 text-pure-white lg:py-24">
-        <div className="shell">
+        <div className="container">
           <Label className="text-sand">The honest next steps</Label>
           <h2 className="display mt-6 max-w-4xl text-[clamp(2.25rem,4vw,4rem)]">
             Measure more. Recover more water. Move more energy to renewables.

@@ -169,7 +169,7 @@ export const products: Product[] = [
     category: "Coco Peat",
     image: productCocoPeat5kg,
     short: "Compressed, low-EC coco pith for professional substrate blending.",
-    format: "5 kg block Â· 30 kg bale",
+    format: "5 kg block / 30 kg bale",
     application: "Substrate blending, nurseries, potting mixes",
     overview:
       "Screened coir pith, washed to a stable EC and compressed under hydraulic pressure into dense, transport-efficient blocks. One 5 kg block expands into roughly 75 litres of ready growing medium, cutting freight volume by up to eight times.",
@@ -180,13 +180,13 @@ export const products: Product[] = [
       "Eight-fold volume reduction in shipping",
     ],
     specs: [
-      { label: "Dimensions", value: "300 Ã— 300 Ã— 120 mm" },
-      { label: "Weight", value: "5 kg Â± 5%" },
+      { label: "Dimensions", value: "300 × 300 × 120 mm" },
+      { label: "Weight", value: "5 kg ± 5%" },
       { label: "Compression ratio", value: "5 : 1" },
-      { label: "pH", value: "5.5 â€“ 6.5" },
+      { label: "pH", value: "5.5–6.5" },
       { label: "EC", value: "< 0.5 mS/cm (washed)" },
-      { label: "Moisture", value: "15 â€“ 20%" },
-      { label: "Expansion volume", value: "70 â€“ 80 litres" },
+      { label: "Moisture", value: "15–20%" },
+      { label: "Expansion volume", value: "70–80 litres" },
       { label: "Packaging", value: "Shrink wrapped, palletised" },
       { label: "Customisation", value: "Private label, custom grading" },
     ],
@@ -200,8 +200,8 @@ export const products: Product[] = [
   },
   {
     slug: "coir-650-gram-bricks",
-    name: "Coir 650 Gram Bricks",
-    category: "Coir 650 Gram Bricks",
+    name: "Coco Peat 650g Bricks",
+    category: "Coco Peat",
     image: productCocoPeat650g,
     short: "Compact coco peat block format for retail packs and smaller growing applications.",
     format: "650 g compressed block",
@@ -215,12 +215,12 @@ export const products: Product[] = [
       "Private label packing available",
     ],
     specs: [
-      { label: "Weight", value: "650 g Â± 5%" },
+      { label: "Weight", value: "650 g ± 5%" },
       { label: "Compression ratio", value: "5 : 1" },
-      { label: "pH", value: "5.5 â€“ 6.5" },
+      { label: "pH", value: "5.5–6.5" },
       { label: "EC", value: "< 0.5 mS/cm (washed)" },
-      { label: "Moisture", value: "15 â€“ 20%" },
-      { label: "Expansion volume", value: "Approx. 8 â€“ 10 litres" },
+      { label: "Moisture", value: "15–20%" },
+      { label: "Expansion volume", value: "Approx. 8–10 litres" },
       { label: "Packaging", value: "Shrink wrapped or retail sleeve" },
       { label: "Use", value: "Pots, planters and nursery mixes" },
       { label: "Customisation", value: "Label, barcode and carton count" },
@@ -236,7 +236,7 @@ export const products: Product[] = [
     category: "Coco Husk",
     image: productCocoHushChips4kg,
     short: "Chunky coir chips for airy substrate blends and orchid-style growing media.",
-    format: "4 kg block Â· Loose chips Â· Compressed bales",
+    format: "4 kg block / loose chips / compressed bales",
     application: "Orchids, aroids, nursery blends and hydroponic substrates",
     overview:
       "Coco Husk Chips add structure, drainage and air space to professional growing mixes. Custom grading helps customers balance water retention with fast drainage for crop-specific blends.",
@@ -249,9 +249,9 @@ export const products: Product[] = [
     specs: [
       { label: "Particle size", value: "Custom graded chips" },
       { label: "Compression", value: "Loose or compressed" },
-      { label: "pH", value: "5.5 â€“ 6.8" },
+      { label: "pH", value: "5.5–6.8" },
       { label: "EC", value: "< 0.8 mS/cm available" },
-      { label: "Moisture", value: "15 â€“ 20%" },
+      { label: "Moisture", value: "15–20%" },
       { label: "Structure", value: "Coarse, open and durable" },
       { label: "Packaging", value: "Bales, sacks or bulk loading" },
       { label: "Use", value: "Drainage and aeration component" },
@@ -268,7 +268,7 @@ export const products: Product[] = [
     category: "Coir Fibre",
     image: detailCoirFlooring,
     short: "Durable natural coir matting for entrances, interiors and contract flooring.",
-    format: "Rolls Â· Cut mats Â· Custom sizes",
+    format: "Rolls / cut mats / custom sizes",
     application: "Interiors, hospitality, retail and contract flooring",
     overview:
       "Woven from selected coir fibre, our matting range brings a natural, hard-wearing surface to entrance areas and interior flooring programmes. Rolls and cut mats can be supplied in standard or customer-specific dimensions.",
@@ -280,7 +280,7 @@ export const products: Product[] = [
     ],
     specs: [
       { label: "Dimensions", value: "Up to 2 m width, cut to length" },
-      { label: "Weight", value: "600 â€“ 1400 gsm" },
+      { label: "Weight", value: "600–1400 gsm" },
       { label: "Format", value: "Rolls and cut mats" },
       { label: "Fibre", value: "Selected natural coir" },
       { label: "Finish", value: "Natural, bleached or dyed" },
@@ -319,7 +319,7 @@ export const industrySolutions: IndustrySolution[] = products
   )
   .sort((a, b) => industrySolutionOrder.indexOf(a.title) - industrySolutionOrder.indexOf(b.title));
 
-export const productFilters = ["All", "Coco Peat", "Coir 650 Gram Bricks", "Coir Fibre", "Coco Husk"];
+export const productFilters = ["All", ...products.map((product) => product.name)];
 
 export const transformationStages = [
   {
@@ -382,7 +382,7 @@ export const processStages = [
     title: "Natural Drying",
     text: "Following washing, the pith is transferred to dedicated drying yards. Controlled sun drying lowers moisture naturally while regular turning promotes even conditioning and prepares the material for efficient compression.",
     image: stage5Drying,
-    data: "Moisture 15â€“20%",
+    data: "Moisture 15–20%",
   },
   {
     n: "06",
@@ -465,7 +465,7 @@ export const applications = [
     title: "Plant Propagation",
     line: "Cuttings and plugs, where root initiation is everything.",
     image: stageMedium,
-    why: "Warm, aerated and consistently moist â€” the three conditions rooting needs, held together in one medium.",
+    why: "Warm, aerated and consistently moist — the three conditions rooting needs, held together in one medium.",
     products: ["Garden Articles", "Coco Peat Blocks"],
     properties: ["High oxygen at the root", "Neutral pH range", "Plug cohesion"],
   },
@@ -582,7 +582,7 @@ export const trustPoints = [
 export const resources = [
   {
     type: "Specification",
-    title: "Coco Peat Block 5 kg â€” Product Specification",
+    title: "Coco Peat Block 5 kg — Product Specification",
     desc: "Dimensions, expansion, chemical profile and packaging.",
     file: "PDF",
     size: "412 KB",
@@ -606,7 +606,7 @@ export const resources = [
   },
   {
     type: "Guide",
-    title: "Growing in Coco â€” Irrigation & Nutrition",
+    title: "Growing in Coco — Irrigation & Nutrition",
     desc: "How coco differs from peat and rockwool in practice.",
     file: "PDF",
     size: "2.4 MB",
@@ -630,7 +630,7 @@ export const resources = [
   },
   {
     type: "FAQ",
-    title: "Buffered vs Unbuffered Coco â€” FAQ",
+    title: "Buffered vs Unbuffered Coco — FAQ",
     desc: "Answers to the questions buyers ask most often.",
     file: "PDF",
     size: "220 KB",

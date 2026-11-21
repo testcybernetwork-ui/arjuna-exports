@@ -9,19 +9,14 @@ export const Route = createFileRoute("/products")({
   head: () =>
     pageMeta(
       "Products",
-      "Explore coco peat blocks, Coir 650 Gram Bricks, Coco Husk Chips and coir matting.",
+      "Explore Coco Peat Blocks, Coco Peat 650g Bricks, Coco Husk Chips and Coir Matting.",
     ),
   component: Products,
 });
 function Products() {
   const [filter, setFilter] = useState("All");
   const pathname = useRouterState({ select: (state) => state.location.pathname });
-  const shown =
-    filter === "All"
-      ? products
-      : filter === "Coir 650 Gram Bricks"
-        ? products.filter((p) => p.slug === "coir-650-gram-bricks")
-        : products.filter((p) => p.category === filter);
+  const shown = filter === "All" ? products : products.filter((product) => product.name === filter);
   if (pathname !== "/products" && pathname !== "/products/") return <Outlet />;
   return (
     <>
@@ -32,13 +27,14 @@ function Products() {
         image={img.productBlock}
       />
       <section className="relative overflow-hidden bg-offwhite py-20 lg:py-24">
-        <div className="shell relative">
-          <div className="flex flex-wrap gap-2">
+        <div className="container relative">
+          <div className="flex flex-wrap gap-2" aria-label="Filter products">
             {productFilters.map((f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
-                className={`min-h-11 rounded-sm border px-4 py-2.5 text-sm transition ${filter === f ? "border-brand bg-brand text-pure-white" : "border-charcoal/15 bg-ivory text-charcoal/70 hover:border-brand hover:text-brand"}`}
+                aria-pressed={filter === f}
+                className={`min-h-12 rounded-sm border px-4 py-2.5 text-sm transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${filter === f ? "border-brand bg-brand text-pure-white" : "border-charcoal/15 bg-ivory text-charcoal/70 hover:border-brand hover:text-brand"}`}
               >
                 {f}
               </button>

@@ -67,7 +67,7 @@ function Gallery() {
       />
 
       <section className="bg-ivory py-20 lg:py-24">
-        <div className="shell">
+        <div className="container">
           <Reveal className="border-b border-charcoal/20 pb-10">
             <div>
               <Label className="text-brand">Inside Arjuna</Label>

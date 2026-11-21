@@ -52,7 +52,7 @@ function Resources() {
       />
 
       <section className="bg-offwhite py-16 lg:py-20">
-        <div className="shell">
+        <div className="container">
           <Reveal className="grid gap-8 border-b border-charcoal/15 pb-10">
             <div>
               <Label className="text-brand">Explore by topic</Label>
@@ -204,7 +204,7 @@ function Resources() {
       </section>
 
       <section className="bg-brand-soft py-20 lg:py-24">
-        <Reveal className="shell grid gap-10 lg:grid-cols-[1.4fr_.6fr] lg:items-end">
+        <Reveal className="container grid gap-10 lg:grid-cols-[1.4fr_.6fr] lg:items-end">
           <div>
             <Label className="text-brand">Need a specific answer?</Label>
             <h2 className="display mt-6 max-w-4xl text-[clamp(2.25rem,3.8vw,3.75rem)]">
@@ -213,6 +213,7 @@ function Resources() {
           </div>
           <Link
             to="/contact"
+            search={{ product: undefined }}
             className="flex items-center justify-between border-b border-brand py-5 text-xs font-semibold uppercase tracking-[0.18em] text-brand"
           >
             Ask an expert <Arrow />

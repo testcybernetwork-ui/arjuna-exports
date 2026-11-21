@@ -58,7 +58,7 @@ export function Reveal({
 
 export function Label({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <span className={cn("micro-label inline-flex items-center gap-3 opacity-80", className)}>
+    <span className={cn("micro-label inline-flex items-center gap-3", className)}>
       <span className="inline-block h-px w-8 bg-current" aria-hidden />
       {children}
     </span>
@@ -86,10 +86,11 @@ export function Arrow({ className }: { className?: string }) {
 /* ---------- buttons ---------- */
 
 const baseBtn =
-  "group inline-flex min-h-[52px] items-center gap-3 rounded-sm px-7 text-[14px] font-semibold tracking-[0.06em] uppercase transition-colors duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-green focus-visible:ring-offset-2 active:bg-primary-green-active disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-60 aria-disabled:pointer-events-none aria-disabled:cursor-not-allowed aria-disabled:opacity-60";
+  "group inline-flex min-h-12 items-center gap-3 rounded-sm px-6 text-sm font-semibold tracking-[0.04em] uppercase shadow-[var(--shadow-button)] transition-colors duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-green focus-visible:ring-offset-2 active:bg-primary-green-active disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-60 aria-disabled:pointer-events-none aria-disabled:cursor-not-allowed aria-disabled:opacity-60";
 
 export function PrimaryButton({
   to,
+  hash,
   children,
   onClick,
   type,
@@ -97,6 +98,7 @@ export function PrimaryButton({
   disabled = false,
 }: {
   to?: string;
+  hash?: string;
   children: ReactNode;
   onClick?: () => void;
   type?: "submit" | "button";
@@ -118,6 +120,7 @@ export function PrimaryButton({
     return (
       <Link
         to={to}
+        {...(hash !== undefined ? { hash } : {})}
         className={cls}
         aria-disabled={disabled || undefined}
         tabIndex={disabled ? -1 : undefined}
@@ -151,7 +154,7 @@ export function SecondaryButton({
         baseBtn,
         "border",
         onDark
-          ? "border-pure-white/60 text-pure-white hover:bg-pure-white hover:text-brand-deep"
+          ? "border-2 border-pure-white/80 bg-black/25 text-pure-white hover:bg-pure-white hover:text-brand-deep"
           : "border-brand text-brand hover:bg-brand hover:text-pure-white",
         className,
       )}
@@ -175,7 +178,7 @@ export function TextLink({
     <Link
       to={to}
       className={cn(
-        "group inline-flex items-center gap-3 text-[13px] font-semibold tracking-[0.16em] uppercase",
+        "group inline-flex min-h-11 items-center gap-3 text-sm font-semibold tracking-[0.08em] uppercase",
         className,
       )}
     >
@@ -192,24 +195,29 @@ export function ChapterHeading({
   lines,
   className,
   align = "left",
+  action,
 }: {
   label?: string;
   lines: string[];
   className?: string;
   align?: "left" | "center";
+  action?: ReactNode;
 }) {
   return (
-    <div className={cn(align === "center" && "text-center", className)}>
-      {label && (
-        <Label className={cn("mb-6 block", align === "center" && "justify-center")}>{label}</Label>
-      )}
-      <h2 className="display max-w-[22ch] text-[clamp(2.25rem,4vw,4rem)] leading-[1.02]">
-        {lines.map((l, i) => (
-          <span key={i} className="block">
-            {l}
-          </span>
-        ))}
-      </h2>
+    <div className={cn(action && "section-heading", align === "center" && "text-center", className)}>
+      <div>
+        {label && (
+          <Label className={cn("mb-6 block", align === "center" && "justify-center")}>{label}</Label>
+        )}
+        <h2 className="display max-w-[22ch] text-[clamp(2.25rem,4vw,4rem)] leading-[1.02]">
+          {lines.map((l, i) => (
+            <span key={i} className="block">
+              {l}
+            </span>
+          ))}
+        </h2>
+      </div>
+      {action && <div className="section-heading__action">{action}</div>}
     </div>
   );
 }

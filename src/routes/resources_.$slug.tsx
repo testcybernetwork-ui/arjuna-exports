@@ -50,7 +50,7 @@ function ArticleDetail() {
 
   return (
     <article className="bg-offwhite pb-20 pt-24 sm:pt-28">
-      <div className="shell grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-12 xl:grid-cols-[minmax(0,1fr)_360px]">
+      <div className="container grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-12 xl:grid-cols-[minmax(0,1fr)_360px]">
         <main className="min-w-0">
           <Reveal>
             <div className="flex flex-wrap items-center justify-between gap-5">
@@ -60,7 +60,7 @@ function ArticleDetail() {
               >
                 {article.category}
               </Link>
-              <span className="bg-charcoal px-5 py-3 text-xs font-bold uppercase tracking-[.06em] text-pure-white">
+              <span className="bg-surface-teal-dark px-5 py-3 text-xs font-bold uppercase tracking-[.06em] text-pure-white">
                 Resource guide
               </span>
             </div>

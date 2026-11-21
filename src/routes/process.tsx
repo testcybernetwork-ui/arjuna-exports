@@ -210,7 +210,7 @@ function Process() {
         className="border-b border-charcoal/10 bg-ivory py-10 lg:py-12"
         aria-label="Process categories"
       >
-        <div className="shell">
+        <div className="container">
           <div className="mx-auto grid max-w-lg grid-cols-2 gap-6 sm:gap-10">
             {processFilters.map(({ id, label, Icon }) => {
               const selected = filter === id;
@@ -247,7 +247,7 @@ function Process() {
       {filter === "product" && (
         <div id="product-process">
           <section className="process-journey relative overflow-hidden bg-offwhite py-16 lg:py-20">
-            <div className="shell process-journey-intro relative z-10">
+            <div className="container process-journey-intro relative z-10">
               <Reveal className="mx-auto max-w-3xl text-center">
                 <Label className="text-brand">The complete workflow</Label>
                 <h2 className="display mt-5 text-[clamp(2.25rem,4vw,4rem)]">
@@ -267,7 +267,7 @@ function Process() {
           <div className="process-chapters bg-offwhite">
             {processChapters.map((chapter, chapterIndex) => (
               <section className="process-chapter relative overflow-hidden" key={chapter.label}>
-                <div className="shell relative z-10">
+                <div className="container relative z-10">
                   <div className="mb-4 flex items-center gap-4 lg:mb-5">
                     <Label className="text-brand">{chapter.label}</Label>
                     <span className="h-px flex-1 bg-brand/15" aria-hidden="true" />
@@ -302,7 +302,7 @@ function Process() {
       {filter === "logistics" && (
         <div id="logistics-process">
         <section className="logistics-section overflow-hidden bg-ivory">
-          <div className="shell flex flex-col justify-center py-16 lg:py-20">
+          <div className="container flex flex-col justify-center py-16 lg:py-20">
             <Reveal className="flex flex-col gap-5 border-b border-charcoal/12 pb-5 lg:flex-row lg:items-end lg:justify-between">
               <div>
                 <Label className="text-brand">From factory to buyer</Label>
@@ -374,7 +374,7 @@ function Process() {
 
           {/* ── Logistics detail content ── */}
           <section className="bg-offwhite py-20 lg:py-24">
-            <div className="shell">
+            <div className="container">
               {/* Main intro */}
               <Reveal className="mx-auto w-full text-center">
                 <Label className="text-brand justify-center">Our Expertise</Label>
@@ -467,7 +467,7 @@ function Process() {
       )}
 
       <section className="bg-ivory py-20 lg:py-24">
-        <div className="shell grid gap-12 lg:grid-cols-[.72fr_1.28fr] lg:items-start">
+        <div className="container grid gap-12 lg:grid-cols-[.72fr_1.28fr] lg:items-start">
           <Reveal>
             <Label className="text-brand">Export Readiness</Label>
             <h2 className="display mt-6 text-[clamp(2.25rem,4vw,4rem)]">
@@ -499,8 +499,8 @@ function Process() {
         </div>
       </section>
 
-      <section className="bg-[#68e6c2] py-16 text-brand lg:py-20">
-        <div className="shell grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+      <section className="bg-surface-teal-light py-16 text-brand lg:py-20">
+        <div className="container grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
           <Reveal>
             <Label className="text-aqua">Custom Specification</Label>
             <h2 className="display mt-6 max-w-3xl text-[clamp(2.25rem,4vw,4rem)]">

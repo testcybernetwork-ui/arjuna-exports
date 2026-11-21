@@ -30,11 +30,13 @@ export const Route = createFileRoute("/")({
 function ProductCarousel() {
   const trackRef = useRef<HTMLDivElement>(null);
   const scrollProducts = (direction: number) => {
-    trackRef.current?.scrollBy({ left: direction * 352, behavior: "smooth" });
+    const card = trackRef.current?.querySelector(".product-card");
+    const step = card ? card.getBoundingClientRect().width + 24 : 352;
+    trackRef.current?.scrollBy({ left: direction * step, behavior: "smooth" });
   };
 
   return (
-    <div className="mt-12" aria-label="Featured products">
+    <div className="mt-8" role="region" aria-label="Featured products">
       <div
         ref={trackRef}
         className="product-carousel-track flex items-stretch gap-6 overflow-x-auto pb-4"
@@ -43,7 +45,7 @@ function ProductCarousel() {
           <ProductCard key={product.slug} product={product} index={index} variant="carousel" />
         ))}
       </div>
-      <div className="mt-4 flex items-center justify-end gap-3" aria-label="Carousel controls">
+      <div className="mt-4 flex items-center justify-end gap-3" role="group" aria-label="Carousel controls">
         <button
           type="button"
           className="product-carousel-arrow"
@@ -130,7 +132,7 @@ function Home() {
   return (
     <>
       <section className="home-hero" aria-labelledby="home-hero-title">
-        <div className="home-hero__content">
+        <div className="container home-hero__content">
           <Label className="mb-6 text-[#b9e5c3]">Arjuna Exports · India</Label>
           <h1 id="home-hero-title" className="home-hero__title display">
             <span className="home-hero__title-line">FROM THE COCONUT HUSK</span>
@@ -176,6 +178,7 @@ function Home() {
         </div>
       </section>
       <section className="hero-stats-strip" aria-label="Arjuna Exports at a glance">
+        <div className="container hero-stats-strip__inner">
         {/* Column 1 — Established */}
         <div className="hero-stats-strip__col">
           <svg
@@ -383,17 +386,20 @@ function Home() {
           <span className="hero-stats-strip__number">3000 +</span>
           <span className="hero-stats-strip__label">MT exported / year</span>
         </div>
+        </div>
       </section>
-      <section className="bg-brand-soft py-20 lg:py-28">
-        <div className="shell">
-          <Reveal className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+      <section className="bg-surface-teal-light py-20 lg:py-28">
+        <div className="container">
+          <Reveal>
             <ChapterHeading
               label="01 — Our Products"
               lines={["Made for growers.", "Built for distance."]}
+              action={
+                <TextLink to="/products" className="section-heading__action shrink-0 text-brand">
+                  View all products
+                </TextLink>
+              }
             />
-            <TextLink to="/products" className="shrink-0 text-brand">
-              View all products
-            </TextLink>
           </Reveal>
           <Reveal>
             <ProductCarousel />
@@ -404,10 +410,10 @@ function Home() {
       <Link
         to="/process"
         aria-label="Explore the full process"
-        className="process-preview-link block bg-charcoal text-[#20555A] transition duration-300 hover:opacity-95 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
+        className="process-preview-link block bg-surface-teal-light text-body-text transition duration-300 hover:opacity-95 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
       >
         <section className="py-14 lg:py-20">
-          <div className="shell">
+          <div className="container">
             <Reveal>
               <div>
                 <Label className="mb-4 block">02 / Transformation</Label>
@@ -465,7 +471,7 @@ function Home() {
         </section>
       </Link>
       <section className="bg-ivory py-12 sm:py-14 lg:py-16">
-        <div className="shell">
+        <div className="container">
           <Reveal>
             <div>
               <Label className="mb-4 block">03 — The Material</Label>
@@ -502,7 +508,7 @@ function Home() {
       </section>
       <CustomerJourney />
       <section className="bg-ivory py-20 lg:py-28">
-        <div className="shell grid gap-12 lg:grid-cols-[.75fr_1.25fr]">
+        <div className="container grid gap-12 lg:grid-cols-[.75fr_1.25fr]">
           <Reveal>
             <ChapterHeading label="Our Solutions" lines={["Solutions Across", "Industries"]} />
             <p className="mt-8 max-w-[38ch] leading-relaxed text-charcoal/65">
@@ -545,7 +551,7 @@ function Home() {
         </div>
       </section>
       <section className="bg-offwhite py-20 lg:py-24">
-        <div className="shell">
+        <div className="container">
           <Reveal className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <Label className="text-brand">Articles &amp; insights</Label>

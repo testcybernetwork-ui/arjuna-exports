@@ -13,8 +13,7 @@ import step7Image from "@/assets/customer journey/7.jpg";
  * Customer Journey section for the Arjuna Exports site.
  *
  * Optional script font: add
- * @import url("https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap");
- * to the top of your global stylesheet, or load Caveat in your document <head>.
+
  *
  * Usage: <CustomerJourney />
  * Custom steps: <CustomerJourney steps={[{ title: "Your step", image: "/images/custom.svg" }]} />
@@ -66,7 +65,7 @@ export function CustomerJourney({ steps = defaultSteps }: { steps?: Step[] }) {
     <section
       aria-labelledby="customer-journey-title"
       className="customer-journey relative overflow-hidden py-5"
-      style={{ "--brand-dark": "#14452F", "--brand-green": "#2F7D4F" } as CSSProperties}
+      style={{ "--brand-dark": "var(--brand-deep)", "--brand-green": "var(--accent-green)" } as CSSProperties}
     >
       <div className="mx-auto w-full max-w-[1200px] px-5">
         <div className="mb-5 grid grid-cols-1 items-center gap-4 md:grid-cols-[1fr_auto] md:gap-8">
@@ -77,7 +76,7 @@ export function CustomerJourney({ steps = defaultSteps }: { steps?: Step[] }) {
             viewport={{ once: true, amount: 0.3 }}
             className="max-w-[760px]"
           >
-            <motion.p variants={prefersReducedMotion ? reducedFadeVariants : headerItemVariants} className="mb-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#617469]">
+            <motion.p variants={prefersReducedMotion ? reducedFadeVariants : headerItemVariants} className="mb-1 text-xs font-semibold uppercase tracking-[0.08em] text-[#617469]">
               Customer Journey
             </motion.p>
             <motion.h2
@@ -87,7 +86,7 @@ export function CustomerJourney({ steps = defaultSteps }: { steps?: Step[] }) {
             >
               From First Call to Long-Term Partnership
             </motion.h2>
-            <motion.p variants={prefersReducedMotion ? reducedFadeVariants : headerItemVariants} className="max-w-[620px] text-left text-[15px] leading-[1.25] text-gray-700">
+            <motion.p variants={prefersReducedMotion ? reducedFadeVariants : headerItemVariants} className="max-w-[620px] text-left text-base leading-[1.6] text-gray-700">
               A simple and transparent process, designed around your success.
             </motion.p>
           </motion.div>
@@ -97,7 +96,7 @@ export function CustomerJourney({ steps = defaultSteps }: { steps?: Step[] }) {
             whileInView={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, rotate: -6, scale: 1 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={prefersReducedMotion ? { duration: 0.25 } : { type: "spring", stiffness: 160, damping: 13, delay: 0.25 }}
-            className="justify-self-start text-left font-['Caveat',_'Kalam',_cursive] text-[24px] font-semibold leading-[0.84] text-[var(--brand-green)] md:justify-self-end md:text-right"
+            className="display justify-self-start text-left text-[24px] md:justify-self-end md:text-right"
             aria-label="Growing Together Worldwide"
           >
             <span className="block">Growing</span>

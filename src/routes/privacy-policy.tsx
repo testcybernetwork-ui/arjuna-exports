@@ -139,7 +139,7 @@ function PrivacyPolicy() {
         intro="How we collect, use, and protect your personal data."
       />
       <main className="bg-offwhite py-12 sm:py-16">
-        <div className="shell max-w-4xl">
+        <div className="container max-w-4xl">
           <div className="space-y-10">
             {sections.map((section) => (
               <section className="border-t border-charcoal/15 pt-6" key={section.title}>

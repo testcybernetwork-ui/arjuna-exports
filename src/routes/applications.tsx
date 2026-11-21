@@ -136,7 +136,7 @@ function Applications() {
   return (
     <main className="overflow-hidden text-charcoal [overflow-wrap:break-word] [word-break:normal]">
       <section className="bg-offwhite">
-        <div className="shell grid min-h-[580px] items-stretch gap-10 py-10 sm:py-14 lg:min-h-[650px] lg:grid-cols-[1.05fr_.95fr] lg:gap-14 lg:py-16">
+        <div className="container grid min-h-[580px] items-stretch gap-10 py-10 sm:py-14 lg:min-h-[650px] lg:grid-cols-[1.05fr_.95fr] lg:gap-14 lg:py-16">
           <div className="flex flex-col justify-center py-2 lg:py-8">
             <nav aria-label="Breadcrumb" className="mb-10 text-sm text-charcoal/55">
               <ol className="flex flex-wrap items-center gap-2">
@@ -171,7 +171,7 @@ function Applications() {
       </section>
 
       <nav aria-label="Explore applications" className="border-y border-charcoal/10 bg-pure-white">
-        <div className="shell grid divide-y divide-charcoal/10 sm:grid-cols-2 sm:divide-x sm:divide-y-0">
+        <div className="container grid divide-y divide-charcoal/10 sm:grid-cols-2 sm:divide-x sm:divide-y-0">
           <a href="#by-crop" className="group flex min-h-28 items-center justify-between gap-5 py-6 pr-5 focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-brand sm:pr-8">
             <span><span className="micro-label text-brand">Browse applications</span><span className="mt-2 block text-xl font-semibold text-brand-deep">By Crop</span><span className="mt-1 block text-sm text-charcoal/60">Soft Fruits · Vegetables · Specialty Crops</span></span>
             <ArrowRight className="h-5 w-5 shrink-0 text-brand transition-transform group-hover:translate-x-1" aria-hidden="true" />
@@ -184,7 +184,7 @@ function Applications() {
       </nav>
 
       <section id="by-crop" className="scroll-mt-24 bg-offwhite py-14 sm:py-16 lg:py-24">
-        <div className="shell">
+        <div className="container">
           <div className="max-w-3xl">
             <Label className="text-brand">By Crop</Label>
             <h2 className="display mt-5 text-[clamp(2rem,3.5vw,3rem)] leading-tight text-brand-deep">Engineered Around What You Grow</h2>
@@ -246,7 +246,7 @@ function Applications() {
       </section>
 
       <section aria-labelledby="why-coir-heading" className="bg-brand-deep py-12 text-pure-white sm:py-14 lg:py-16">
-        <div className="shell">
+        <div className="container">
           <div className="mb-8 flex flex-wrap items-end justify-between gap-4"><div><Label className="text-pure-white/75">Growing medium advantages</Label><h2 id="why-coir-heading" className="display mt-4 text-[clamp(1.8rem,3vw,2.7rem)] leading-tight">Why Growers Choose Coir</h2></div><p className="max-w-[45ch] text-sm leading-relaxed text-pure-white/65">A flexible substrate foundation for professional crop and growing systems.</p></div>
           <div className="grid gap-px overflow-hidden rounded-sm border border-pure-white/15 bg-pure-white/15 sm:grid-cols-2 lg:grid-cols-5">
             {coirBenefits.map(({ title, description, Icon }) => <div key={title} className="bg-brand-deep p-5 sm:p-6"><Icon className="h-6 w-6 text-[#b6c982]" strokeWidth={1.6} aria-hidden="true" /><h3 className="mt-5 text-base font-semibold text-pure-white">{title}</h3><p className="mt-2 text-sm leading-relaxed text-pure-white/65">{description}</p></div>)}
@@ -255,7 +255,7 @@ function Applications() {
       </section>
 
       <section id="by-application" className="scroll-mt-24 bg-pure-white py-14 sm:py-16 lg:py-24">
-        <div className="shell">
+        <div className="container">
           <div className="mb-9">
             <Label className="text-brand">By Application</Label>
             <h2 className="display mt-5 max-w-full text-[clamp(1.6rem,4vw,2.5rem)] leading-tight text-brand-deep">
@@ -275,7 +275,7 @@ function Applications() {
       </section>
 
       <section aria-labelledby="related-products-heading" className="bg-offwhite py-14 sm:py-16 lg:py-20">
-        <div className="shell">
+        <div className="container">
           <div className="mb-8 flex flex-wrap items-end justify-between gap-4"><div><Label className="text-brand">Product range</Label><h2 id="related-products-heading" className="display mt-4 text-[clamp(2rem,3.5vw,3rem)] leading-tight text-brand-deep">Find the Right Growing Solution</h2></div><Link to="/products" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-brand focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand">All products <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link></div>
           <div className="related-products-carousel mt-8" role="region" aria-label="Product range">
             <div className="related-products-track">
@@ -316,7 +316,7 @@ function Applications() {
       </section>
 
       <section className="bg-brand py-14 text-pure-white sm:py-16 lg:py-20">
-        <div className="shell grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+        <div className="container grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
           <div><Label className="text-pure-white/70">Bulk &amp; Export Enquiries Welcome</Label><h2 className="display mt-5 max-w-[22ch] text-[clamp(2rem,3.5vw,3rem)] leading-tight">Looking for the Right Coir Solution for Your Crop?</h2><p className="mt-4 max-w-[66ch] text-base leading-relaxed text-pure-white/75">Our team can help identify the appropriate product, specification and packing configuration for your cultivation or commercial requirements.</p></div>
           <div className="flex flex-wrap gap-3 lg:flex-col"><PrimaryButton to="/contact" className="min-h-12 px-5">Discuss Your Requirement</PrimaryButton><SecondaryButton to="/products" onDark className="min-h-12 px-5">View Our Products</SecondaryButton></div>
         </div>

@@ -436,11 +436,15 @@ function Home() {
                       decoding="async"
                       className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
                     />
-                    <div className="absolute inset-x-0 bottom-0 flex min-w-0 items-center gap-2 p-5 sm:p-6">
-                      <span className="display shrink-0 text-[clamp(.9rem,2vw,1.5rem)] leading-none text-pure-white/75">
+                    <div
+                      aria-hidden="true"
+                      className="absolute inset-x-0 bottom-0 z-[1] h-36 bg-gradient-to-t from-brand-deep/95 via-brand-deep/60 to-transparent"
+                    />
+                    <div className="absolute inset-x-0 bottom-0 z-[2] flex min-w-0 items-center gap-2 p-5 sm:p-6">
+                      <span className="display shrink-0 text-[clamp(.9rem,2vw,1.5rem)] leading-none text-pure-white">
                         {String(i + 1).padStart(2, "0")}
                       </span>
-                      <h3 className="display min-w-0 text-[clamp(.8rem,1.6vw,1.3rem)] leading-tight text-[#20555A]">
+                      <h3 className="display min-w-0 text-[clamp(.8rem,1.6vw,1.3rem)] leading-tight text-pure-white">
                         {s.title}
                       </h3>
                     </div>

@@ -228,6 +228,7 @@ body {
   --color-primary-green-active: var(--primary-green-active);
   --color-brand-green: var(--brand-green);
   --color-accent-green: var(--accent-green);
+  --color-text-secondary: var(--text-secondary);
   --color-brand-deep: var(--brand-deep);
   --color-brand-forest: var(--brand-forest);
   --color-brand-soft: var(--brand-soft);
@@ -247,7 +248,7 @@ body {
   --color-surface-teal-dark: var(--surface-teal-dark);
 
   --font-display: "Bowlby One", "Arial Black", ui-sans-serif, system-ui, sans-serif;
-  --font-subtitle: var(--font-sans);
+  --font-subtitle: var(--font-display);
   --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
 
   --text-h1: 3.5rem;
@@ -299,6 +300,7 @@ body {
   --surface-teal-dark: #006465;
   --brand-green: #006465;
   --accent-green: #15803d;
+  --text-secondary: #8ee36d;
   --text: #20555A;
   --text-muted: var(--text);
   --heading: #006465;
@@ -851,10 +853,10 @@ h1:is(.hero-title-dark, .contact-hero-title, [class*="text-[#20555A]"]) {
 }
 
 .home-hero__title-line { display: block !important; white-space: normal !important; color: #fff !important; }
-.home-hero__title-line--accent { color: #8ee36d !important; }
+.home-hero__title-line--accent { color: var(--text-secondary) !important; }
 .home-hero h1.home-hero__title { color: #fff !important; }
-.home-hero h1.home-hero__title .home-hero__title-line--accent { color: #8ee36d !important; }
-.home-hero .micro-label { color: #9be2b5 !important; }
+.home-hero h1.home-hero__title .home-hero__title-line--accent { color: var(--text-secondary) !important; }
+.home-hero .micro-label { color: var(--text-secondary) !important; }
 
 .home-hero__content > p {
   max-width: 43ch;

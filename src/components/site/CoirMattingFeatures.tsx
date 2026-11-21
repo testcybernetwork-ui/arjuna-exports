@@ -128,7 +128,7 @@ export function CoirMattingFeatures() {
       <div className="container coir-features-inner">
         <h2
           id="coir-matting-features-title"
-          className="font-sans text-[clamp(2.4rem,4.6vw,3rem)] font-bold leading-[1.05] tracking-[-0.035em] text-[#0f4c42]"
+          className="display text-[clamp(2.4rem,4.6vw,3rem)] font-normal leading-[1.05] tracking-[-0.01em] text-[#0f4c42]"
         >
           Key Features
         </h2>

@@ -82,7 +82,7 @@ export function CustomerJourney({ steps = defaultSteps }: { steps?: Step[] }) {
             <motion.h2
               id="customer-journey-title"
               variants={prefersReducedMotion ? reducedFadeVariants : headerItemVariants}
-              className="mb-1 font-sans text-[clamp(1.35rem,3.15vw,2rem)] font-bold leading-[1.08] tracking-[-0.035em] text-[var(--brand-dark)]"
+              className="display mb-1 text-[clamp(1.35rem,3.15vw,2rem)] font-normal leading-[1.08] tracking-[-0.01em] text-[var(--brand-dark)]"
             >
               From First Call to Long-Term Partnership
             </motion.h2>

@@ -205,7 +205,7 @@ function AboutUs() {
             {/* Caption Bar Directly Below Photo (#1F5566) */}
             <div className="bg-[#1F5566] p-5 sm:p-6 text-white shrink-0 flex flex-col gap-2.5">
               <div className="flex items-center gap-3">
-                <h2 className="text-xl sm:text-2xl !font-sans font-bold tracking-tight !text-white leading-tight" style={{ fontFamily: "var(--font-sans)", color: "#ffffff" }}>
+                <h2 className="display text-xl sm:text-2xl font-normal tracking-[-0.01em] !text-white leading-tight">
                   Mohanraj Palaniappan
                 </h2>
                 <a

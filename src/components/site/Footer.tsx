@@ -60,7 +60,7 @@ function SocialIcon({ label }: { label: string }) {
             y="17"
             textAnchor="middle"
             fill="white"
-            fontFamily="Poppins, sans-serif"
+            fontFamily="Sora, sans-serif"
             fontSize="13"
             fontWeight="700"
             letterSpacing="-1"

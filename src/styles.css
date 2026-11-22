@@ -31,42 +31,10 @@
 .article-body th { background: var(--brand-soft); color: var(--brand-deep); }
 
 @font-face {
-  font-family: "Bowlby One";
-  src: url("./BowlbyOne-Regular.ttf") format("truetype");
+  font-family: "Sora";
+  src: url("./assets/fonts/sora-latin.woff2") format("woff2");
   font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Poppins";
-  src: url("./assets/fonts/poppins-400-latin.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Poppins";
-  src: url("./assets/fonts/poppins-500-latin.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Poppins";
-  src: url("./assets/fonts/poppins-600-latin.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Poppins";
-  src: url("./assets/fonts/poppins-700-latin.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 700;
+  font-weight: 400 800;
   font-display: swap;
 }
 
@@ -275,19 +243,25 @@ body {
   --color-surface-teal-light: var(--surface-teal-light);
   --color-surface-teal-dark: var(--surface-teal-dark);
 
-  --font-display: "Bowlby One", "Arial Black", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Sora", sans-serif;
   --font-subtitle: var(--font-display);
-  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Sora", sans-serif;
 
-  --text-h1: 3.5rem;
-  --text-h2: 2.5rem;
-  --text-h3: 1.5rem;
+  --text-h1: clamp(3rem, 4.45vw, 4rem);
+  --text-h2: clamp(2rem, 2.8vw, 2.5rem);
+  --text-h3: clamp(1.5rem, 2vw, 1.75rem);
+  --text-h4: clamp(1.25rem, 1.55vw, 1.375rem);
+  --text-h5: 1.125rem;
+  --text-h6: 1rem;
   --text-body-lg: 1.125rem;
   --text-body: 1rem;
   --text-small: 0.875rem;
-  --text-label: 0.75rem;
+  --text-label: 0.8125rem;
   --leading-heading: 1.15;
-  --leading-body: 1.6;
+  --leading-body: 1.7;
+  --letter-heading: -0.03em;
+  --letter-h1: -0.04em;
+  --letter-label: 0.08em;
 
   --ease-arjuna: cubic-bezier(0.22, 1, 0.36, 1);
   --breakpoint-xs: 360px;
@@ -324,9 +298,7 @@ body {
   --container-gutter: 24px;
   --container-gutter-mobile: 16px;
   --line-heading: 1.15;
-  --line-body: 1.6;
-  --letter-heading: -0.01em;
-  --letter-label: 0.08em;
+  --line-body: 1.7;
 
   --surface-cream: oklch(0.964 0.0123 91.52);
   --surface-teal-light: oklch(0.9358 0.019 196.83);
@@ -400,6 +372,10 @@ body {
     font-family: var(--font-sans);
     font-size: var(--text-body);
     line-height: var(--line-body);
+  }
+
+  :is(a, button, input, select, textarea) {
+    font-family: inherit;
   }
 
   main,
@@ -487,6 +463,45 @@ body {
     text-wrap: balance;
   }
 
+  h1 {
+    font-size: var(--text-h1);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: var(--letter-h1);
+  }
+
+  h2 {
+    font-size: var(--text-h2);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: var(--letter-heading);
+  }
+
+  h3 {
+    font-size: var(--text-h3);
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: normal;
+  }
+
+  h4 {
+    font-size: var(--text-h4);
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  h5 {
+    font-size: var(--text-h5);
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  h6 {
+    font-size: var(--text-h6);
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
   ::selection {
     background: var(--brand);
     color: var(--pure-white);
@@ -502,7 +517,7 @@ body {
 
 @utility display {
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 600;
   line-height: var(--line-heading);
   letter-spacing: var(--letter-heading);
   overflow-wrap: break-word;
@@ -512,9 +527,9 @@ body {
 }
 
 @utility micro-label {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: var(--text-label);
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.4;
   letter-spacing: var(--letter-label);
   text-transform: uppercase;
@@ -523,7 +538,8 @@ body {
 
 .site-menu-font {
   font-family: var(--font-sans);
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .subtitle {
@@ -631,26 +647,53 @@ h1:is(.hero-title-dark, .contact-hero-title, [class*="text-[#20555A]"]) {
 
 .site-compact h1 {
   font-size: var(--text-h1) !important;
-  line-height: var(--line-heading) !important;
-  letter-spacing: var(--letter-heading);
+  font-weight: 700;
+  line-height: 1.1 !important;
+  letter-spacing: var(--letter-h1);
 }
 
 .site-compact h2 {
   font-size: var(--text-h2) !important;
-  line-height: var(--line-heading) !important;
+  font-weight: 700;
+  line-height: 1.2 !important;
   letter-spacing: var(--letter-heading);
 }
 
 .site-compact h3 {
   font-size: var(--text-h3) !important;
-  line-height: var(--line-heading) !important;
-  letter-spacing: var(--letter-heading);
+  font-weight: 600;
+  line-height: 1.3 !important;
+  letter-spacing: normal;
+}
+
+.site-compact h4 {
+  font-size: var(--text-h4) !important;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.site-compact h5 {
+  font-size: var(--text-h5) !important;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.site-compact h6 {
+  font-size: var(--text-h6) !important;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.site-compact form label {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
 }
 
 .micro-label {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: var(--text-label);
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.4;
   letter-spacing: var(--letter-label);
 }
@@ -664,9 +707,9 @@ h1:is(.hero-title-dark, .contact-hero-title, [class*="text-[#20555A]"]) {
 .home-hero__title {
   font-family: var(--font-display);
   font-size: var(--text-h1) !important;
-  font-weight: 400;
-  line-height: var(--line-heading);
-  letter-spacing: var(--letter-heading);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: var(--letter-h1);
 }
 
 .home-hero__title-line {
@@ -1094,8 +1137,7 @@ h1:is(.hero-title-dark, .contact-hero-title, [class*="text-[#20555A]"]) {
 /* ---------- Shipping and logistics map ---------- */
 
 .about-page p {
-  text-align: justify;
-  text-justify: inter-word;
+  text-align: left;
 }
 
 .about-page :is(h1, h2, h3, h4) {
@@ -1622,7 +1664,7 @@ footer [class~="mt-16"] {
 .site-footer .footer-headline span:first-child {
   margin-bottom: 4px;
   color: #42675c !important;
-  font-size: 14px;
+  font-size: var(--text-label);
   letter-spacing: 0.17em;
   text-transform: uppercase;
 }
@@ -1656,7 +1698,7 @@ footer [class~="mt-16"] {
 
 .footer-value-icon { width: 22px; height: 22px; color: #34745c; stroke-width: 1.5; }
 .footer-value strong { font-size: 15px; line-height: 1.2; }
-.footer-value span { max-width: 160px; color: #536c63; font-size: 12px; line-height: 1.35; }
+.footer-value span { max-width: 160px; color: #536c63; font-size: 14px; line-height: 1.5; }
 
 .site-footer .footer-tagline {
   display: flex;
@@ -1713,9 +1755,9 @@ footer [class~="mt-16"] {
   max-width: 300px;
   margin: 0.45rem 0 0;
   color: var(--footer-ink) !important;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 400;
-  line-height: 1.45;
+  line-height: 1.7;
   text-align: left !important;
   text-wrap: pretty;
 }
@@ -1772,8 +1814,8 @@ footer [class~="mt-16"] {
   padding-bottom: 0.25rem;
   color: var(--footer-ink) !important;
   font-family: var(--font-display);
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 600;
   line-height: 1.4;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1802,9 +1844,9 @@ footer [class~="mt-16"] {
 .site-footer .footer-contact-link {
   color: var(--footer-ink);
   font-family: var(--font-sans);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 400;
-  line-height: 1.4;
+  line-height: 1.7;
   text-decoration: none;
   transition: color 180ms ease, transform 180ms ease;
 }
@@ -1827,9 +1869,9 @@ footer [class~="mt-16"] {
   display: grid;
   gap: 0.25rem;
   color: var(--footer-ink);
-  font-size: 16px;
+  font-size: 14px;
   font-style: normal;
-  line-height: 1.4;
+  line-height: 1.7;
 }
 
 .footer-contact-item {
@@ -1878,8 +1920,8 @@ footer [class~="mt-16"] {
   padding-top: 5px;
   border-top: 1px solid rgb(242 247 245 / 20%);
   color: rgb(242 247 245 / 82%);
-  font-size: 12px;
-  line-height: 1.6;
+  font-size: 14px;
+  line-height: 1.7;
 }
 
 .footer-legal-copy {

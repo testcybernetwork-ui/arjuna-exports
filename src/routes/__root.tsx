@@ -15,7 +15,7 @@ import { Header } from "../components/site/Header";
 import { Footer } from "../components/site/Footer";
 import { ImageZoomProvider } from "../components/site/ImageZoom";
 import brandLogo from "@/assets/logo.svg?url";
-import displayFont from "../BowlbyOne-Regular.ttf";
+import soraFont from "../assets/fonts/sora-latin.woff2?url";
 
 const siteOrigin = "https://www.arjunaexports.com";
 const organizationStructuredData = JSON.stringify({
@@ -144,9 +144,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "apple-touch-icon", href: "/favicon.png" },
       {
         rel: "preload",
-        href: displayFont,
+        href: soraFont,
         as: "font",
-        type: "font/ttf",
+        type: "font/woff2",
         crossOrigin: "anonymous",
       },
     ],

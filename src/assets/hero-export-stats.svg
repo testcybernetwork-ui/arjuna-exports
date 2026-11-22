@@ -15,7 +15,7 @@
     <g transform="translate(315 36) scale(.48)"><path d="M649 81h73v36h-73zM722 92h17l13 13v12h-30zM739 95v10h11m-98-17v28m12-28v28m12-28v28m12-28v28m12-28v28m12-28v28M660 121h81"/><circle cx="670" cy="123" r="6" fill="#f4fbf9"/><circle cx="731" cy="123" r="6" fill="#f4fbf9"/></g>
     <g transform="translate(400 36) scale(.5)"><path d="M850 105h100l-13 20h-73zM866 82h22v22h-22zm25-12h23v34h-23zm26 18h19v16h-19zm-53 5h22m-5-29V55h7v9h8v7m-69 67c8-7 16 7 24 0s16 7 24 0 16 7 24 0 16 7 24 0"/></g>
   </g>
-  <g fill="#06434a" font-family="Arial, Helvetica, sans-serif" text-anchor="middle">
+  <g fill="#06434a" font-family="Sora, sans-serif" text-anchor="middle">
     <g font-size="42" font-weight="800">
       <text x="100" y="190">2019</text><text x="300" y="190">7+</text><text x="500" y="190">12+</text><text x="700" y="190">120+</text><text x="900" y="190">3,000+</text>
     </g>

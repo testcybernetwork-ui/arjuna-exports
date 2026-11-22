@@ -1,3 +1,5 @@
+import soraFont from "../assets/fonts/sora-latin.woff2?url";
+
 export function renderErrorPage(): string {
   return `<!doctype html>
 <html lang="en">
@@ -6,7 +8,8 @@ export function renderErrorPage(): string {
     <title>This page didn't load</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      body { font: 15px/1.5 system-ui, -apple-system, sans-serif; background: #fafafa; color: #111; display: grid; place-items: center; min-height: 100vh; margin: 0; padding: 1.5rem; }
+      @font-face { font-family: "Sora"; src: url("${soraFont}") format("woff2"); font-style: normal; font-weight: 400 800; font-display: swap; }
+      body { font: 15px/1.7 "Sora", sans-serif; background: #fafafa; color: #111; display: grid; place-items: center; min-height: 100vh; margin: 0; padding: 1.5rem; }
       .card { max-width: 28rem; width: 100%; text-align: center; padding: 2rem; }
       h1 { font-size: 1.25rem; margin: 0 0 0.5rem; }
       p { color: #4b5563; margin: 0 0 1.5rem; }

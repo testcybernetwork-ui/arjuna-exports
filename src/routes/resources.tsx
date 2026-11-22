@@ -4,6 +4,7 @@ import { useState } from "react";
 import { img } from "@/lib/site-data";
 import { resourceArticles, resourceCategories as categories } from "@/lib/resource-data";
 import { PageHero, pageMeta } from "@/components/site/PageHero";
+import { ImageZoomButton } from "@/components/site/ImageZoom";
 import { Arrow, Label, Reveal } from "@/components/site/primitives";
 
 const categoryKey = (value: string) =>
@@ -115,6 +116,7 @@ function Resources() {
                   decoding="async"
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                 />
+                <ImageZoomButton src={featured.image} alt={featured.title} />
               </div>
               <div className="flex flex-col justify-between p-8 sm:p-12 lg:p-16">
                 <div>
@@ -153,13 +155,17 @@ function Resources() {
               <div className="mb-8 border-b border-charcoal/15" />
               <div className="grid items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {gridArticles.map((article, index) => (
-                  <Reveal key={article.slug} delay={(index % 3) * 70} className="h-full">
+                  <Reveal
+                    key={article.slug}
+                    delay={(index % 3) * 70}
+                    className="group relative h-full"
+                  >
                     <Link
                       to="/resources/$slug"
                       params={{ slug: article.slug }}
                       className="group flex h-full flex-col overflow-hidden rounded-md border border-[#1B4D2E] bg-ivory transition-transform duration-300 hover:-translate-y-1"
                     >
-                      <div className="relative aspect-[16/10] overflow-hidden bg-brand-soft">
+                      <div className="relative aspect-[16/10] overflow-hidden bg-pure-white">
                         {article.image && (
                           <img
                             src={article.image}
@@ -190,6 +196,7 @@ function Resources() {
                         </span>
                       </div>
                     </Link>
+                    {article.image && <ImageZoomButton src={article.image} alt={article.title} />}
                   </Reveal>
                 ))}
               </div>

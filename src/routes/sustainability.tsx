@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { img } from "@/lib/site-data";
 import { PageHero, pageMeta } from "@/components/site/PageHero";
+import { ImageZoomButton } from "@/components/site/ImageZoom";
 import { Label, Reveal } from "@/components/site/primitives";
 import { PointArt } from "@/components/site/PointArt";
 export const Route = createFileRoute("/sustainability")({
@@ -46,13 +47,16 @@ function Sustainability() {
       <section className="bg-ivory py-20 lg:py-24">
         <div className="container grid gap-12 lg:grid-cols-2">
           <Reveal>
-            <img
-              src={img.stagePith}
-              alt="Coco pith texture"
-              loading="lazy"
-              decoding="async"
-              className="aspect-square w-full object-cover"
-            />
+            <div className="relative">
+              <img
+                src={img.stagePith}
+                alt="Coco pith texture"
+                loading="lazy"
+                decoding="async"
+                className="aspect-square w-full object-cover"
+              />
+              <ImageZoomButton src={img.stagePith} alt="Coco pith texture" />
+            </div>
           </Reveal>
           <div>
             {pillars.map((p, index) => (

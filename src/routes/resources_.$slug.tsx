@@ -4,6 +4,7 @@ import { Breadcrumbs, Label, PrimaryButton, Reveal } from "@/components/site/pri
 import { resourceArticles, resourceCategories } from "@/lib/resource-data";
 import { legacyResourceSlugRedirects } from "@/lib/route-aliases";
 import { pageMeta } from "@/components/site/PageHero";
+import { ImageZoomButton } from "@/components/site/ImageZoom";
 
 export const Route = createFileRoute("/resources_/$slug")({
   loader: ({ params }) => {
@@ -122,6 +123,7 @@ function ArticleDetail() {
                   decoding="async"
                   className="h-full w-full object-cover"
                 />
+                <ImageZoomButton src={article.image} alt={article.title} />
                 <span className="absolute bottom-4 left-4 bg-offwhite px-3 py-2 text-xs font-bold uppercase tracking-[.08em] text-brand-deep shadow-sm sm:bottom-6 sm:left-6">
                   {article.category}
                 </span>

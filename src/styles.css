@@ -2148,7 +2148,7 @@ body > div {
   min-height: 260px;
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  background: var(--brand-soft);
+  background: var(--pure-white);
 }
 
 .product-card--listing .product-card__media {
@@ -2651,4 +2651,91 @@ body > div {
     animation: none;
   }
 
+}
+
+.image-zoom-button {
+  position: absolute;
+  z-index: 20;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: var(--border-card);
+  border-radius: var(--radius-control);
+  background: var(--pure-white);
+  color: var(--brand-deep);
+  box-shadow: var(--shadow-card);
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+.image-zoom-button--below-header {
+  top: 88px;
+}
+
+.image-zoom-button:hover {
+  transform: scale(1.05);
+  background: var(--brand);
+  color: var(--pure-white);
+}
+
+.image-zoom-button:focus-visible,
+.image-zoom-dialog__close:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 3px;
+}
+
+.image-zoom-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.image-zoom-dialog {
+  position: fixed;
+  inset: 0;
+  width: fit-content;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: var(--radius-card);
+  background: var(--pure-white);
+}
+
+.image-zoom-dialog::backdrop {
+  background: rgb(0 0 0 / 84%);
+}
+
+.image-zoom-dialog__image {
+  display: block;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100dvh - 32px);
+  object-fit: contain;
+}
+
+.image-zoom-dialog__close {
+  position: fixed;
+  z-index: 1;
+  top: 16px;
+  right: 16px;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: var(--border-card);
+  border-radius: var(--radius-control);
+  background: var(--pure-white);
+  color: var(--brand-deep);
+  box-shadow: var(--shadow-card);
+}
+
+.image-zoom-dialog__close svg {
+  width: 22px;
+  height: 22px;
 }

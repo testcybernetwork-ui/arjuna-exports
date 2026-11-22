@@ -1,6 +1,7 @@
 import { CheckCircle2 } from "lucide-react";
 import { Fragment, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { ImageZoomButton } from "@/components/site/ImageZoom";
 
 type SpecRow = { label: string; values: string[] };
 type SpecSection = { label?: string; rows: SpecRow[] };
@@ -130,17 +131,20 @@ export function PackingCard({
 }) {
   return (
     <article className="flex h-full flex-col overflow-hidden rounded-sm border border-brand/15 bg-pure-white">
-      <div className="aspect-[4/3] bg-surface-cream">
+      <div className="relative aspect-[4/3] bg-pure-white">
         {image ? (
-          <img
-            src={image}
-            alt={alt ?? ""}
-            width={600}
-            height={450}
-            loading="lazy"
-            decoding="async"
-            className="h-full w-full object-cover"
-          />
+          <>
+            <img
+              src={image}
+              alt={alt ?? ""}
+              width={600}
+              height={450}
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full object-cover"
+            />
+            <ImageZoomButton src={image} alt={alt ?? title} />
+          </>
         ) : (
           <ImageSlot todo={imageTodo} className="h-full w-full" />
         )}

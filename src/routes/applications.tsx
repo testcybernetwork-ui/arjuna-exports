@@ -12,6 +12,7 @@ import {
 import { cropIcons, img, industrySolutions, products } from "@/lib/site-data";
 import { Label, PrimaryButton, SecondaryButton } from "@/components/site/primitives";
 import { pageMeta } from "@/components/site/PageHero";
+import { ImageZoomButton } from "@/components/site/ImageZoom";
 import strawberryPlants from "@/assets/applications/strawberry-plants.jpg";
 import blueberryPlants from "@/assets/applications/blueberry-plants.jpg";
 import blackberryPlants from "@/assets/applications/blackberry-plants.jpg";
@@ -163,8 +164,9 @@ function Applications() {
             </div>
             <p className="mt-8 text-xs font-semibold uppercase tracking-[.16em] text-brand/70">One growing medium · Multiple professional applications</p>
           </div>
-          <div className="relative min-h-[320px] overflow-hidden rounded-sm bg-brand-soft sm:min-h-[420px] lg:min-h-[500px]">
+          <div className="relative min-h-[320px] overflow-hidden rounded-sm bg-pure-white sm:min-h-[420px] lg:min-h-[500px]">
             <img src={img.detailGrowbagTomatoes} alt="Tomato plants thriving in coir grow bags inside a commercial greenhouse" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover" />
+            <ImageZoomButton src={img.detailGrowbagTomatoes} alt="Tomato plants thriving in coir grow bags inside a commercial greenhouse" />
             <div className="absolute inset-0 bg-gradient-to-t from-brand-deep/55 via-transparent to-transparent" aria-hidden="true" />
             <p className="absolute bottom-5 left-5 max-w-[25ch] text-sm font-medium text-pure-white sm:bottom-7 sm:left-7">A stable root zone for confident, season-long cultivation.</p>
           </div>
@@ -200,7 +202,7 @@ function Applications() {
             <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
               {softFruitCrops.map((crop) => (
                 <article key={crop.name} className="group flex min-w-0 flex-col overflow-hidden rounded-sm border border-charcoal/10 bg-pure-white transition-shadow hover:shadow-[0_16px_36px_rgba(31,45,40,.1)]">
-                  <div className="relative aspect-[4/3] overflow-hidden bg-brand-soft"><img src={crop.image} alt={crop.alt} loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />{cropIcons[crop.name] && <img src={cropIcons[crop.name]} alt="" loading="lazy" className="absolute bottom-3 left-3 h-11 w-11 rounded-full bg-pure-white/90 p-2" />}</div>
+                  <div className="relative aspect-[4/3] overflow-hidden bg-pure-white"><img src={crop.image} alt={crop.alt} loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" /><ImageZoomButton src={crop.image} alt={crop.alt} />{cropIcons[crop.name] && <img src={cropIcons[crop.name]} alt="" loading="lazy" className="absolute bottom-3 left-3 h-11 w-11 rounded-full bg-pure-white/90 p-2" />}</div>
                   <div className="flex flex-1 flex-col p-5 sm:p-6">
                     <h4 className="text-xl font-semibold text-brand-deep">{crop.name}</h4>
                     <p className="mt-2 text-sm text-charcoal/55">Recommended · <span className="font-semibold text-brand">{crop.product}</span></p>
@@ -220,7 +222,7 @@ function Applications() {
             <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
               {vegetableCrops.map((crop) => (
                 <article key={crop.name} className="group flex min-w-0 flex-col overflow-hidden rounded-sm border border-charcoal/10 bg-pure-white transition-shadow hover:shadow-[0_16px_36px_rgba(31,45,40,.1)]">
-                  <div className="aspect-[4/3] overflow-hidden bg-brand-soft"><img src={crop.image} alt={crop.alt} loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" /></div>
+                  <div className="relative aspect-[4/3] overflow-hidden bg-pure-white"><img src={crop.image} alt={crop.alt} loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" /><ImageZoomButton src={crop.image} alt={crop.alt} /></div>
                   <div className="flex flex-1 flex-col p-5 sm:p-6">
                     <h4 className="text-xl font-semibold leading-snug text-brand-deep">{crop.name}</h4>
                     <p className="mt-2 text-sm text-charcoal/55">Recommended · <span className="font-semibold text-brand">{crop.product}</span></p>
@@ -237,7 +239,7 @@ function Applications() {
             <div className="grid gap-5 md:grid-cols-3">
               {specialtyApplications.map((item) => (
                 <article key={item.title} className="group flex min-w-0 flex-col overflow-hidden rounded-sm border border-charcoal/10 bg-pure-white transition-shadow hover:shadow-[0_16px_36px_rgba(31,45,40,.1)]">
-                  <div className="aspect-[16/9] overflow-hidden bg-brand-soft"><img src={item.image} alt={item.alt} loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" /></div>
+                  <div className="relative aspect-[16/9] overflow-hidden bg-pure-white"><img src={item.image} alt={item.alt} loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" /><ImageZoomButton src={item.image} alt={item.alt} /></div>
                   <div className="flex flex-1 flex-col p-6 sm:p-7"><h4 className="text-xl font-semibold text-brand-deep">{item.title}</h4>{item.crops && <p className="mt-2 text-sm font-medium text-brand">{item.crops}</p>}<p className="mt-3 flex-1 text-sm leading-relaxed text-charcoal/65">{item.description}</p><p className="mt-4 text-sm text-charcoal/55">Recommended · <span className="font-semibold text-brand">{item.product}</span></p><ProductLink slug={item.slug} className="mt-5" /></div>
                 </article>
               ))}
@@ -336,6 +338,7 @@ function IndustryCard({
   const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
+    <div className="relative h-full">
     <Link
       to="/applications"
       hash={title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}
@@ -344,7 +347,7 @@ function IndustryCard({
       className="industry-card group block h-full overflow-hidden rounded-sm border border-brand/15 bg-surface-cream text-left shadow-[var(--shadow-card)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
     >
       <article className="flex h-full min-w-0 flex-col">
-        <div className="industry-media relative aspect-[16/10] overflow-hidden bg-surface-teal-light">
+        <div className="industry-media relative aspect-[16/10] overflow-hidden bg-pure-white">
           <div className="industry-image-skeleton" aria-hidden="true" data-loaded={imageLoaded} />
           <img
             src={image}
@@ -356,7 +359,6 @@ function IndustryCard({
             className="industry-photo absolute inset-0 h-full w-full object-cover"
             style={{ opacity: imageLoaded ? 1 : 0 }}
           />
-          <span className="absolute inset-0 bg-gradient-to-t from-[rgba(11,92,92,0.35)] to-transparent" aria-hidden="true" />
         </div>
         <div className="flex flex-1 flex-col px-5 pb-5 sm:px-6 sm:pb-6">
           <span className="industry-icon relative -mt-5 flex size-10 items-center justify-center self-start rounded-full border border-[#D7E3E1] bg-white text-[#0B5C5C] shadow-sm">
@@ -372,6 +374,8 @@ function IndustryCard({
         </div>
       </article>
     </Link>
+      <ImageZoomButton src={image} alt={alt} />
+    </div>
   );
 }
 

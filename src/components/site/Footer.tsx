@@ -2,8 +2,11 @@ import { Link } from "@tanstack/react-router";
 import { Globe2, Leaf, Mail, MapPin, MessageCircle, Phone, Sprout, Trees } from "lucide-react";
 import logo from "@/assets/logo.svg";
 import plantation from "@/assets/stage-husk.jpg";
+import { ImageZoomButton } from "@/components/site/ImageZoom";
 import { navItems, products } from "@/lib/site-data";
 import { ContentTodo } from "./primitives";
+
+const footerNavItems = navItems.filter((item) => item.to !== "/");
 
 const socialLinks = [
   { label: "LinkedIn", href: "https://www.linkedin.com/company/arjunaexports" },
@@ -91,6 +94,7 @@ export function Footer() {
           loading="lazy"
           decoding="async"
         />
+        <ImageZoomButton src={plantation} alt="Coconut palms growing in a tropical plantation" />
         <div className="footer-story-wash" aria-hidden="true" />
         <div className="container footer-story-content">
           <h2 id="footer-story-title" className="footer-headline">
@@ -142,7 +146,7 @@ export function Footer() {
           <nav aria-label="Navigate the website" className="footer-nav">
             <h3 className="footer-column-heading">Navigate</h3>
             <ul className="footer-link-list">
-              {navItems.map((item) => (
+              {footerNavItems.map((item) => (
                 <li key={item.to}>
                   <Link to={item.to} className="footer-link">
                     {item.label}

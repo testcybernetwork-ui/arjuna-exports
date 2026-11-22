@@ -5,7 +5,7 @@ import { navItems } from "@/lib/site-data";
 import { cn } from "@/lib/utils";
 import { PrimaryButton } from "./primitives";
 
-const menuItems = navItems;
+const menuItems = navItems.filter((item) => item.to !== "/");
 
 export function Header({ overHero = false }: { overHero?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
@@ -98,7 +98,7 @@ export function Header({ overHero = false }: { overHero?: boolean }) {
               src={logo}
               alt="Arjuna Exports"
               className={cn(
-                "h-auto w-[158px] transition-[filter] duration-250 sm:w-[174px]",
+                "h-auto w-[190px] transition-[filter] duration-250 sm:w-[205px]",
                 !solid && "brightness-0 invert",
               )}
             />
@@ -177,7 +177,7 @@ export function Header({ overHero = false }: { overHero?: boolean }) {
       >
         <div className="container flex h-20 items-center justify-between">
           <Link to="/" aria-label="Arjuna Exports home">
-            <img src={logo} alt="Arjuna Exports" className="h-auto w-[158px]" />
+            <img src={logo} alt="Arjuna Exports" className="h-auto w-[190px] sm:w-[205px]" />
           </Link>
           <button
             onClick={() => setOpen(false)}

@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import type { Product } from "@/lib/site-data";
 import { Arrow } from "@/components/site/primitives";
 import { ImageSlot } from "@/components/site/ProductDetailComponents";
+import { ImageZoomButton } from "@/components/site/ImageZoom";
 
 type ProductCardProps = {
   product: Product;
@@ -17,23 +18,26 @@ export function ProductCard({ product, index, variant }: ProductCardProps) {
 
   if (variant === "carousel") {
     return (
-      <Link {...productLink} className="product-card product-card--carousel group">
-        <div className="product-card__media aspect-[4/5]">
-          {product.imageTodo ? (
-            <ImageSlot todo={product.imageTodo} className="h-full w-full" />
-          ) : (
-            <img
-              src={product.image}
-              alt={product.name}
-              width={600}
-              height={750}
-              loading="lazy"
-              decoding="async"
-              className="product-card__image h-full w-full object-cover"
-            />
-          )}
+      <article className="product-card product-card--carousel group">
+        <div className="product-card__media relative aspect-[4/5] bg-pure-white">
+          <Link {...productLink} aria-label={`View ${product.name}`} className="block h-full">
+            {product.imageTodo ? (
+              <ImageSlot todo={product.imageTodo} className="h-full w-full" />
+            ) : (
+              <img
+                src={product.image}
+                alt={product.name}
+                width={600}
+                height={750}
+                loading="lazy"
+                decoding="async"
+                className="product-card__image h-full w-full object-cover"
+              />
+            )}
+          </Link>
+          {!product.imageTodo && <ImageZoomButton src={product.image} alt={product.name} />}
         </div>
-        <div className="product-card__body">
+        <Link {...productLink} className="product-card__body block">
           <span className="micro-label text-brand">
             {String(index + 1).padStart(2, "0")} / {product.category}
           </span>
@@ -41,14 +45,14 @@ export function ProductCard({ product, index, variant }: ProductCardProps) {
           <p className="mt-3 line-clamp-2 font-display text-sm leading-relaxed text-charcoal/70">
             {product.short}
           </p>
-        </div>
-      </Link>
+        </Link>
+      </article>
     );
   }
 
   return (
     <article className="product-card product-card--listing group flex h-full flex-col overflow-hidden rounded-sm border border-brand/15 bg-pure-white shadow-[var(--shadow-card)]">
-      <div className="product-card__media relative aspect-[4/5] overflow-hidden bg-surface-cream">
+      <div className="product-card__media relative aspect-[4/5] overflow-hidden bg-pure-white">
         <span className="product-card__category micro-label">{product.category}</span>
         <Link {...productLink} aria-label={`View ${product.name}`} className="block h-full">
           {product.imageTodo ? (
@@ -65,6 +69,7 @@ export function ProductCard({ product, index, variant }: ProductCardProps) {
             />
           )}
         </Link>
+        {!product.imageTodo && <ImageZoomButton src={product.image} alt={product.name} />}
       </div>
       <div className="product-card__body flex flex-1 flex-col p-5">
         <div className="flex-1">

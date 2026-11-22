@@ -13,6 +13,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { Header } from "../components/site/Header";
 import { Footer } from "../components/site/Footer";
+import { ImageZoomProvider } from "../components/site/ImageZoom";
 import brandLogo from "@/assets/logo.svg?url";
 import displayFont from "../BowlbyOne-Regular.ttf";
 
@@ -188,14 +189,16 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <a className="skip-link" href="#main-content">
-        Skip to content
-      </a>
-      <Header overHero />
-      <main id="main-content" tabIndex={-1} className="site-compact">
-        <Outlet />
-      </main>
-      <Footer />
+      <ImageZoomProvider>
+        <a className="skip-link" href="#main-content">
+          Skip to content
+        </a>
+        <Header overHero />
+        <main id="main-content" tabIndex={-1} className="site-compact">
+          <Outlet />
+        </main>
+        <Footer />
+      </ImageZoomProvider>
     </QueryClientProvider>
   );
 }

@@ -23,6 +23,7 @@ import destinationPort from "@/assets/Process/landing port.png";
 import customsClearance from "@/assets/Process/cutoms clearence.png";
 import buyerPlace from "@/assets/Process/buyer place.png";
 import { PageHero, pageMeta } from "@/components/site/PageHero";
+import { ImageZoomButton } from "@/components/site/ImageZoom";
 import { ChapterHeading, Label, PrimaryButton, Reveal } from "@/components/site/primitives";
 
 export const Route = createFileRoute("/process")({
@@ -177,6 +178,7 @@ function ProcessStage({ stage, index }: { stage: (typeof processStages)[number];
         loading={index < 2 ? "eager" : "lazy"}
         className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.035]"
       />
+      <ImageZoomButton src={stage.image} alt={`${stage.title} at Arjuna Exports`} />
       <span className="absolute bottom-3 left-3 z-[3] rounded-sm bg-ivory/95 px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[.14em] text-brand shadow-sm">
         Inside our process
       </span>

@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Label, Reveal } from "./primitives";
 import { cn } from "@/lib/utils";
 import heroSocialImage from "@/assets/hero-plantation.webp";
+import { ImageZoomButton } from "@/components/site/ImageZoom";
 
 export function PageHero({
   eyebrow,
@@ -30,12 +31,7 @@ export function PageHero({
       >
         <Reveal>
           <Label className="mb-6 text-brand">{eyebrow}</Label>
-          <h1
-            className={cn(
-              "display max-w-[21ch] text-h1 text-body-text",
-              titleClassName,
-            )}
-          >
+          <h1 className={cn("display max-w-[21ch] text-h1 text-body-text", titleClassName)}>
             {title}
           </h1>
         </Reveal>
@@ -51,13 +47,20 @@ export function PageHero({
         </Reveal>
       </div>
       {image && (
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-cover bg-center opacity-30 slow-zoom"
-          style={{
-            backgroundImage: `linear-gradient(to right, var(--surface-teal-light), color-mix(in oklab, var(--surface-teal-light) 84%, transparent), color-mix(in oklab, var(--brand) 35%, transparent)), url(${image})`,
-          }}
-        />
+        <>
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-cover bg-center opacity-30 slow-zoom"
+            style={{
+              backgroundImage: `linear-gradient(to right, var(--surface-teal-light), color-mix(in oklab, var(--surface-teal-light) 84%, transparent), color-mix(in oklab, var(--brand) 35%, transparent)), url(${image})`,
+            }}
+          />
+          <ImageZoomButton
+            src={image}
+            alt={`${eyebrow} page hero image`}
+            className="image-zoom-button--below-header"
+          />
+        </>
       )}
     </section>
   );

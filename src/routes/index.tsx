@@ -9,6 +9,7 @@ import {
 } from "@/lib/site-data";
 import { ProductCard } from "@/components/site/ProductCard";
 import { pageMeta } from "@/components/site/PageHero";
+import { ImageZoomButton } from "@/components/site/ImageZoom";
 import {
   ChapterHeading,
   ContentTodo,
@@ -98,23 +99,33 @@ function ArticlesCarousel({ articles }: { articles: ResourceArticle[] }) {
             aria-hidden={duplicate || undefined}
           >
             {articles.map((article) => (
-              <Link
+              <article
                 key={article.slug}
-                to="/resources/$slug"
-                params={{ slug: article.slug }}
-                tabIndex={duplicate ? -1 : undefined}
                 className="group flex w-[min(84vw,23rem)] shrink-0 flex-col overflow-hidden rounded-sm border border-brand/20 bg-pure-white shadow-[var(--shadow-card)]"
               >
-                <div className="aspect-[16/10] overflow-hidden bg-brand-soft">
-                  <img
-                    src={article.image}
-                    alt={article.title}
-                    loading="lazy"
-                    decoding="async"
-                    className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                  />
+                <div className="relative aspect-[16/10] overflow-hidden bg-pure-white">
+                  <Link
+                    to="/resources/$slug"
+                    params={{ slug: article.slug }}
+                    tabIndex={duplicate ? -1 : undefined}
+                    className="block h-full"
+                  >
+                    <img
+                      src={article.image}
+                      alt={article.title}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                    />
+                  </Link>
+                  {!duplicate && <ImageZoomButton src={article.image} alt={article.title} />}
                 </div>
-                <div className="flex flex-1 flex-col p-6">
+                <Link
+                  to="/resources/$slug"
+                  params={{ slug: article.slug }}
+                  tabIndex={duplicate ? -1 : undefined}
+                  className="flex flex-1 flex-col p-6"
+                >
                   <div className="flex items-center justify-between gap-4 text-[11px] font-semibold uppercase tracking-[.08em] text-brand">
                     <span className="line-clamp-1">{article.category}</span>
                     <span className="shrink-0 text-charcoal/55">{article.read}</span>
@@ -125,8 +136,8 @@ function ArticlesCarousel({ articles }: { articles: ResourceArticle[] }) {
                   <span className="mt-auto pt-4 text-xs font-bold uppercase tracking-[.14em] text-brand">
                     Read article →
                   </span>
-                </div>
-              </Link>
+                </Link>
+              </article>
             ))}
           </div>
         ))}
@@ -222,6 +233,11 @@ function Home() {
           </video>
           <span className="home-hero__image-caption">Rooted in nature. Ready for the world.</span>
         </div>
+        <ImageZoomButton
+          src={heroPlantationWebp}
+          alt="Coconut plantation and export operations"
+          className="image-zoom-button--below-header"
+        />
       </section>
       <HomeStats />
       <ContentTodo request="Confirm the export-market list before publishing country names." />
@@ -242,7 +258,7 @@ function Home() {
                 delay={i * 80}
                 className="group overflow-hidden rounded-md bg-ivory"
               >
-                <div className="aspect-[5/4] overflow-hidden">
+                <div className="relative aspect-[5/4] overflow-hidden">
                   <img
                     src={s.image}
                     alt={s.title}
@@ -250,6 +266,7 @@ function Home() {
                     decoding="async"
                     className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
                   />
+                  <ImageZoomButton src={s.image} alt={s.title} />
                 </div>
                 <div className="p-5">
                   <span className="micro-label text-brand">{s.n}</span>
@@ -262,12 +279,8 @@ function Home() {
         </div>
       </section>
 
-      <Link
-        to="/process"
-        aria-label="Explore the full process"
-        className="process-preview-link block bg-surface-teal-light text-body-text transition duration-300 hover:opacity-95 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
-      >
-        <section className="py-14 lg:py-20">
+      <section className="process-preview-link bg-surface-teal-light text-body-text transition duration-300 hover:opacity-95">
+        <div className="py-14 lg:py-20">
           <div className="container">
             <Reveal>
               <div>
@@ -291,9 +304,15 @@ function Home() {
                       decoding="async"
                       className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
                     />
+                    <Link
+                      to="/process"
+                      aria-label={`Explore ${s.title} in the full process`}
+                      className="absolute inset-0 z-[3] focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-aqua"
+                    />
+                    <ImageZoomButton src={s.image} alt={s.title} />
                     <div
                       aria-hidden="true"
-                      className="absolute inset-x-0 bottom-0 z-[1] h-36 bg-gradient-to-t from-brand-deep/95 via-brand-deep/60 to-transparent"
+                      className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-36 bg-gradient-to-t from-brand-deep/95 via-brand-deep/60 to-transparent"
                     />
                     <div className="absolute inset-x-0 bottom-0 z-[2] flex min-w-0 items-center gap-2 p-5 sm:p-6">
                       <span className="display shrink-0 text-[clamp(.9rem,2vw,1.5rem)] leading-none text-pure-white">
@@ -321,14 +340,17 @@ function Home() {
               ))}
             </div>
             <div className="mt-8 flex justify-center sm:justify-end">
-              <span className="process-preview-cta inline-flex min-h-[52px] items-center gap-3 rounded-sm bg-[var(--brand-green)] px-7 text-[14px] font-semibold uppercase tracking-[0.06em] text-pure-white transition-colors duration-300 hover:bg-[#1B5E20]">
+              <Link
+                to="/process"
+                className="process-preview-cta inline-flex min-h-[52px] items-center gap-3 rounded-sm bg-[var(--brand-green)] px-7 text-[14px] font-semibold uppercase tracking-[0.06em] text-pure-white transition-colors duration-300 hover:bg-[#1B5E20] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
+              >
                 Explore the full process
                 <span aria-hidden="true">→</span>
-              </span>
+              </Link>
             </div>
           </div>
-        </section>
-      </Link>
+        </div>
+      </section>
 
       <section className="bg-surface-teal-light py-20 lg:py-28">
         <div className="container">
@@ -387,6 +409,7 @@ function Home() {
                     <h3 className="display mt-2 text-3xl">{solution.title}</h3>
                   </div>
                 </a>
+                <ImageZoomButton src={solution.image} alt={solution.alt} />
               </Reveal>
             ))}
           </div>

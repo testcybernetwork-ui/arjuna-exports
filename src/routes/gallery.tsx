@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero, pageMeta } from "@/components/site/PageHero";
 import { Label, Reveal } from "@/components/site/primitives";
+import { ImageZoomButton } from "@/components/site/ImageZoom";
 
 export const Route = createFileRoute("/gallery")({
   head: () =>
@@ -33,7 +34,7 @@ const galleryItems = Object.entries(galleryModules)
           ? "md:col-span-2"
           : index % 5 === 0
             ? "md:row-span-2"
-          : "",
+            : "",
   }));
 
 // Reuse the container-loading photo as a final tile to close the mosaic's open cell.
@@ -83,10 +84,13 @@ function Gallery() {
               <Reveal
                 key={`${item.number}-${index}`}
                 delay={(index % 4) * 65}
-                className={`${item.size} group relative min-h-[260px] overflow-hidden rounded-md border border-brand bg-brand-deep`}
+                className={`${item.size} group relative min-h-[260px] overflow-hidden rounded-md border border-brand bg-pure-white`}
               >
                 <GalleryPhoto image={item.image} number={item.number} />
-                <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-pure-white/10 transition-colors duration-500 group-hover:bg-brand-deep/10" />
+                <ImageZoomButton
+                  src={item.image}
+                  alt={`Arjuna Exports gallery image ${item.number}`}
+                />
               </Reveal>
             ))}
           </div>

@@ -16,6 +16,7 @@ import {
 import { useEffect, useState, type FormEvent } from "react";
 import { img, products } from "@/lib/site-data";
 import { PageHero, pageMeta } from "@/components/site/PageHero";
+import { ImageZoomButton } from "@/components/site/ImageZoom";
 import { ContentTodo, Label, PrimaryButton, Reveal } from "@/components/site/primitives";
 import { DeskPhoneIcon } from "@/components/site/DeskPhoneIcon";
 import { submitEnquiry } from "@/lib/submit-enquiry";
@@ -894,6 +895,10 @@ function Contact() {
                     loading="lazy"
                     decoding="async"
                     className="h-full w-full object-cover"
+                  />
+                  <ImageZoomButton
+                    src={img.appGreenhouse}
+                    alt="Greenhouse crops grown in coco medium"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-brand-deep via-brand-deep/12 to-transparent" />
                   <div className="absolute right-6 bottom-6 left-6">

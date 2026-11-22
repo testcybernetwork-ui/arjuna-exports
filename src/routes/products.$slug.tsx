@@ -24,6 +24,7 @@ import {
   TextLink,
 } from "@/components/site/primitives";
 import { FeatureGrid, ImageSlot } from "@/components/site/ProductDetailComponents";
+import { ImageZoomButton } from "@/components/site/ImageZoom";
 import { PointArt } from "@/components/site/PointArt";
 import coconutIcon from "@/assets/coconut2.svg";
 import coirMatPhoto1 from "@/assets/Product/4.coir mat/01.png";
@@ -639,18 +640,18 @@ function ProductPageDetail() {
             <div
               onMouseEnter={() => setGalleryPaused(true)}
               onMouseLeave={() => setGalleryPaused(false)}
-              className="relative h-full min-h-[400px] w-full min-w-0 overflow-hidden rounded-md border border-brand/15 bg-surface-teal-dark shadow-[0_20px_60px_rgba(31,45,40,.12)] sm:min-h-[480px] lg:min-h-[540px]"
+              className="relative h-full min-h-[400px] w-full min-w-0 overflow-hidden rounded-md border border-brand/15 bg-pure-white shadow-[0_20px_60px_rgba(31,45,40,.12)] sm:min-h-[480px] lg:min-h-[540px]"
             >
               {isCocoPeatBlocks || isGramBlock || isHuskChips ? (
                 <>
-                  <div className="absolute inset-x-0 top-0 bottom-[84px] flex items-center justify-center bg-surface-teal-dark">
+                  <div className="absolute inset-x-0 top-0 bottom-[84px] flex items-center justify-center bg-pure-white">
                     <GalleryPhoto
                       photo={activePhoto}
                       alt={activePhoto.label ?? p.name}
                       className="h-full w-full object-contain p-4 sm:p-6"
                     />
                   </div>
-                  <div className="absolute inset-x-0 bottom-0 overflow-x-auto bg-surface-teal-dark px-4 pb-4 pt-2 sm:px-5">
+                  <div className="absolute inset-x-0 bottom-0 overflow-x-auto bg-pure-white px-4 pb-4 pt-2 sm:px-5">
                     <div className="flex w-max gap-2">
                       {gallery.map((photo) => (
                         <button
@@ -661,7 +662,7 @@ function ProductPageDetail() {
                           aria-pressed={
                             activePhoto?.image === photo.image && activePhoto?.todo === photo.todo
                           }
-                          className={`h-14 w-14 shrink-0 overflow-hidden rounded-sm border-2 bg-surface-teal-dark transition-opacity ${
+                          className={`h-14 w-14 shrink-0 overflow-hidden rounded-sm border-2 bg-pure-white transition-opacity ${
                             activePhoto?.image === photo.image && activePhoto?.todo === photo.todo
                               ? "border-[#1B7F3B]"
                               : "border-brand/15 hover:opacity-70"
@@ -678,15 +679,15 @@ function ProductPageDetail() {
                   </div>
                 </>
               ) : isPackagingPhoto ? (
-                <div className="absolute inset-x-0 top-0 bottom-[84px] flex items-center justify-center bg-surface-teal-dark p-6 sm:p-8">
+                <div className="absolute inset-x-0 top-0 bottom-[84px] flex items-center justify-center bg-pure-white p-6 sm:p-8">
                   <GalleryPhoto
                     photo={activePhoto}
                     alt={activePhoto.label ?? p.name}
-                    className="max-h-full w-auto max-w-full object-contain drop-shadow-xl transition duration-500 ease-[cubic-bezier(.22,1,.36,1)]"
+                    className="max-h-full w-auto max-w-full object-contain transition duration-500 ease-[cubic-bezier(.22,1,.36,1)]"
                   />
                 </div>
               ) : (
-                <div className="absolute inset-x-0 top-0 bottom-[84px] flex items-center justify-center bg-surface-teal-dark p-4 sm:p-6">
+                <div className="absolute inset-x-0 top-0 bottom-[84px] flex items-center justify-center bg-pure-white p-4 sm:p-6">
                   <GalleryPhoto
                     photo={activePhoto}
                     alt={activePhoto.label ?? p.name}
@@ -695,7 +696,7 @@ function ProductPageDetail() {
                 </div>
               )}
               {!isCocoPeatBlocks && !isGramBlock && !isHuskChips && (
-                <div className="absolute inset-x-0 bottom-0 overflow-x-auto bg-surface-teal-dark px-4 pb-4 pt-2 sm:px-5">
+                <div className="absolute inset-x-0 bottom-0 overflow-x-auto bg-pure-white px-4 pb-4 pt-2 sm:px-5">
                   <div className="flex w-max gap-2">
                     {gallery.map((photo) => {
                       return (
@@ -707,7 +708,7 @@ function ProductPageDetail() {
                           aria-pressed={
                             activePhoto?.image === photo.image && activePhoto?.todo === photo.todo
                           }
-                          className={`group relative h-14 w-14 shrink-0 overflow-hidden rounded-sm border-2 bg-surface-teal-dark transition duration-300 ${
+                          className={`group relative h-14 w-14 shrink-0 overflow-hidden rounded-sm border-2 bg-pure-white transition duration-300 ${
                             activePhoto?.image === photo.image && activePhoto?.todo === photo.todo
                               ? "border-aqua shadow-[0_0_0_3px_rgba(104,230,194,.18)]"
                               : "border-pure-white/30 opacity-75 hover:border-pure-white hover:opacity-100"
@@ -723,6 +724,9 @@ function ProductPageDetail() {
                     })}
                   </div>
                 </div>
+              )}
+              {activePhoto.image && (
+                <ImageZoomButton src={activePhoto.image} alt={activePhoto.label ?? p.name} />
               )}
             </div>
             <Reveal delay={100} className="flex h-full min-w-0 items-start py-0">
@@ -869,7 +873,7 @@ function ProductPageDetail() {
               {huskChipsKeyFeatures.map(({ title, image }) => (
                 <li
                   key={title}
-                  className="flex min-h-36 items-center justify-center rounded-sm border border-brand/10 bg-pure-white p-3 transition duration-200 hover:-translate-y-1 hover:shadow-[0_14px_35px_rgba(0,70,65,.1)] sm:min-h-40"
+                  className="relative flex min-h-36 items-center justify-center rounded-sm border border-brand/10 bg-pure-white p-3 transition duration-200 hover:-translate-y-1 hover:shadow-[0_14px_35px_rgba(0,70,65,.1)] sm:min-h-40"
                 >
                   <img
                     src={image}
@@ -877,6 +881,7 @@ function ProductPageDetail() {
                     loading="lazy"
                     className="h-auto w-full max-w-[220px] object-contain"
                   />
+                  <ImageZoomButton src={image} alt={title} />
                 </li>
               ))}
             </ul>
@@ -914,6 +919,10 @@ function ProductPageDetail() {
                     loading="lazy"
                     className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
                   />
+                  <ImageZoomButton
+                    src={gallery[1]?.image ?? gallery[0]?.image ?? p.image}
+                    alt={gallery[1]?.label ?? gallery[0]?.label ?? p.name}
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-charcoal/70 via-transparent to-transparent" />
                   <figcaption className="micro-label absolute right-6 bottom-6 left-6 text-pure-white">
                     {gallery[1]?.label ?? gallery[0]?.label}
@@ -931,6 +940,7 @@ function ProductPageDetail() {
                         loading="lazy"
                         className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
                       />
+                      {photo.image && <ImageZoomButton src={photo.image} alt={photo.label} />}
                       <div className="absolute inset-0 bg-gradient-to-t from-charcoal/70 via-transparent to-transparent" />
                       <figcaption className="micro-label absolute right-5 bottom-5 left-5 text-pure-white">
                         {photo.label}
@@ -961,7 +971,7 @@ function ProductPageDetail() {
                   ({ title, image }) => (
                     <li
                       key={title}
-                      className="flex min-h-36 items-center justify-center rounded-sm border border-brand/10 bg-pure-white p-3 transition duration-200 hover:-translate-y-1 hover:shadow-[0_14px_35px_rgba(0,70,65,.1)] sm:min-h-40"
+                      className="relative flex min-h-36 items-center justify-center rounded-sm border border-brand/10 bg-pure-white p-3 transition duration-200 hover:-translate-y-1 hover:shadow-[0_14px_35px_rgba(0,70,65,.1)] sm:min-h-40"
                     >
                       <img
                         src={image}
@@ -969,6 +979,7 @@ function ProductPageDetail() {
                         loading="lazy"
                         className="h-auto w-full max-w-[220px] object-contain"
                       />
+                      <ImageZoomButton src={image} alt={title} />
                     </li>
                   ),
                 )}
@@ -1340,15 +1351,18 @@ function ProductPageDetail() {
                     }`}
                   >
                     {option.image ? (
-                      <img
-                        src={option.image}
-                        alt={option.alt}
-                        width={600}
-                        height={450}
-                        loading="lazy"
-                        decoding="async"
-                        className="h-56 w-full flex-none rounded-md object-cover sm:h-64 xl:h-[56%]"
-                      />
+                      <div className="relative h-56 w-full flex-none sm:h-64 xl:h-[56%]">
+                        <img
+                          src={option.image}
+                          alt={option.alt}
+                          width={600}
+                          height={450}
+                          loading="lazy"
+                          decoding="async"
+                          className="h-full w-full rounded-md object-cover"
+                        />
+                        <ImageZoomButton src={option.image} alt={option.alt} />
+                      </div>
                     ) : (
                       <ImageSlot
                         todo={option.todo ?? `${p.name} packing image`}
@@ -1401,12 +1415,15 @@ function ProductPageDetail() {
                   className={`group relative min-h-80 overflow-hidden ${isHuskChips ? "text-brand-deep" : ""}`}
                 >
                   {application.image ? (
-                    <img
-                      src={application.image}
-                      alt={application.name}
-                      loading="lazy"
-                      className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                    />
+                    <>
+                      <img
+                        src={application.image}
+                        alt={application.name}
+                        loading="lazy"
+                        className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                      />
+                      <ImageZoomButton src={application.image} alt={application.name} />
+                    </>
                   ) : (
                     <ImageSlot
                       todo={
@@ -1465,12 +1482,15 @@ function ProductPageDetail() {
 
       {!isCocoPeatBlocks && !isGramBlock && !isHuskChips && !isCoirMatting && !hasVariants && (
         <section className="grid bg-brand-deep text-pure-white lg:grid-cols-2">
-          <img
-            src={img.exportPort}
-            alt="Export containers ready for shipping"
-            loading="lazy"
-            className="h-full min-h-[440px] w-full object-cover"
-          />
+          <div className="relative min-h-[440px] w-full">
+            <img
+              src={img.exportPort}
+              alt="Export containers ready for shipping"
+              loading="lazy"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <ImageZoomButton src={img.exportPort} alt="Export containers ready for shipping" />
+          </div>
           <div className="flex items-center px-6 py-16 sm:px-12 lg:p-16">
             <Reveal>
               <Label className="text-aqua">Packaging & shipping</Label>
@@ -1505,30 +1525,33 @@ function ProductPageDetail() {
           <div className="mt-14 grid gap-8 md:grid-cols-3">
             {related.map((product, i) => (
               <Reveal key={product.slug} delay={i * 70} className="group">
-                <a href={`/products/${product.slug}`}>
-                  <div
-                    className={`aspect-[4/5] overflow-hidden rounded-md border border-brand/15 ${
-                      product.imageTodo
-                        ? "bg-brand-soft"
-                        : "flex items-center justify-center bg-pure-white p-4"
-                    }`}
-                  >
-                    {product.imageTodo ? (
-                      <ImageSlot todo={product.imageTodo} className="h-full w-full" />
-                    ) : (
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        loading="lazy"
-                        className="max-h-full w-auto max-w-full object-contain drop-shadow-sm transition duration-700 group-hover:scale-105"
-                      />
-                    )}
-                  </div>
-                  <span className="micro-label mt-6 block text-brand">{product.category}</span>
-                  <h3 className="display mt-3 text-3xl transition-transform group-hover:-translate-y-1">
-                    {product.name}
-                  </h3>
-                </a>
+                <div className="relative">
+                  <a href={`/products/${product.slug}`} className="block">
+                    <div
+                      className={`aspect-[4/5] overflow-hidden rounded-md border border-brand/15 ${
+                        product.imageTodo
+                          ? "bg-brand-soft"
+                          : "flex items-center justify-center bg-pure-white p-4"
+                      }`}
+                    >
+                      {product.imageTodo ? (
+                        <ImageSlot todo={product.imageTodo} className="h-full w-full" />
+                      ) : (
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          loading="lazy"
+                          className="max-h-full w-auto max-w-full object-contain transition duration-700 group-hover:scale-105"
+                        />
+                      )}
+                    </div>
+                    <span className="micro-label mt-6 block text-brand">{product.category}</span>
+                    <h3 className="display mt-3 text-3xl transition-transform group-hover:-translate-y-1">
+                      {product.name}
+                    </h3>
+                  </a>
+                  {!product.imageTodo && <ImageZoomButton src={product.image} alt={product.name} />}
+                </div>
               </Reveal>
             ))}
           </div>

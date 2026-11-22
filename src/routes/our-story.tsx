@@ -26,6 +26,7 @@ import storyPeople from "@/assets/story-people.jpg";
 import { PurposeSection } from "@/components/site/PurposeSection";
 import { AboutHeroSection } from "@/components/site/AboutHeroSection";
 import { OurStrengthsAccordion } from "@/components/site/OurStrengthsAccordion";
+import { ImageZoomButton } from "@/components/site/ImageZoom";
 import { ImageSlot } from "@/components/site/ProductDetailComponents";
 import { pageMeta } from "@/components/site/PageHero";
 import { Label, ContentTodo, PrimaryButton, Reveal, TextLink } from "@/components/site/primitives";
@@ -346,6 +347,7 @@ function AboutUs() {
                 className="h-full min-h-[320px] w-full object-cover"
                 loading="lazy"
               />
+              <ImageZoomButton src={containerTrucks} alt="Arjuna Exports container trucks" />
               <div className="absolute inset-0 bg-gradient-to-l from-brand-deep/40 to-transparent" />
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                 <GlobeLeafIcon className="h-28 w-28 opacity-85 sm:h-36 sm:w-36 drop-shadow-md" />
@@ -411,6 +413,10 @@ function AboutUs() {
                 alt="Coco substrate blocks wrapped and stacked inside the warehouse"
                 className="h-full w-full object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.04]"
                 loading="lazy"
+              />
+              <ImageZoomButton
+                src={warehousePallets}
+                alt="Coco substrate blocks wrapped and stacked inside the warehouse"
               />
               <div
                 className="absolute inset-0 bg-brand-deep/55 mix-blend-multiply"
